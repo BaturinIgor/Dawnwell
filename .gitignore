@@ -17,3 +17,4 @@ ios/DerivedData/
 ios/*.xcresult
 ios/xcodebuild.log
 xcuserdata/
+__pycache__/
