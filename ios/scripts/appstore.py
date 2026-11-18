@@ -288,7 +288,7 @@ def sync_age_rating(asc, info_id):
     are built from what the declaration lists, plus any question an error names as missing."""
     import re
     decl = asc.get(f"/v1/appInfos/{info_id}/ageRatingDeclaration")["data"]
-    skip = ("override", "Override", "kidsAgeBand", "url", "Url")
+    skip = ("override", "Override", "kidsAgeBand", "url", "Url", "ClassificationNumber")
 
     def answer(key):
         if key == "medicalOrTreatmentInformation":
@@ -309,8 +309,12 @@ def sync_age_rating(asc, info_id):
             flipped = {k: (False if t == "BOOLEAN" else "NONE")
                        for k, t in re.findall(r"attribute '(\w+)'\. Expected an? (\w+)", text) if k in answers}
             missing = set(re.findall(r"value for the attribute '(\w+)'", text)) - set(answers)
-            if not flipped and not missing:
+            # A field that only goes with a country override we don't use: leave it out.
+            dropped = set(re.findall(r"attribute '(\w+)' cannot be set unless", text)) & set(answers)
+            if not flipped and not missing and not dropped:
                 raise
+            for k in dropped:
+                answers.pop(k)
             answers.update(flipped)
             answers.update({k: answer(k) for k in missing})
     raise RuntimeError("age rating still incomplete")
