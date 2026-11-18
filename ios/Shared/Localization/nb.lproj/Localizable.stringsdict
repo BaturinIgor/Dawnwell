@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%lld days of logs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld dag med registreringer</string>
+			<key>other</key>
+			<string>%lld dager med registreringer</string>
+		</dict>
+	</dict>
+	<key>%lld days · worst %lld/5</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@ · verst %lld/5</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld dag</string>
+			<key>other</key>
+			<string>%lld dager</string>
+		</dict>
+	</dict>
+	<key>%lld items · %@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@ · %@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld ting</string>
+			<key>other</key>
+			<string>%lld ting</string>
+		</dict>
+	</dict>
+	<key>%lld tablets left. Time to ask for a refill.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld tablett igjen. På tide å fornye resepten.</string>
+			<key>other</key>
+			<string>%lld tabletter igjen. På tide å fornye resepten.</string>
+		</dict>
+	</dict>
+	<key>%lld weight entries</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld vektregistrering</string>
+			<key>other</key>
+			<string>%lld vektregistreringer</string>
+		</dict>
+	</dict>
+	<key>%lld-day streak</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld dag på rad</string>
+			<key>other</key>
+			<string>%lld dager på rad</string>
+		</dict>
+	</dict>
+	<key>- %@: %lld days, worst %lld/5</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>- %@: %#@n@, verst %lld/5</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld dag</string>
+			<key>other</key>
+			<string>%lld dager</string>
+		</dict>
+	</dict>
+	<key>About %lld days left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>Omtrent %lld dag igjen</string>
+			<key>other</key>
+			<string>Omtrent %lld dager igjen</string>
+		</dict>
+	</dict>
+	<key>Showing %lld days from Apple Health.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>Viser %lld dag fra Apple Helse.</string>
+			<key>other</key>
+			<string>Viser %lld dager fra Apple Helse.</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

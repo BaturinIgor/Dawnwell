@@ -63,9 +63,9 @@ struct OnboardingView: View {
             .background(Palette.accent, in: RoundedRectangle(cornerRadius: 36, style: .continuous))
 
             ForEach([
-                "Know exactly when you can eat after your tablet",
-                "Hit your protein to keep your muscle",
-                "Bring a clear summary to every visit",
+                String(localized: "Know exactly when you can eat after your tablet"),
+                String(localized: "Hit your protein to keep your muscle"),
+                String(localized: "Bring a clear summary to every visit"),
             ], id: \.self) { line in
                 HStack(spacing: 12) {
                     Image(systemName: "checkmark")
@@ -120,7 +120,7 @@ struct OnboardingView: View {
                     Text("As written on your label").font(.footnote).foregroundStyle(Palette.muted)
                 }
                 Spacer()
-                StepperView(value: $wait, unit: "min", step: 5, range: 5...120)
+                StepperView(value: $wait, unit: String(localized: "min"), step: 5, range: 5...120)
             }
             .card()
             Button("Continue") { step = 2 }.buttonStyle(FilledButtonStyle())
@@ -150,11 +150,12 @@ struct OnboardingView: View {
                     Text("Change it anytime").font(.footnote).foregroundStyle(Palette.muted)
                 }
                 Spacer()
-                StepperView(value: $protein, unit: "g", step: 5, range: 40...200)
+                StepperView(value: $protein, unit: String(localized: "g"), step: 5, range: 40...200)
             }
             .card()
             VStack(spacing: 0) {
-                toggle("Tablet reminder", "Every day at \(doseTime.formatted(date: .omitted, time: .shortened))", $remindTablet)
+                let time = doseTime.formatted(date: .omitted, time: .shortened)
+                toggle("Tablet reminder", "Every day at \(time)", $remindTablet)
                 toggle("Wait is over", "Tells you when you can eat", $remindWaitOver)
                 toggle("Protein check", "At 3 PM", $remindProtein)
             }
@@ -186,18 +187,18 @@ struct OnboardingView: View {
         repo.save()
     }
 
-    private func title(_ text: String, _ sub: String) -> some View {
+    private func title(_ text: LocalizedStringKey, _ sub: LocalizedStringKey) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(text).font(.system(size: 28, weight: .heavy)).foregroundStyle(Palette.ink)
             Text(sub).font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
         }
     }
 
-    private func fieldLabel(_ text: String) -> some View {
+    private func fieldLabel(_ text: LocalizedStringKey) -> some View {
         Text(text).font(.subheadline.weight(.bold)).foregroundStyle(Palette.inkSoft)
     }
 
-    private func toggle(_ label: String, _ sub: String, _ value: Binding<Bool>) -> some View {
+    private func toggle(_ label: LocalizedStringKey, _ sub: LocalizedStringKey, _ value: Binding<Bool>) -> some View {
         Toggle(isOn: value) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(label).font(.system(size: 15, weight: .bold))

@@ -15,7 +15,7 @@ struct LogFoodView: View {
     private var list: [Food] {
         let q = query.trimmingCharacters(in: .whitespaces).lowercased()
         return Catalog.foods
-            .filter { q.isEmpty || $0.name.lowercased().contains(q) }
+            .filter { q.isEmpty || $0.displayName.lowercased().contains(q) || $0.name.lowercased().contains(q) }
             .sorted { $0.protein > $1.protein }
     }
 
@@ -33,7 +33,7 @@ struct LogFoodView: View {
             List {
                 Section {
                     Picker("Meal", selection: $meal) {
-                        ForEach(Meal.allCases) { Text($0.rawValue).tag($0) }
+                        ForEach(Meal.allCases) { Text($0.label).tag($0) }
                     }
                     .pickerStyle(.segmented)
                     .listRowBackground(Color.clear)
@@ -51,8 +51,8 @@ struct LogFoodView: View {
                         } label: {
                             HStack(spacing: 12) {
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text(f.name).font(.system(size: 15, weight: .bold)).foregroundStyle(Palette.ink)
-                                    Text(f.portion).font(.footnote).foregroundStyle(Palette.muted)
+                                    Text(f.displayName).font(.system(size: 15, weight: .bold)).foregroundStyle(Palette.ink)
+                                    Text(f.displayPortion).font(.footnote).foregroundStyle(Palette.muted)
                                 }
                                 Spacer()
                                 Text("\(f.protein) g").font(.system(size: 15, weight: .heavy)).foregroundStyle(Palette.warmDark)
@@ -62,7 +62,7 @@ struct LogFoodView: View {
                             }
                             .frame(minHeight: 52)
                         }
-                        .accessibilityLabel("\(on ? "Remove" : "Add") \(f.name), \(f.protein) grams protein")
+                        .accessibilityLabel(on ? Text("Remove \(f.displayName), \(f.protein) grams protein") : Text("Add \(f.displayName), \(f.protein) grams protein"))
                     }
                 }
                 Section("Something else") {
@@ -79,7 +79,7 @@ struct LogFoodView: View {
             .safeAreaInset(edge: .bottom) {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("\(count) item\(count == 1 ? "" : "s") · \(meal.rawValue)").font(.footnote.weight(.semibold)).foregroundStyle(Palette.muted)
+                        Text("\(count) items · \(meal.label)").font(.footnote.weight(.semibold)).foregroundStyle(Palette.muted)
                         Text("+\(total) g protein").font(.system(size: 20, weight: .heavy)).foregroundStyle(Palette.ink)
                     }
                     Spacer()

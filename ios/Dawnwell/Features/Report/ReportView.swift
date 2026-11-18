@@ -25,11 +25,13 @@ struct ReportView: View {
                     }
                     VStack(alignment: .leading, spacing: 12) {
                         Text(summary.medication).font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
-                        Text(summary.dose.isEmpty ? "Dose not set" : "\(summary.dose) daily").font(.system(size: 17, weight: .heavy))
+                        Group { if summary.dose.isEmpty { Text("Dose not set") } else { Text(Loc.doseDaily(summary.dose)) } }
+                            .font(.system(size: 17, weight: .heavy))
                         Divider()
                         HStack(alignment: .top) {
                             stat("\(summary.daysTaken)/\(VisitSummary.span)", "Days taken")
-                            stat(summary.weightChange.map { "\($0 > 0 ? "+" : "")\(VisitSummary.num($0))" } ?? "–", "Weight, \(summary.unit.rawValue)")
+                            let unitName = summary.unit.rawValue
+                            stat(summary.weightChange.map { "\($0 > 0 ? "+" : "")\(VisitSummary.num($0))" } ?? "–", "Weight, \(unitName)")
                             stat(summary.averageProtein.map { "\($0) g" } ?? "–", "Protein a day")
                         }
                     }
@@ -44,7 +46,7 @@ struct ReportView: View {
                                 HStack {
                                     Text(s.kind.label).fontWeight(.bold)
                                     Spacer()
-                                    Text("\(s.days) day\(s.days == 1 ? "" : "s") · worst \(s.worst)/5")
+                                    Text("\(s.days) days · worst \(s.worst)/5")
                                         .font(.caption.weight(.bold))
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 4)
@@ -52,7 +54,7 @@ struct ReportView: View {
                                         .background(s.worst >= 4 ? Palette.warmSoft : Palette.neutralSoft, in: Capsule())
                                 }
                                 ForEach(s.notes.prefix(2), id: \.self) { n in
-                                    Text("“\(n)”").font(.footnote).foregroundStyle(Palette.muted)
+                                    Text(verbatim: "“\(n)”").font(.footnote).foregroundStyle(Palette.muted)
                                 }
                             }
                         }
@@ -99,7 +101,7 @@ struct ReportView: View {
         }
     }
 
-    private func stat(_ value: String, _ label: String) -> some View {
+    private func stat(_ value: String, _ label: LocalizedStringKey) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value).font(.system(size: 22, weight: .heavy))
             Text(label).font(.caption).foregroundStyle(Palette.muted)

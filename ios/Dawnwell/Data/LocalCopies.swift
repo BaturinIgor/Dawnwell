@@ -6,7 +6,7 @@ struct LocalCopies {
         case daily
         case beforeRestore = "before-restore"
 
-        var label: String { self == .daily ? "Daily copy" : "Before a restore" }
+        var label: String { self == .daily ? String(localized: "Daily copy") : String(localized: "Before a restore") }
     }
 
     struct Copy: Identifiable, Equatable {

@@ -47,7 +47,7 @@ struct LearnView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityAddTraits(on ? .isSelected : [])
-                        .accessibilityHint(on ? "Collapses the article" : "Opens the article")
+                        .accessibilityHint(on ? Text("Collapses the article") : Text("Opens the article"))
                     }
 
                     Text("General information, not medical advice. Your medication guide and your care team come first.")

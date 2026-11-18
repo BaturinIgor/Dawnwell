@@ -37,6 +37,7 @@ struct FilledButtonStyle: ButtonStyle {
 }
 
 struct ChipView: View {
+    /// Already in the user's language.
     let label: String
     let selected: Bool
     var warm = false
@@ -103,7 +104,7 @@ struct ScaleView: View {
                         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(on ? fill : Palette.fieldBorder, lineWidth: 1.5))
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("\(n), \(words[n])")
+                .accessibilityLabel(Text(verbatim: "\(n), \(words[n])"))
                 .accessibilityAddTraits(on ? .isSelected : [])
             }
         }
@@ -120,7 +121,7 @@ struct StepperView: View {
     var body: some View {
         HStack(spacing: 8) {
             stepButton("minus", label: "Decrease") { value = max(range.lowerBound, value - step) }
-            Text("\(value) \(unit)")
+            Text(verbatim: "\(value) \(unit)")
                 .font(.system(size: 17, weight: .heavy))
                 .foregroundStyle(Palette.ink)
                 .frame(minWidth: 72)
@@ -128,7 +129,7 @@ struct StepperView: View {
         }
     }
 
-    private func stepButton(_ symbol: String, label: String, action: @escaping () -> Void) -> some View {
+    private func stepButton(_ symbol: String, label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
                 .font(.system(size: 16, weight: .bold))

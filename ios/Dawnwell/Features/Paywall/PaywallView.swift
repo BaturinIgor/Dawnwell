@@ -28,8 +28,14 @@ struct PaywallView: View {
                     .card()
 
                     if store.products.isEmpty {
-                        Text(store.loadFailed ? "Plans couldn't load. Check your connection and try again." : "Loading plans…")
-                            .font(.footnote).foregroundStyle(Palette.muted)
+                        Group {
+                            if store.loadFailed {
+                                Text("Plans couldn't load. Check your connection and try again.")
+                            } else {
+                                Text("Loading plans…")
+                            }
+                        }
+                        .font(.footnote).foregroundStyle(Palette.muted)
                     } else {
                         if let y = store.yearly { plan(y, isYearly: true) }
                         if let m = store.monthly { plan(m, isYearly: false) }
@@ -43,7 +49,7 @@ struct PaywallView: View {
                             busy = false
                         }
                     } label: {
-                        Text(busy ? "Working…" : trialText)
+                        Text(busy ? String(localized: "Working…") : trialText)
                     }
                     .buttonStyle(FilledButtonStyle())
                     .disabled(selected == nil || busy)
@@ -70,7 +76,7 @@ struct PaywallView: View {
     }
 
     private var trialText: String {
-        guard let p = selected else { return "Continue" }
+        guard let p = selected else { return String(localized: "Continue") }
         return Plus.buyTitle(
             hasFreeTrial: p.subscription?.introductoryOffer?.paymentMode == .freeTrial,
             eligibleForTrial: store.trialEligible,
@@ -83,8 +89,9 @@ struct PaywallView: View {
         return Button { yearly = isYearly } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(isYearly ? "Yearly" : "Monthly").font(.system(size: 17, weight: .heavy)).foregroundStyle(Palette.ink)
-                    Text(isYearly ? "\(p.displayPrice) a year" : "\(p.displayPrice) a month").font(.footnote).foregroundStyle(Palette.muted)
+                    let price = p.displayPrice
+                    (isYearly ? Text("Yearly") : Text("Monthly")).font(.system(size: 17, weight: .heavy)).foregroundStyle(Palette.ink)
+                    (isYearly ? Text("\(price) a year") : Text("\(price) a month")).font(.footnote).foregroundStyle(Palette.muted)
                 }
                 Spacer()
                 if isYearly, let m = store.monthly {

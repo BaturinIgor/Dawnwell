@@ -12,6 +12,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Fast check on Linux: every language has every string, and the generated files are current.
+  strings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Translations are complete
+        run: python3 scripts/localize.py --check
+      - name: Every string in the code has a translation
+        run: python3 scripts/extract_strings.py --check
+
   build-and-test:
     runs-on: macos-15
     timeout-minutes: 30

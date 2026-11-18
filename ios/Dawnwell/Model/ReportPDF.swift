@@ -15,7 +15,7 @@ enum ReportPDF {
 
         let renderer = UIGraphicsPDFRenderer(bounds: page, format: {
             let f = UIGraphicsPDFRendererFormat()
-            f.documentInfo = [kCGPDFContextTitle as String: "Dawnwell visit summary", kCGPDFContextCreator as String: "Dawnwell"]
+            f.documentInfo = [kCGPDFContextTitle as String: String(localized: "Dawnwell visit summary"), kCGPDFContextCreator as String: "Dawnwell"]
             return f
         }())
         let frame = page.insetBy(dx: margin, dy: margin)

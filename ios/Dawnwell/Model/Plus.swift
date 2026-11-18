@@ -14,18 +14,18 @@ enum Plus {
 
         var title: String {
             switch self {
-            case .pdfReport: return "Visit report as a PDF"
-            case .insights: return "Insights about your symptoms and food"
+            case .pdfReport: return String(localized: "Visit report as a PDF")
+            case .insights: return String(localized: "Insights about your symptoms and food")
             }
         }
     }
 
     /// What Plus adds, shown on the paywall.
-    static let benefits = [
-        "A clean PDF report to send or print for each visit",
-        "Insights: which foods line up with your nausea",
-        "Support a small, independent app",
-    ]
+    static var benefits: [String] { [
+        String(localized: "A clean PDF report to send or print for each visit"),
+        String(localized: "Insights: which foods line up with your nausea"),
+        String(localized: "Support a small, independent app"),
+    ] }
 
     /// How much cheaper a year is than 12 months, in whole percent.
     static func yearlySaving(monthly: Decimal, yearly: Decimal) -> Int {
@@ -46,6 +46,6 @@ enum Plus {
     /// Apple gives one trial per Apple ID per subscription group, so after a trial or a past
     /// subscription the button shows the plain price instead.
     static func buyTitle(hasFreeTrial: Bool, eligibleForTrial: Bool, price: String) -> String {
-        hasFreeTrial && eligibleForTrial ? "Start free week, then \(price)" : "Subscribe for \(price)"
+        hasFreeTrial && eligibleForTrial ? String(localized: "Start free week, then \(price)") : String(localized: "Subscribe for \(price)")
     }
 }
