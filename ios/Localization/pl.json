@@ -388,7 +388,8 @@
  "Alcohol": "Alkohol",
  "Not sure": "Nie wiem",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell odczytuje Twoją wagę z aplikacji Zdrowie, aby nie trzeba było wpisywać jej dwa razy. Nigdy jej nie udostępnia."
+  "NSHealthShareUsageDescription": "Dawnwell odczytuje Twoją wagę z aplikacji Zdrowie, aby nie trzeba było wpisywać jej dwa razy. Nigdy jej nie udostępnia.",
+  "NSHealthUpdateUsageDescription": "Dawnwell tylko odczytuje Twoją wagę z aplikacji Zdrowie. Nigdy niczego do niej nie zapisuje."
  },
  "Lifetime": "Dożywotnio",
  "%@ once": "%@ jednorazowo",

@@ -361,7 +361,8 @@
  "Alcohol": "술",
  "Not sure": "잘 모르겠음",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell은 체중을 두 번 입력하지 않도록 Apple 건강 앱에서 읽어 와요. 절대 공유하지 않아요."
+  "NSHealthShareUsageDescription": "Dawnwell은 체중을 두 번 입력하지 않도록 Apple 건강 앱에서 읽어 와요. 절대 공유하지 않아요.",
+  "NSHealthUpdateUsageDescription": "Dawnwell은 건강 앱에서 체중만 읽어 옵니다. 건강 앱에 아무것도 기록하지 않습니다."
  },
  "Lifetime": "평생 이용",
  "%@ once": "%@ 1회 결제",

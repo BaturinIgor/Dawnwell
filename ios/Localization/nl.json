@@ -370,7 +370,8 @@
  "Alcohol": "Alcohol",
  "Not sure": "Weet ik niet",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell leest je gewicht uit Apple Gezondheid, zodat je het niet twee keer hoeft in te typen. Het wordt nooit gedeeld."
+  "NSHealthShareUsageDescription": "Dawnwell leest je gewicht uit Apple Gezondheid, zodat je het niet twee keer hoeft in te typen. Het wordt nooit gedeeld.",
+  "NSHealthUpdateUsageDescription": "Dawnwell leest alleen je gewicht uit Apple Gezondheid. Het schrijft nooit iets naar Apple Gezondheid."
  },
  "Lifetime": "Levenslang",
  "%@ once": "%@ eenmalig",

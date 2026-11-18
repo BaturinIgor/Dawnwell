@@ -361,7 +361,8 @@
  "Alcohol": "アルコール",
  "Not sure": "わからない",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwellは体重を2回入力しなくて済むよう、Appleヘルスケアから読み取ります。共有することはありません。"
+  "NSHealthShareUsageDescription": "Dawnwellは体重を2回入力しなくて済むよう、Appleヘルスケアから読み取ります。共有することはありません。",
+  "NSHealthUpdateUsageDescription": "Dawnwellはヘルスケアから体重を読み取るだけです。ヘルスケアに何かを書き込むことはありません。"
  },
  "Lifetime": "買い切り",
  "%@ once": "%@（1回のみ）",

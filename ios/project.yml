@@ -34,6 +34,7 @@ targets:
         INFOPLIST_KEY_NSSupportsLiveActivities: YES
         INFOPLIST_KEY_UIBackgroundModes: remote-notification
         INFOPLIST_KEY_NSHealthShareUsageDescription: "Dawnwell reads your weight from Apple Health so you don't have to type it twice. It never shares it."
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Dawnwell only reads your weight from Apple Health. It never writes anything to Apple Health."
         CODE_SIGN_ENTITLEMENTS: Dawnwell/Dawnwell.entitlements
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: "NO"
         # Set to CLOUDKIT_SCHEMA_INIT only by the TestFlight workflow's Development option.

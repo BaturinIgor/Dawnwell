@@ -370,7 +370,8 @@
  "Alcohol": "Alkol",
  "Not sure": "Emin değilim",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell kilonuzu iki kez yazmak zorunda kalmamanız için Apple Sağlık'tan okur. Asla paylaşmaz."
+  "NSHealthShareUsageDescription": "Dawnwell kilonuzu iki kez yazmak zorunda kalmamanız için Apple Sağlık'tan okur. Asla paylaşmaz.",
+  "NSHealthUpdateUsageDescription": "Dawnwell yalnızca kilonuzu Apple Sağlık’tan okur. Apple Sağlık’a hiçbir şey yazmaz."
  },
  "Lifetime": "Ömür boyu",
  "%@ once": "Tek seferlik %@",

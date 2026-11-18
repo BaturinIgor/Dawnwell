@@ -370,7 +370,8 @@
  "Alcohol": "Álcool",
  "Not sure": "Não sei",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "O Dawnwell lê seu peso do app Saúde para você não ter que digitar duas vezes. Ele nunca é compartilhado."
+  "NSHealthShareUsageDescription": "O Dawnwell lê seu peso do app Saúde para você não ter que digitar duas vezes. Ele nunca é compartilhado.",
+  "NSHealthUpdateUsageDescription": "O Dawnwell só lê seu peso no app Saúde. Ele nunca grava nada no app Saúde."
  },
  "Lifetime": "Vitalício",
  "%@ once": "%@ uma vez",
