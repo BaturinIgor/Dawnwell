@@ -12,7 +12,7 @@ final class LocalizationTests: XCTestCase {
         return try XCTUnwrap(Bundle(path: path))
     }
 
-    private func table(_ lang: String, _ name: String = "Localizable", _ ext: String) throws -> [String: Any] {
+    private func table(_ lang: String, _ name: String = "Localizable", ext: String) throws -> [String: Any] {
         let url = try XCTUnwrap(bundle(lang).url(forResource: name, withExtension: ext), "\(lang): \(name).\(ext) missing")
         return try XCTUnwrap(NSDictionary(contentsOf: url) as? [String: Any], "\(lang): \(name).\(ext) unreadable")
     }
