@@ -87,6 +87,56 @@ struct Repository {
         save()
     }
 
+    func addFoods(_ picked: [Food], custom: (name: String, protein: Int)?, meal: Meal, day key: String, at: Date = Date()) {
+        for f in picked {
+            context.insert(FoodEntry(day: key, name: f.name, protein: f.protein, meal: meal, at: at))
+        }
+        if let custom {
+            let name = custom.name.trimmingCharacters(in: .whitespaces)
+            if !name.isEmpty && custom.protein > 0 {
+                context.insert(FoodEntry(day: key, name: name, protein: custom.protein, meal: meal, at: at))
+            }
+        }
+        save()
+    }
+
+    func deleteFood(_ entry: FoodEntry) {
+        context.delete(entry)
+        save()
+    }
+
+    /// One entry per symptom per day: saving details replaces that symptom's entry.
+    func saveSymptom(_ kind: SymptomKind, severity: Int, triggers: [String], note: String, day key: String, at: Date = Date()) {
+        for old in symptoms(key) where old.kind == kind { context.delete(old) }
+        let clamped = min(5, max(1, severity))
+        context.insert(SymptomEntry(day: key, kind: kind, severity: clamped, triggers: triggers,
+                                    note: note.trimmingCharacters(in: .whitespacesAndNewlines), at: at))
+        save()
+    }
+
+    /// Records a new dose from the label. Adds a dose-history line only when the dose actually changed.
+    func updateTablet(medication: Medication, doseLabel: String, today: String = DayKey.today()) {
+        let p = profile()
+        let label = doseLabel.trimmingCharacters(in: .whitespaces)
+        if !label.isEmpty && label != p.doseLabel {
+            context.insert(DoseChange(label: "\(label) daily", from: today))
+        }
+        p.medication = medication
+        p.doseLabel = label
+        save()
+    }
+
+    func addTablets(_ count: Int) {
+        guard count > 0 else { return }
+        let p = profile()
+        p.tabletsLeft = (p.tabletsLeft ?? 0) + count
+        save()
+    }
+
+    func doseHistory() -> [DoseChange] {
+        (try? context.fetch(FetchDescriptor<DoseChange>(sortBy: [SortDescriptor(\.from, order: .reverse), SortDescriptor(\.at, order: .reverse)]))) ?? []
+    }
+
     /// Save now. A failure keeps the changes in memory, so the next save tries again.
     func save() {
         guard context.hasChanges else { return }
