@@ -602,6 +602,53 @@ def sync_review_screenshot(asc, kind, parent_id, shot):
     print("  review screenshot uploaded")
 
 
+def diagnose(asc, app_id):
+    """Print everything Apple needs before a subscription is Ready to Submit. Changes nothing."""
+    def safe(fn):
+        try:
+            return fn()
+        except ApiError as e:
+            return f"error {e.status}: {str(e)[:300]}"
+
+    for g in asc.all(f"/v1/apps/{app_id}/subscriptionGroups"):
+        print(f"• Group {g['attributes']}")
+        locs = safe(lambda: asc.all(f"/v1/subscriptionGroups/{g['id']}/subscriptionGroupLocalizations"))
+        if isinstance(locs, list):
+            print(f"  group names: {len(locs)}; states: {sorted({l['attributes'].get('state') for l in locs})}")
+        else:
+            print(f"  group names: {locs}")
+        for sub in asc.all(f"/v1/subscriptionGroups/{g['id']}/subscriptions"):
+            sid = sub["id"]
+            print(f"• Subscription {sub['attributes']}")
+            locs = safe(lambda: asc.all(f"/v1/subscriptions/{sid}/subscriptionLocalizations"))
+            if isinstance(locs, list):
+                print(f"  names: {len(locs)}; states: {sorted({str(l['attributes'].get('state')) for l in locs})}")
+                bad = [l["attributes"] for l in locs if not l["attributes"].get("description")]
+                if bad:
+                    print(f"  names without description: {bad[:3]}")
+            print(f"  availability: {safe(lambda: asc.get(f'/v1/subscriptions/{sid}/subscriptionAvailability').get('data'))}")
+            shot = safe(lambda: asc.get(f"/v1/subscriptions/{sid}/appStoreReviewScreenshot").get("data"))
+            print(f"  review screenshot: {shot['attributes'].get('assetDeliveryState') if isinstance(shot, dict) else shot}")
+            prices = safe(lambda: asc.get(f"/v1/subscriptions/{sid}/prices", include="subscriptionPricePoint,territory",
+                                          limit=200, **{"filter[territory]": "USA"}))
+            if isinstance(prices, dict):
+                for p in prices.get("data", []):
+                    print(f"  USA price: {p['attributes']} point={p['relationships'].get('subscriptionPricePoint', {}).get('data')}")
+                for inc in prices.get("included", []):
+                    if inc["type"] == "subscriptionPricePoints":
+                        print(f"  USA price point: {inc['attributes']}")
+            else:
+                print(f"  USA price: {prices}")
+            all_prices = safe(lambda: asc.all(f"/v1/subscriptions/{sid}/prices"))
+            if isinstance(all_prices, list):
+                starts = sorted({str(p['attributes'].get('startDate')) for p in all_prices})
+                print(f"  prices: {len(all_prices)}; start dates: {starts[:5]}")
+            offers = safe(lambda: asc.all(f"/v1/subscriptions/{sid}/introductoryOffers"))
+            print(f"  free-week offers: {len(offers) if isinstance(offers, list) else offers}")
+    for iap in asc.all(f"/v1/apps/{app_id}/inAppPurchasesV2"):
+        print(f"• In-app purchase {iap['attributes']}")
+
+
 # ---------- main ----------
 
 def main():
@@ -625,7 +672,7 @@ def main():
     key_id, issuer, key = (os.environ.get(k, "") for k in ("ASC_KEY_ID", "ASC_ISSUER_ID", "ASC_PRIVATE_KEY"))
     if not (key_id and issuer and key):
         sys.exit("Add the ASC_KEY_ID, ASC_ISSUER_ID and ASC_PRIVATE_KEY repository secrets first.")
-    asc = ASC(key_id, issuer, key, dry_run=parts == {"read"})
+    asc = ASC(key_id, issuer, key, dry_run=parts <= {"read", "diagnose"})
     listing, products = load_listing(), load_products()
     run = Run()
 
@@ -635,6 +682,10 @@ def main():
     version = run.step("Version in Prepare for Submission", editable_version, asc, app_id)
     if version:
         print(f"  version {version['attributes']['versionString']}")
+
+    if "diagnose" in parts:
+        diagnose(asc, app_id)
+        return
 
     if parts == {"read"}:
         locs = asc.all(f"/v1/appInfos/{info['id']}/appInfoLocalizations")

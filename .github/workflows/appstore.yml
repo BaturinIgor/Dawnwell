@@ -15,7 +15,7 @@ on:
       parts:
         description: 'What to fill'
         type: choice
-        options: [check, everything, texts, products, screenshots]
+        options: [check, diagnose, everything, texts, products, screenshots]
         default: check
 
 concurrency:
