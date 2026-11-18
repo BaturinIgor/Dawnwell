@@ -35,6 +35,7 @@ export default function RootLayout() {
         <Stack.Screen name="log-food" options={{ presentation: 'modal' }} />
         <Stack.Screen name="symptom" options={{ presentation: 'modal' }} />
         <Stack.Screen name="medication" />
+        <Stack.Screen name="data" />
       </Stack>
     </StoreProvider>
   );

@@ -204,6 +204,14 @@ export default function Medication() {
         </Card>
       </View>
 
+      <Pressable accessibilityRole="button" onPress={() => router.push('/data')} style={styles.link}>
+        <View style={{ flex: 1 }}>
+          <T style={{ fontWeight: '700' }}>Your data and backups</T>
+          <T variant="small">Backup file, daily copies, move to a new phone</T>
+        </View>
+        <Text style={{ fontSize: 20, color: C.muted }}>›</Text>
+      </Pressable>
+
       <T variant="small" style={{ textAlign: 'center' }}>
         Dawnwell only records what your prescriber set. Talk to them before changing anything.
       </T>
@@ -242,5 +250,14 @@ const styles = StyleSheet.create({
   step: { width: 40, height: 40, borderRadius: 20, backgroundColor: C.neutralSoft, alignItems: 'center', justifyContent: 'center' },
   stepText: { fontSize: 20, fontWeight: '700', color: C.ink },
   timeText: { fontSize: 15, fontWeight: '800', color: C.ink, minWidth: 72, textAlign: 'center' },
+  link: {
+    backgroundColor: C.card,
+    borderRadius: R.xl - 4,
+    padding: S.xl,
+    minHeight: 64,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: S.md,
+  },
   count: { fontSize: 30, fontWeight: '800', color: C.ink },
 });
