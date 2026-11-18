@@ -1,0 +1,109 @@
+name: App Store listing
+
+# Fills the App Store Connect record from ios/AppStore: texts in every language, categories,
+# age rating, price and availability, the subscriptions and the Lifetime purchase with prices,
+# and screenshots taken in every language. Run it by hand: Actions -> App Store listing -> Run workflow.
+# "check" only signs in and lists what exists. Running it again fills only what is missing or changed
+# (screenshots are replaced).
+#
+# Uses the same App Store Connect API key secrets as the TestFlight workflow:
+# ASC_KEY_ID, ASC_ISSUER_ID, ASC_PRIVATE_KEY (Admin role).
+
+on:
+  workflow_dispatch:
+    inputs:
+      parts:
+        description: 'What to fill'
+        type: choice
+        options: [check, everything, texts, products, screenshots]
+        default: check
+
+concurrency:
+  group: appstore-listing
+  cancel-in-progress: false
+
+jobs:
+  shots:
+    if: inputs.parts == 'everything' || inputs.parts == 'screenshots'
+    runs-on: macos-15
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Boot a 6.9-inch iPhone
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          runtimes = sorted((k for k in devices if ".iOS-" in k), key=lambda k: [int(p) for p in k.rsplit(".iOS-", 1)[1].split("-")])
+          for rt in reversed(runtimes):
+              big = [d for d in devices[rt] if "Pro Max" in d["name"]]
+              if big:
+                  print(big[-1]["udid"]); break
+          ')
+          [ -n "$UDID" ] || { echo "::error::No Pro Max simulator"; exit 1; }
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl ui "$UDID" appearance light
+          xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Build once
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing \
+            -project Dawnwell.xcodeproj -scheme Screenshots \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath "$RUNNER_TEMP/dd" CODE_SIGNING_ALLOWED=NO \
+            | tee build.log | grep -E "error:|BUILD (SUCCEEDED|FAILED)" || (tail -150 build.log; exit 1)
+      - name: Screenshots in every language
+        run: |
+          set -o pipefail
+          for pair in en:en_US de:de_DE fr:fr_FR es:es_ES it:it_IT pt-BR:pt_BR pt-PT:pt_PT nl:nl_NL sv:sv_SE da:da_DK nb:nb_NO fi:fi_FI pl:pl_PL tr:tr_TR ja:ja_JP ko:ko_KR zh-Hans:zh_CN zh-Hant:zh_TW; do
+            lang="${pair%%:*}"; locale="${pair#*:}"
+            dir="$RUNNER_TEMP/shots/$lang"; mkdir -p "$dir"
+            echo "::group::$lang"
+            TEST_RUNNER_SCREENSHOT_DIR="$dir" TEST_RUNNER_SCREENSHOT_LANG="$lang" TEST_RUNNER_SCREENSHOT_LOCALE="$locale" \
+            xcodebuild test-without-building \
+              -project Dawnwell.xcodeproj -scheme Screenshots \
+              -destination "id=${{ steps.sim.outputs.udid }}" \
+              -derivedDataPath "$RUNNER_TEMP/dd" \
+              | tee "test-$lang.log" | grep -E "error:|Test Case .* (passed|failed)|TEST (SUCCEEDED|FAILED)" || (tail -80 "test-$lang.log"; exit 1)
+            ls "$dir"
+            test "$(ls "$dir"/[0-9]-*.png | wc -l)" -ge 4
+            echo "::endgroup::"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-store-screenshots-all
+          path: ${{ runner.temp }}/shots
+
+  upload:
+    needs: shots
+    if: always() && (needs.shots.result == 'success' || needs.shots.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        if: needs.shots.result == 'success'
+        with:
+          name: app-store-screenshots-all
+          path: shots
+      - name: Install
+        run: pip install --quiet pyjwt cryptography requests
+      - name: Fill App Store Connect
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          PARTS: ${{ inputs.parts }}
+        run: |
+          [ "$PARTS" = "check" ] && PARTS=read
+          python3 ios/scripts/appstore.py --parts "$PARTS" --shots shots
