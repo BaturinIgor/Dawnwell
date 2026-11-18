@@ -9,6 +9,10 @@ struct DawnwellApp: App {
         if !Persistence.isRunningTests { CloudSchema.initializeIfNeeded() }
         if Persistence.isRunningTests {
             container = try? Persistence.makeContainer(inMemory: true)
+        } else if Persistence.isDemo {
+            let demo = try? Persistence.makeContainer(inMemory: true)
+            if let demo { try? Repository(context: demo.mainContext).replaceAll(with: DemoData.snapshot()) }
+            container = demo
         } else if let opened = try? Persistence.openAppStore() {
             container = opened.0
             CloudStatus.storeSyncs = opened.syncing

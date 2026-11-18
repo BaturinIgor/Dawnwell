@@ -6,6 +6,12 @@ enum Persistence {
         ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 
+    /// Launched with sample data for screenshots. Memory only; the real store is not opened.
+    static var isDemo: Bool { ProcessInfo.processInfo.arguments.contains(DemoData.launchArgument) }
+
+    /// No background work (copies, reminders, Health) when running tests or the demo.
+    static var isSandboxed: Bool { isRunningTests || isDemo }
+
     /// The user's own private iCloud database. Dawnwell has no server; Apple stores it in the user's iCloud.
     static let cloudContainer = "iCloud.com.dawnwell.app"
 

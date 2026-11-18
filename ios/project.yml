@@ -63,6 +63,18 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.dawnwell.app.tests
+  DawnwellUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - DawnwellUITests
+    dependencies:
+      - target: Dawnwell
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.dawnwell.app.uitests
+        TEST_TARGET_NAME: Dawnwell
 schemes:
   Dawnwell:
     build:
@@ -75,3 +87,11 @@ schemes:
       gatherCoverageData: true
       targets:
         - DawnwellTests
+  Screenshots:
+    build:
+      targets:
+        Dawnwell: all
+        DawnwellUITests: [test]
+    test:
+      targets:
+        - DawnwellUITests
