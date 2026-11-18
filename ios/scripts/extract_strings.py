@@ -24,7 +24,8 @@ INT_EXPRS = {
     "i.waitMinutes", "i.proteinToday", "i.proteinTarget", "p.tabletsLeft ?? 0", "Catalog.refillAt",
     "saving", "found", "s.proteinHitDays", "s.proteinTarget", "s.takenCount", "VisitSummary.span",
     "s.days", "s.worst", "count", "total", "day", "a.minutes", "d", "w", "daysTaken", "span",
-    "daysSkipped", "p", "proteinTarget",
+    "daysSkipped", "p", "proteinTarget", "hits", "of", "otherHits", "otherOf", "with", "without", "need",
+    "logged", "summary.span",
 }
 # Literals the patterns catch that are not shown to anyone (SF Symbol names).
 NOT_TEXT = {"minus", "plus"}

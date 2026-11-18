@@ -46,7 +46,6 @@
  "Visit report as a PDF": "Visit report as a PDF",
  "Insights about your symptoms and food": "Insights about your symptoms and food",
  "A clean PDF report to send or print for each visit": "A clean PDF report to send or print for each visit",
- "Insights: which foods line up with your nausea": "Insights: which foods line up with your nausea",
  "Support a small, independent app": "Support a small, independent app",
  "Start free week, then %@": "Start free week, then %@",
  "Subscribe for %@": "Subscribe for %@",
@@ -376,5 +375,28 @@
  "Lifetime": "Lifetime",
  "%@ once": "%@ once",
  "Buy once for %@": "Buy once for %@",
- "One payment. No subscription to renew.": "One payment. No subscription to renew."
+ "One payment. No subscription to renew.": "One payment. No subscription to renew.",
+ "%@: “%@” marked on %lld of %lld entries.": "%@: “%@” marked on %lld of %lld entries.",
+ "%@: on %lld of %lld days with %@, and on %lld of %lld other days.": "%@: on %lld of %lld days with %@, and on %lld of %lld other days.",
+ "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.": "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.",
+ "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.": "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.",
+ "%@: on those days you ate %lld g of protein on average, and %lld g on other days.": "%@: on those days you ate %lld g of protein on average, and %lld g on other days.",
+ "%@: on those days you drank %@ glasses of water on average, and %@ on other days.": "%@: on those days you drank %@ glasses of water on average, and %@ on other days.",
+ "%lld patterns found in your logs.": {
+  "one": "%lld pattern found in your logs.",
+  "other": "%lld patterns found in your logs."
+ },
+ "30 days": "30 days",
+ "90 days · Plus": "90 days · Plus",
+ "A visit summary for the last 90 days, not just 30": "A visit summary for the last 90 days, not just 30",
+ "Days with symptoms, last 4 weeks": "Days with symptoms, last 4 weeks",
+ "Insights": "Insights",
+ "Insights appear after %lld days of logs. You have %lld so far.": "Insights appear after %lld days of logs. You have %lld so far.",
+ "Insights: which foods and habits line up with your symptoms": "Insights: which foods and habits line up with your symptoms",
+ "No clear patterns yet. Keep logging food and symptoms.": "No clear patterns yet. Keep logging food and symptoms.",
+ "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.": "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.",
+ "Period": "Period",
+ "See insights with Plus": "See insights with Plus",
+ "See which foods and habits line up with your symptoms.": "See which foods and habits line up with your symptoms.",
+ "Visit summary for the last 90 days": "Visit summary for the last 90 days"
 }

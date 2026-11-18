@@ -50,6 +50,22 @@
 			<string>%lld öğe</string>
 		</dict>
 	</dict>
+	<key>%lld patterns found in your logs.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>Kayıtlarında %lld örüntü bulundu.</string>
+			<key>other</key>
+			<string>Kayıtlarında %lld örüntü bulundu.</string>
+		</dict>
+	</dict>
 	<key>%lld tablets left. Time to ask for a refill.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

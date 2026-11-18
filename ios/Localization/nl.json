@@ -46,7 +46,6 @@
  "Visit report as a PDF": "Bezoekrapport als pdf",
  "Insights about your symptoms and food": "Inzichten in je klachten en eten",
  "A clean PDF report to send or print for each visit": "Een overzichtelijk pdf-rapport om te versturen of af te drukken voor elke afspraak",
- "Insights: which foods line up with your nausea": "Inzichten: welk eten samenvalt met je misselijkheid",
  "Support a small, independent app": "Steun een kleine, onafhankelijke app",
  "Start free week, then %@": "Start gratis week, daarna %@",
  "Subscribe for %@": "Abonneer voor %@",
@@ -376,5 +375,28 @@
  "Lifetime": "Levenslang",
  "%@ once": "%@ eenmalig",
  "Buy once for %@": "Eenmalig kopen voor %@",
- "One payment. No subscription to renew.": "Eén betaling. Geen abonnement dat verlengt."
+ "One payment. No subscription to renew.": "Eén betaling. Geen abonnement dat verlengt.",
+ "%@: “%@” marked on %lld of %lld entries.": "%@: ‘%@’ aangevinkt bij %lld van %lld invoeren.",
+ "%@: on %lld of %lld days with %@, and on %lld of %lld other days.": "%@: op %lld van %lld dagen met %@, en op %lld van %lld andere dagen.",
+ "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.": "%@: op %lld van %lld dagen dat je at voor de wachttijd voorbij was, en op %lld van %lld andere tabletdagen.",
+ "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.": "%@: op %lld van %lld dagen met een maaltijd na 20.00 uur, en op %lld van %lld andere dagen.",
+ "%@: on those days you ate %lld g of protein on average, and %lld g on other days.": "%@: op die dagen at je gemiddeld %lld g eiwit, en %lld g op andere dagen.",
+ "%@: on those days you drank %@ glasses of water on average, and %@ on other days.": "%@: op die dagen dronk je gemiddeld %@ glazen water, en %@ op andere dagen.",
+ "%lld patterns found in your logs.": {
+  "one": "%lld patroon gevonden in je gegevens.",
+  "other": "%lld patronen gevonden in je gegevens."
+ },
+ "30 days": "30 dagen",
+ "90 days · Plus": "90 dagen · Plus",
+ "A visit summary for the last 90 days, not just 30": "Een overzicht van 90 dagen, niet alleen 30",
+ "Days with symptoms, last 4 weeks": "Dagen met klachten, laatste 4 weken",
+ "Insights": "Inzichten",
+ "Insights appear after %lld days of logs. You have %lld so far.": "Inzichten verschijnen na %lld dagen met gegevens. Je hebt er nu %lld.",
+ "Insights: which foods and habits line up with your symptoms": "Inzichten: welke voeding en gewoontes samenvallen met je klachten",
+ "No clear patterns yet. Keep logging food and symptoms.": "Nog geen duidelijke patronen. Blijf eten en klachten noteren.",
+ "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.": "Patronen in je eigen gegevens, geen medisch advies. Overleg met je zorgverlener voordat je iets verandert.",
+ "Period": "Periode",
+ "See insights with Plus": "Inzichten bekijken met Plus",
+ "See which foods and habits line up with your symptoms.": "Zie welke voeding en gewoontes samenvallen met je klachten.",
+ "Visit summary for the last 90 days": "Overzicht van de laatste 90 dagen"
 }

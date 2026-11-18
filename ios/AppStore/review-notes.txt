@@ -1,5 +1,5 @@
 Dawnwell is a tracker and reminder app for people already prescribed an oral GLP-1 medicine. It does not give medical or dosing advice: the user copies the medication name, dose and timing from their own prescription label, and the app never suggests or changes a dose. Severe symptom entries show a note to contact a clinician.
 
-No account or sign-in is needed. Dawnwell Plus (monthly or yearly subscription, or a one-time Lifetime purchase) unlocks the PDF report: Report tab > "Share as PDF · Plus" opens the paywall. Restore purchases is on the same screen.
+No account or sign-in is needed. Dawnwell Plus (monthly or yearly subscription, or a one-time Lifetime purchase) unlocks the PDF report, a 90-day visit summary and Insights (patterns between logged food, habits and symptoms). Report tab > "Share as PDF · Plus" or Progress tab > Insights > "See insights with Plus" opens the paywall. Restore purchases is on the same screen.
 
 Apple Health is read-only and used only to show weight on the Progress chart. Data stays on the device and in the user's own private iCloud; nothing is sent to us.

@@ -46,7 +46,6 @@
  "Visit report as a PDF": "Legerapport som PDF",
  "Insights about your symptoms and food": "Innsikt i symptomene og maten din",
  "A clean PDF report to send or print for each visit": "En ryddig PDF-rapport å sende eller skrive ut til hver legetime",
- "Insights: which foods line up with your nausea": "Innsikt: hvilken mat som henger sammen med kvalmen din",
  "Support a small, independent app": "Støtt en liten, uavhengig app",
  "Start free week, then %@": "Start gratis uke, deretter %@",
  "Subscribe for %@": "Abonner for %@",
@@ -376,5 +375,28 @@
  "Lifetime": "Livstid",
  "%@ once": "%@ én gang",
  "Buy once for %@": "Kjøp én gang for %@",
- "One payment. No subscription to renew.": "Én betaling. Ingen abonnement som fornyes."
+ "One payment. No subscription to renew.": "Én betaling. Ingen abonnement som fornyes.",
+ "%@: “%@” marked on %lld of %lld entries.": "%@: «%@» markert i %lld av %lld registreringer.",
+ "%@: on %lld of %lld days with %@, and on %lld of %lld other days.": "%@: %lld av %lld dager med %@, og %lld av %lld andre dager.",
+ "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.": "%@: %lld av %lld dager da du spiste før ventetiden var over, og %lld av %lld andre tablettdager.",
+ "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.": "%@: %lld av %lld dager med et måltid etter kl. 20, og %lld av %lld andre dager.",
+ "%@: on those days you ate %lld g of protein on average, and %lld g on other days.": "%@: de dagene spiste du i snitt %lld g protein, og %lld g andre dager.",
+ "%@: on those days you drank %@ glasses of water on average, and %@ on other days.": "%@: de dagene drakk du i snitt %@ glass vann, og %@ andre dager.",
+ "%lld patterns found in your logs.": {
+  "one": "%lld mønster funnet i registreringene dine.",
+  "other": "%lld mønstre funnet i registreringene dine."
+ },
+ "30 days": "30 dager",
+ "90 days · Plus": "90 dager · Plus",
+ "A visit summary for the last 90 days, not just 30": "En oversikt over 90 dager, ikke bare 30",
+ "Days with symptoms, last 4 weeks": "Dager med symptomer, siste 4 uker",
+ "Insights": "Innsikt",
+ "Insights appear after %lld days of logs. You have %lld so far.": "Innsikt vises etter %lld dager med registreringer. Så langt har du %lld.",
+ "Insights: which foods and habits line up with your symptoms": "Innsikt: hvilken mat og hvilke vaner som sammenfaller med symptomene dine",
+ "No clear patterns yet. Keep logging food and symptoms.": "Ingen tydelige mønstre ennå. Fortsett å registrere mat og symptomer.",
+ "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.": "Mønstre i dine egne registreringer, ikke medisinske råd. Snakk med behandleren din før du endrer noe.",
+ "Period": "Periode",
+ "See insights with Plus": "Se innsikt med Plus",
+ "See which foods and habits line up with your symptoms.": "Se hvilken mat og hvilke vaner som sammenfaller med symptomene dine.",
+ "Visit summary for the last 90 days": "Oversikt over de siste 90 dagene"
 }

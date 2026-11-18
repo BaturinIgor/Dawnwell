@@ -46,7 +46,6 @@
  "Visit report as a PDF": "Arztbericht als PDF",
  "Insights about your symptoms and food": "Einblicke zu Symptomen und Essen",
  "A clean PDF report to send or print for each visit": "Ein sauberer PDF-Bericht zum Senden oder Drucken für jeden Termin",
- "Insights: which foods line up with your nausea": "Einblicke: welche Lebensmittel mit deiner Übelkeit zusammenhängen",
  "Support a small, independent app": "Unterstütze eine kleine, unabhängige App",
  "Start free week, then %@": "Gratiswoche starten, dann %@",
  "Subscribe for %@": "Abonnieren für %@",
@@ -376,5 +375,28 @@
  "Lifetime": "Lebenslang",
  "%@ once": "%@ einmalig",
  "Buy once for %@": "Einmalig kaufen für %@",
- "One payment. No subscription to renew.": "Eine Zahlung. Kein Abo, das sich verlängert."
+ "One payment. No subscription to renew.": "Eine Zahlung. Kein Abo, das sich verlängert.",
+ "%@: “%@” marked on %lld of %lld entries.": "%@: „%@“ bei %lld von %lld Einträgen markiert.",
+ "%@: on %lld of %lld days with %@, and on %lld of %lld other days.": "%@: an %lld von %lld Tagen mit %@ und an %lld von %lld anderen Tagen.",
+ "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.": "%@: an %lld von %lld Tagen, an denen du vor Ende der Wartezeit gegessen hast, und an %lld von %lld anderen Tablettentagen.",
+ "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.": "%@: an %lld von %lld Tagen mit einer Mahlzeit nach 20 Uhr und an %lld von %lld anderen Tagen.",
+ "%@: on those days you ate %lld g of protein on average, and %lld g on other days.": "%@: An diesen Tagen hast du im Schnitt %lld g Protein gegessen, an anderen Tagen %lld g.",
+ "%@: on those days you drank %@ glasses of water on average, and %@ on other days.": "%@: An diesen Tagen hast du im Schnitt %@ Gläser Wasser getrunken, an anderen Tagen %@.",
+ "%lld patterns found in your logs.": {
+  "one": "%lld Muster in deinen Einträgen gefunden.",
+  "other": "%lld Muster in deinen Einträgen gefunden."
+ },
+ "30 days": "30 Tage",
+ "90 days · Plus": "90 Tage · Plus",
+ "A visit summary for the last 90 days, not just 30": "Eine Übersicht über 90 statt nur 30 Tage",
+ "Days with symptoms, last 4 weeks": "Tage mit Symptomen, letzte 4 Wochen",
+ "Insights": "Einblicke",
+ "Insights appear after %lld days of logs. You have %lld so far.": "Einblicke erscheinen nach %lld Tagen mit Einträgen. Bisher sind es %lld.",
+ "Insights: which foods and habits line up with your symptoms": "Einblicke: welche Lebensmittel und Gewohnheiten mit deinen Symptomen zusammenfallen",
+ "No clear patterns yet. Keep logging food and symptoms.": "Noch keine klaren Muster. Trag weiter Essen und Symptome ein.",
+ "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.": "Muster in deinen eigenen Einträgen, keine medizinische Beratung. Sprich mit deinem Behandlungsteam, bevor du etwas änderst.",
+ "Period": "Zeitraum",
+ "See insights with Plus": "Einblicke mit Plus ansehen",
+ "See which foods and habits line up with your symptoms.": "Sieh, welche Lebensmittel und Gewohnheiten mit deinen Symptomen zusammenfallen.",
+ "Visit summary for the last 90 days": "Übersicht für die letzten 90 Tage"
 }

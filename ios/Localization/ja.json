@@ -46,7 +46,6 @@
  "Visit report as a PDF": "受診レポートのPDF",
  "Insights about your symptoms and food": "症状と食事の分析",
  "A clean PDF report to send or print for each visit": "受診ごとに送信・印刷できる見やすいPDFレポート",
- "Insights: which foods line up with your nausea": "分析：吐き気と関係がありそうな食べ物",
  "Support a small, independent app": "小さな独立系アプリを応援",
  "Start free week, then %@": "無料で1週間試す（その後%@）",
  "Subscribe for %@": "%@で登録",
@@ -367,5 +366,27 @@
  "Lifetime": "買い切り",
  "%@ once": "%@（1回のみ）",
  "Buy once for %@": "%@で買い切り購入",
- "One payment. No subscription to renew.": "お支払いは1回のみ。更新されるサブスクリプションはありません。"
+ "One payment. No subscription to renew.": "お支払いは1回のみ。更新されるサブスクリプションはありません。",
+ "%@: “%@” marked on %lld of %lld entries.": "%1$@：「%2$@」は%4$lld件中%3$lld件の記録でチェックされました。",
+ "%@: on %lld of %lld days with %@, and on %lld of %lld other days.": "%1$@：%4$@を食べた%3$lld日中%2$lld日、それ以外の%6$lld日中%5$lld日。",
+ "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.": "%1$@：待ち時間の前に食べた%3$lld日中%2$lld日、それ以外の服用日%5$lld日中%4$lld日。",
+ "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.": "%1$@：20時以降に食事をした%3$lld日中%2$lld日、それ以外の%5$lld日中%4$lld日。",
+ "%@: on those days you ate %lld g of protein on average, and %lld g on other days.": "%@：その日のタンパク質は平均%lld g、それ以外の日は%lld g。",
+ "%@: on those days you drank %@ glasses of water on average, and %@ on other days.": "%@：その日の水は平均%@杯、それ以外の日は%@杯。",
+ "%lld patterns found in your logs.": {
+  "other": "記録から%lld件のパターンが見つかりました。"
+ },
+ "30 days": "30日間",
+ "90 days · Plus": "90日間 · Plus",
+ "A visit summary for the last 90 days, not just 30": "30日だけでなく90日間のまとめ",
+ "Days with symptoms, last 4 weeks": "症状があった日（過去4週間）",
+ "Insights": "分析",
+ "Insights appear after %lld days of logs. You have %lld so far.": "分析は%lld日分の記録がたまると表示されます。現在%lld日です。",
+ "Insights: which foods and habits line up with your symptoms": "分析：どの食べ物や習慣が症状と重なっているか",
+ "No clear patterns yet. Keep logging food and symptoms.": "まだはっきりしたパターンはありません。食事と症状の記録を続けましょう。",
+ "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.": "ご自身の記録から見えたパターンであり、医学的なアドバイスではありません。何かを変える前に医療チームに相談してください。",
+ "Period": "期間",
+ "See insights with Plus": "Plusで分析を見る",
+ "See which foods and habits line up with your symptoms.": "どの食べ物や習慣が症状と重なっているかがわかります。",
+ "Visit summary for the last 90 days": "過去90日間のまとめ"
 }
