@@ -462,6 +462,25 @@ def sync_subscription_availability(asc, sub_id, ids):
     print(f"  available in {len(ids)} countries and regions")
 
 
+def sync_plan_availability(asc, sub_id, ids):
+    """Apple now asks which plan type each territory offers. Dawnwell sells plain up-front plans
+    (pay for the month or the year at once), no 12-month commitment billed monthly."""
+    try:
+        plans = asc.all(f"/v1/subscriptions/{sub_id}/planAvailabilities")
+    except ApiError as e:
+        if e.status != 404:
+            raise
+        plans = []
+    if any(p["attributes"].get("planType") == "UPFRONT" for p in plans):
+        print("  up-front plan already available")
+        return
+    asc.create("subscriptionPlanAvailabilities", {"planType": "UPFRONT", "availableInNewTerritories": True}, {
+        "subscription": ref("subscriptions", sub_id),
+        "availableTerritories": [ref("territories", t) for t in ids],
+    })
+    print(f"  up-front plan in {len(ids)} countries and regions")
+
+
 def sync_subscription_prices(asc, sub_id, usd, ids):
     have = {p["relationships"]["territory"]["data"]["id"]
             for p in asc.all(f"/v1/subscriptions/{sub_id}/prices", include="territory")
@@ -648,6 +667,10 @@ def diagnose(asc, app_id):
             if isinstance(all_prices, list):
                 starts = sorted({str(p['attributes'].get('startDate')) for p in all_prices})
                 print(f"  prices: {len(all_prices)}; start dates: {starts[:5]}")
+            plans = safe(lambda: asc.all(f"/v1/subscriptions/{sid}/planAvailabilities"))
+            print(f"  plan availabilities: {[p['attributes'] for p in plans] if isinstance(plans, list) else plans}")
+            terr = safe(lambda: asc.all(f"/v1/subscriptionAvailabilities/{asc.get(f'/v1/subscriptions/{sid}/subscriptionAvailability')['data']['id']}/availableTerritories"))
+            print(f"  available territories: {len(terr) if isinstance(terr, list) else terr}")
             offers = safe(lambda: asc.all(f"/v1/subscriptions/{sid}/introductoryOffers"))
             print(f"  free-week offers: {len(offers) if isinstance(offers, list) else offers}")
     for iap in asc.all(f"/v1/apps/{app_id}/inAppPurchasesV2"):
@@ -734,6 +757,7 @@ def main():
                              f"/v1/subscriptions/{s['id']}/subscriptionLocalizations", "subscriptionLocalizations",
                              "subscription", ref("subscriptions", s["id"]), sub["localizations"])
                     run.step(f"{sub['referenceName']}: availability", sync_subscription_availability, asc, s["id"], ids)
+                    run.step(f"{sub['referenceName']}: plan type", sync_plan_availability, asc, s["id"], ids)
                     run.step(f"{sub['referenceName']}: prices", sync_subscription_prices, asc, s["id"], sub["usd"], ids)
                     run.step(f"{sub['referenceName']}: free week", sync_free_week, asc, s["id"], sub["freeTrial"], ids)
         life = products["lifetime"]
