@@ -12,53 +12,74 @@ extension Color {
     }
 }
 
-/// The "Morning" palette Igor chose on 2026-11-18: deep green with apricot. Hex values are kept apart
-/// so contrast can be checked in tests.
+/// The "Morning" palette Igor chose on 2026-11-18: deep green with apricot, with a dark pair for each color.
+/// Hex values are kept apart so contrast can be checked in tests for both themes.
 enum PaletteHex {
-    static let bg: UInt32 = 0xF4F5F1
-    static let ink: UInt32 = 0x16201B
-    static let inkSoft: UInt32 = 0x3E4842
-    static let muted: UInt32 = 0x56615A
-    static let line: UInt32 = 0xE3E7E1
-    static let lineSoft: UInt32 = 0xEEF0EB
-    static let field: UInt32 = 0xFAFBF8
-    static let fieldBorder: UInt32 = 0xDCE2DA
-    static let accent: UInt32 = 0x0F6B5C
-    static let accentDark: UInt32 = 0x0B4A40
-    static let accentSoft: UInt32 = 0xE6F1EE
-    static let warm: UInt32 = 0xE07B39
-    static let warmDark: UInt32 = 0xA34A12
-    static let warmInk: UInt32 = 0x8A3E10
-    static let warmSoft: UInt32 = 0xFCE9DC
-    static let warmLight: UInt32 = 0xF2C29E
-    static let warmMark: UInt32 = 0xCC7339
-    static let sand: UInt32 = 0xF4EFE2
-    static let sandInk: UInt32 = 0x5E4A12
-    static let neutralSoft: UInt32 = 0xF1F2EE
+    struct Pair {
+        let light: UInt32
+        let dark: UInt32
+    }
+
+    static let bg = Pair(light: 0xF4F5F1, dark: 0x111614)
+    static let card = Pair(light: 0xFFFFFF, dark: 0x1C2320)
+    static let ink = Pair(light: 0x16201B, dark: 0xE9EEEA)
+    static let inkSoft = Pair(light: 0x3E4842, dark: 0xC3CCC6)
+    static let muted = Pair(light: 0x56615A, dark: 0x98A39C)
+    static let line = Pair(light: 0xE3E7E1, dark: 0x2E3733)
+    static let lineSoft = Pair(light: 0xEEF0EB, dark: 0x262E2A)
+    static let field = Pair(light: 0xFAFBF8, dark: 0x182019)
+    static let fieldBorder = Pair(light: 0xDCE2DA, dark: 0x3A4540)
+    static let buttonBorder = Pair(light: 0xCBD3C9, dark: 0x3A4540)
+    static let accent = Pair(light: 0x0F6B5C, dark: 0x14806C)
+    static let accentDark = Pair(light: 0x0B4A40, dark: 0x9FE3D1)
+    static let accentSoft = Pair(light: 0xE6F1EE, dark: 0x173A32)
+    static let accentText = Pair(light: 0x0F6B5C, dark: 0x5CC8AE)
+    static let warm = Pair(light: 0xE07B39, dark: 0xE88A4C)
+    static let warmDark = Pair(light: 0xA34A12, dark: 0xF0A06A)
+    static let warmInk = Pair(light: 0x8A3E10, dark: 0xF6C29C)
+    static let warmSoft = Pair(light: 0xFCE9DC, dark: 0x3A2417)
+    static let warmLight = Pair(light: 0xF2C29E, dark: 0x7A4A2C)
+    static let warmMark = Pair(light: 0xCC7339, dark: 0xD9824A)
+    static let sand = Pair(light: 0xF4EFE2, dark: 0x2B2619)
+    static let sandInk = Pair(light: 0x5E4A12, dark: 0xE6D3A1)
+    static let neutralSoft = Pair(light: 0xF1F2EE, dark: 0x252C29)
+    static let onInk = Pair(light: 0xFFFFFF, dark: 0x111614)
 }
 
+/// Colors follow the system appearance. Text on `accent` fills stays white in both themes.
 enum Palette {
-    static let bg = Color(hex: PaletteHex.bg)
-    static let card = Color.white
-    static let ink = Color(hex: PaletteHex.ink)
-    static let inkSoft = Color(hex: PaletteHex.inkSoft)
-    static let muted = Color(hex: PaletteHex.muted)
-    static let line = Color(hex: PaletteHex.line)
-    static let lineSoft = Color(hex: PaletteHex.lineSoft)
-    static let field = Color(hex: PaletteHex.field)
-    static let fieldBorder = Color(hex: PaletteHex.fieldBorder)
-    static let accent = Color(hex: PaletteHex.accent)
-    static let accentDark = Color(hex: PaletteHex.accentDark)
-    static let accentSoft = Color(hex: PaletteHex.accentSoft)
-    static let warm = Color(hex: PaletteHex.warm)
-    static let warmDark = Color(hex: PaletteHex.warmDark)
-    static let warmInk = Color(hex: PaletteHex.warmInk)
-    static let warmSoft = Color(hex: PaletteHex.warmSoft)
-    static let warmLight = Color(hex: PaletteHex.warmLight)
-    static let warmMark = Color(hex: PaletteHex.warmMark)
-    static let sand = Color(hex: PaletteHex.sand)
-    static let sandInk = Color(hex: PaletteHex.sandInk)
-    static let neutralSoft = Color(hex: PaletteHex.neutralSoft)
+    static let bg = Color(PaletteHex.bg)
+    static let card = Color(PaletteHex.card)
+    static let ink = Color(PaletteHex.ink)
+    static let inkSoft = Color(PaletteHex.inkSoft)
+    static let muted = Color(PaletteHex.muted)
+    static let line = Color(PaletteHex.line)
+    static let lineSoft = Color(PaletteHex.lineSoft)
+    static let field = Color(PaletteHex.field)
+    static let fieldBorder = Color(PaletteHex.fieldBorder)
+    static let buttonBorder = Color(PaletteHex.buttonBorder)
+    static let accent = Color(PaletteHex.accent)
+    static let accentDark = Color(PaletteHex.accentDark)
+    static let accentSoft = Color(PaletteHex.accentSoft)
+    static let accentText = Color(PaletteHex.accentText)
+    static let warm = Color(PaletteHex.warm)
+    static let warmDark = Color(PaletteHex.warmDark)
+    static let warmInk = Color(PaletteHex.warmInk)
+    static let warmSoft = Color(PaletteHex.warmSoft)
+    static let warmLight = Color(PaletteHex.warmLight)
+    static let warmMark = Color(PaletteHex.warmMark)
+    static let sand = Color(PaletteHex.sand)
+    static let sandInk = Color(PaletteHex.sandInk)
+    static let neutralSoft = Color(PaletteHex.neutralSoft)
+    static let onInk = Color(PaletteHex.onInk)
+}
+
+extension Color {
+    init(_ pair: PaletteHex.Pair) {
+        self.init(UIColor { traits in
+            UIColor(Color(hex: traits.userInterfaceStyle == .dark ? pair.dark : pair.light))
+        })
+    }
 }
 
 /// WCAG 2.2 contrast ratio between two sRGB colors.

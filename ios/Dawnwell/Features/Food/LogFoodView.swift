@@ -58,7 +58,7 @@ struct LogFoodView: View {
                                 Text("\(f.protein) g").font(.system(size: 15, weight: .heavy)).foregroundStyle(Palette.warmDark)
                                 Image(systemName: on ? "checkmark.circle.fill" : "plus.circle")
                                     .font(.system(size: 26))
-                                    .foregroundStyle(Palette.accent)
+                                    .foregroundStyle(Palette.accentText)
                             }
                             .frame(minHeight: 52)
                         }

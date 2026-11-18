@@ -22,7 +22,7 @@ struct FilledButtonStyle: ButtonStyle {
         let (bg, fg, border): (Color, Color, Color) = {
             switch kind {
             case .primary: return (Palette.accent, .white, Palette.accent)
-            case .secondary: return (Palette.card, Palette.ink, Color(hex: 0xCBD3C9))
+            case .secondary: return (Palette.card, Palette.ink, Palette.buttonBorder)
             case .light: return (.white, Color(hex: 0x0B3D35), .white)
             }
         }()
@@ -96,7 +96,7 @@ struct ScaleView: View {
                 let fill = on ? (hot ? Palette.warmDark : Palette.accent) : Palette.field
                 Button { onChange(n) } label: {
                     Capsule()
-                        .fill(on ? Color.white : (hot ? Palette.warm : Palette.accent))
+                        .fill(on ? Palette.card : (hot ? Palette.warm : Palette.accent))
                         .frame(width: 16, height: CGFloat(8 + n * 5))
                         .frame(maxWidth: .infinity, minHeight: 52)
                         .background(fill, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
