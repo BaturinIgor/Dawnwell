@@ -6,6 +6,7 @@ struct DawnwellApp: App {
     private let container: ModelContainer?
 
     init() {
+        if !Persistence.isRunningTests { CloudSchema.initializeIfNeeded() }
         if Persistence.isRunningTests {
             container = try? Persistence.makeContainer(inMemory: true)
         } else if Persistence.isDemo {
