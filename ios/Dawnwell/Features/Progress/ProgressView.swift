@@ -129,7 +129,7 @@ struct ProgressScreen: View {
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 5]))
                 ForEach(s.proteinWeek, id: \.day) { d in
                     BarMark(x: .value("Day", weekday(d.day)), y: .value("Protein", d.grams))
-                        .foregroundStyle(d.grams >= s.proteinTarget ? Palette.accent : d.grams > 0 ? Palette.warmLight : Palette.lineSoft)
+                        .foregroundStyle(d.grams >= s.proteinTarget ? Palette.accent : d.grams > 0 ? Palette.warmMark : Palette.lineSoft)
                         .cornerRadius(8)
                 }
             }
@@ -166,7 +166,7 @@ struct ProgressScreen: View {
             }
             HStack(spacing: 16) {
                 legend(Palette.accent, "Taken")
-                legend(Palette.warmLight, "Skipped")
+                legend(Palette.warmMark, "Skipped")
                 legend(Palette.lineSoft, "Not logged")
             }
         }
@@ -176,7 +176,7 @@ struct ProgressScreen: View {
     private func color(_ m: ProgressStats.TabletMark) -> Color {
         switch m {
         case .taken: return Palette.accent
-        case .skipped: return Palette.warmLight
+        case .skipped: return Palette.warmMark
         case .none: return Palette.lineSoft
         }
     }
