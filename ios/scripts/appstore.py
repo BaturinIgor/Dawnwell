@@ -432,6 +432,9 @@ def sync_subscription(asc, group_id, sub, note):
     if s["attributes"].get("multiSeatStatus", "DISABLED") != "DISABLED":
         s = asc.update("subscriptions", s["id"], {"multiSeatStatus": "DISABLED"}).get("data", s)
         print("  multiseat purchases turned off")
+    if s["attributes"].get("marketSettings", ["APP_STORE"]) != ["APP_STORE"]:
+        s = asc.update("subscriptions", s["id"], {"marketSettings": ["APP_STORE"]}).get("data", s)
+        print("  sold on the App Store only (not Apple Business or School Manager)")
     return s
 
 
@@ -711,7 +714,7 @@ def main():
     if version:
         print(f"  version {version['attributes']['versionString']}")
 
-    if "diagnose" in parts:
+    if parts == {"diagnose"}:
         diagnose(asc, app_id)
         return
 
@@ -786,6 +789,9 @@ def main():
                              sync_review_screenshot, asc, "iap", iap_id, paywall)
             else:
                 run.failures.append("review screenshots: en/paywall.png was not taken")
+
+    if "diagnose" in parts:
+        diagnose(asc, app_id)
 
     if run.failures:
         print("\nSome steps failed:")
