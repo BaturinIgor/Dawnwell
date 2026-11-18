@@ -511,6 +511,37 @@ def sync_subscription_prices(asc, sub_id, usd, ids):
     print(f"  ${usd} in the U.S., Apple's matching price in {len(targets) - 1} more ({added} added)")
 
 
+def reprice_subscription(asc, sub_id, usd, ids):
+    """Delete every price and set them again from adjusted equalizations with planType UPFRONT.
+    Only for subscriptions that have never been approved (no subscribers to keep)."""
+    existing = asc.all(f"/v1/subscriptions/{sub_id}/prices")
+    for p in existing:
+        asc.call("DELETE", f"/v1/subscriptionPrices/{p['id']}")
+    print(f"  removed {len(existing)} old prices")
+    points = asc.all(f"/v1/subscriptions/{sub_id}/pricePoints", **{"filter[territory]": "USA"})
+    base = next(p for p in points if p["attributes"]["customerPrice"] in (usd, usd.rstrip("0")))
+    targets = {"USA": base["id"]}
+    try:
+        eqs = asc.all(f"/v1/subscriptionPricePoints/{base['id']}/adjustedEqualizations", include="territory",
+                      **{"filter[planType]": "UPFRONT", "filter[upfrontPricePointId]": base["id"]})
+        source = "adjusted equalizations"
+    except ApiError as e:
+        print(f"  adjusted equalizations failed ({e.status}), using plain equalizations")
+        eqs = asc.all(f"/v1/subscriptionPricePoints/{base['id']}/equalizations", include="territory")
+        source = "equalizations"
+    for eq in eqs:
+        t = eq.get("relationships", {}).get("territory", {}).get("data", {}).get("id")
+        if t and t in ids:
+            targets[t] = eq["id"]
+    for territory, point in targets.items():
+        asc.create("subscriptionPrices", {"startDate": None, "preserveCurrentPrice": False, "planType": "UPFRONT"}, {
+            "subscription": ref("subscriptions", sub_id),
+            "subscriptionPricePoint": ref("subscriptionPricePoints", point),
+            "territory": ref("territories", territory),
+        })
+    print(f"  ${usd} in the U.S. and {len(targets) - 1} more from {source}, plan type up front")
+
+
 def sync_free_week(asc, sub_id, duration, ids):
     have = {o["relationships"]["territory"]["data"]["id"]
             for o in asc.all(f"/v1/subscriptions/{sub_id}/introductoryOffers", include="territory")
@@ -698,6 +729,8 @@ def main():
         return
 
     parts = {p.strip() for p in args.parts.split(",") if p.strip()}
+    if "reprice" in parts:
+        parts.add("diagnose")
     if "everything" in parts:
         parts = {"texts", "products", "screenshots"}
     key_id, issuer, key = (os.environ.get(k, "") for k in ("ASC_KEY_ID", "ASC_ISSUER_ID", "ASC_PRIVATE_KEY"))
@@ -744,7 +777,7 @@ def main():
         run.step("Countries and regions", sync_app_availability, asc, app_id)
 
     sub_ids, iap_id = {}, None
-    if "products" in parts or "screenshots" in parts:
+    if "products" in parts or "screenshots" in parts or "reprice" in parts:
         group = run.step("Subscription group", sync_group, asc, app_id, products["group"])
         if group:
             if "products" in parts:
@@ -761,6 +794,9 @@ def main():
                              "subscription", ref("subscriptions", s["id"]), sub["localizations"])
                     run.step(f"{sub['referenceName']}: availability", sync_subscription_availability, asc, s["id"], ids)
                     run.step(f"{sub['referenceName']}: plan type", sync_plan_availability, asc, s["id"], ids)
+                if "reprice" in parts:
+                    run.step(f"{sub['referenceName']}: prices again", reprice_subscription, asc, s["id"], sub["usd"], ids)
+                if "products" in parts:
                     run.step(f"{sub['referenceName']}: prices", sync_subscription_prices, asc, s["id"], sub["usd"], ids)
                     run.step(f"{sub['referenceName']}: free week", sync_free_week, asc, s["id"], sub["freeTrial"], ids)
         life = products["lifetime"]
