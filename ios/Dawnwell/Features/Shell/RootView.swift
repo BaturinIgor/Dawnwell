@@ -20,6 +20,7 @@ struct RootView: View {
             guard !Persistence.isRunningTests else { return }
             if phase == .active {
                 DataSafety.takeDailyCopy(repo: Repository(context: context), copies: .standard)
+                WaitActivityController.tidy()
             }
             if phase != .inactive { syncReminders() }
         }

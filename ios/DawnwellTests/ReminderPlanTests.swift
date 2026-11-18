@@ -81,3 +81,26 @@ final class ReminderPlanTests: XCTestCase {
         }
     }
 }
+
+final class WaitTimerTests: XCTestCase {
+    private let taken = Date(timeIntervalSince1970: 1_794_990_000)
+
+    func testEndsAfterWait() {
+        XCTAssertEqual(WaitTimer.endsAt(takenAt: taken, waitMinutes: 30), taken.addingTimeInterval(1800))
+        XCTAssertEqual(WaitTimer.endsAt(takenAt: taken, waitMinutes: -5), taken)
+    }
+
+    func testProgressIsClamped() {
+        let ends = WaitTimer.endsAt(takenAt: taken, waitMinutes: 30)
+        XCTAssertEqual(WaitTimer.progress(takenAt: taken, endsAt: ends, now: taken.addingTimeInterval(-60)), 0)
+        XCTAssertEqual(WaitTimer.progress(takenAt: taken, endsAt: ends, now: taken.addingTimeInterval(900)), 0.5, accuracy: 0.0001)
+        XCTAssertEqual(WaitTimer.progress(takenAt: taken, endsAt: ends, now: taken.addingTimeInterval(4000)), 1)
+        XCTAssertEqual(WaitTimer.progress(takenAt: taken, endsAt: taken, now: taken), 1)
+    }
+
+    func testIsOver() {
+        let ends = WaitTimer.endsAt(takenAt: taken, waitMinutes: 30)
+        XCTAssertFalse(WaitTimer.isOver(endsAt: ends, now: taken.addingTimeInterval(1799)))
+        XCTAssertTrue(WaitTimer.isOver(endsAt: ends, now: ends))
+    }
+}
