@@ -9,6 +9,8 @@ struct TodayView: View {
     @Query private var symptoms: [SymptomEntry]
 
     private let key: String
+    @State private var showFood = false
+    @State private var symptomDetail: SymptomKind?
 
     init(day: String = DayKey.today()) {
         key = day
@@ -22,11 +24,36 @@ struct TodayView: View {
     private var protein: Int { foods.reduce(0) { $0 + $1.protein } }
 
     var body: some View {
+        NavigationStack {
+            content
+                .toolbar(.hidden, for: .navigationBar)
+                .navigationDestination(for: String.self) { route in
+                    if route == "medication" { MedicationView() }
+                }
+                .sheet(isPresented: $showFood) { LogFoodView(day: key) }
+                .sheet(item: $symptomDetail) { kind in SymptomDetailView(day: key, initial: kind) }
+        }
+    }
+
+    private var content: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Metrics.gap) {
                 header
                 WeekStrip(taken: Set(days.filter { $0.takenAt != nil }.map(\.day)))
                 if let profile {
+                    if profile.remindRefill, let left = profile.tabletsLeft, left <= Catalog.refillAt {
+                        NavigationLink(value: "medication") {
+                            HStack {
+                                Text("\(left) tablets left. Time to ask for a refill.").font(.subheadline.weight(.bold))
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                            }
+                            .foregroundStyle(Palette.warmInk)
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 52)
+                            .background(Palette.warmSoft, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        }
+                    }
                     TabletCard(profile: profile, day: today, onTake: take, onUndo: undo, onSkip: skip)
                     proteinCard(target: profile.proteinTarget)
                     HStack(spacing: 12) {
@@ -67,6 +94,14 @@ struct TodayView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(Palette.accentSoft, in: Capsule())
+            NavigationLink(value: "medication") {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(Palette.ink)
+                    .frame(width: 44, height: 44)
+                    .background(Palette.card, in: Circle())
+            }
+            .accessibilityLabel("Medication and reminders")
         }
     }
 
@@ -103,6 +138,7 @@ struct TodayView: View {
                     .accessibilityLabel("Add \(f.shortName), \(f.protein) grams protein")
                 }
             }
+            Button("Search all foods") { showFood = true }.buttonStyle(FilledButtonStyle(kind: .secondary))
         }
         .card()
     }
@@ -126,7 +162,15 @@ struct TodayView: View {
 
     private var symptomsCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("How do you feel?").font(.system(size: 17, weight: .heavy))
+            HStack {
+                Text("How do you feel?").font(.system(size: 17, weight: .heavy))
+                Spacer()
+                Button("Add details") {
+                    symptomDetail = symptoms.first { $0.kind != .good }?.kind ?? .nausea
+                }
+                .font(.subheadline.weight(.bold))
+                .frame(minHeight: 44)
+            }
             FlowLayout {
                 ForEach(SymptomKind.allCases) { kind in
                     ChipView(label: kind.label, selected: symptoms.contains { $0.kind == kind }, warm: kind != .good) {
