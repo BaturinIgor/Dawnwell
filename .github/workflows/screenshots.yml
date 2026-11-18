@@ -1,0 +1,67 @@
+name: Screenshots
+
+# App Store screenshots on the 6.9" iPhone, from the built-in demo data.
+# Run by hand (Actions -> Screenshots -> Run workflow), or automatically when the demo changes.
+# The PNGs are in the run's "app-store-screenshots" artifact.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'ios/DawnwellUITests/**'
+      - 'ios/Dawnwell/Model/DemoData.swift'
+      - '.github/workflows/screenshots.yml'
+
+concurrency:
+  group: screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shots:
+    runs-on: macos-15
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Boot a 6.9-inch iPhone
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          runtimes = sorted((k for k in devices if ".iOS-" in k), key=lambda k: [int(p) for p in k.rsplit(".iOS-", 1)[1].split("-")])
+          for rt in reversed(runtimes):
+              big = [d for d in devices[rt] if "Pro Max" in d["name"]]
+              if big:
+                  print(big[-1]["udid"]); break
+          ')
+          [ -n "$UDID" ] || { echo "::error::No Pro Max simulator"; exit 1; }
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl ui "$UDID" appearance light
+          xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Take screenshots
+        env:
+          TEST_RUNNER_SCREENSHOT_DIR: ${{ runner.temp }}/shots
+        run: |
+          mkdir -p "$TEST_RUNNER_SCREENSHOT_DIR"
+          set -o pipefail
+          xcodebuild test \
+            -project Dawnwell.xcodeproj \
+            -scheme Screenshots \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee xcodebuild.log | grep -E "error:|Test Case .* (passed|failed)|TEST (SUCCEEDED|FAILED)" || (tail -150 xcodebuild.log; exit 1)
+          ls -l "$TEST_RUNNER_SCREENSHOT_DIR"
+          test "$(ls "$TEST_RUNNER_SCREENSHOT_DIR"/*.png | wc -l)" -ge 4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-store-screenshots
+          path: ${{ runner.temp }}/shots/*.png
