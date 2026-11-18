@@ -1,0 +1,151 @@
+DEFINE SCHEMA
+
+    RECORD TYPE CD_DayLog (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE QUERYABLE,
+        CD_day STRING,
+        CD_day_ckAsset ASSET,
+        CD_entityName STRING,
+        CD_fiber INT64,
+        CD_foodNoise INT64,
+        CD_skipped INT64,
+        CD_strength INT64,
+        CD_takenAt TIMESTAMP,
+        CD_updatedAt TIMESTAMP,
+        CD_water INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE CD_DoseChange (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE QUERYABLE,
+        CD_at TIMESTAMP,
+        CD_entityName STRING,
+        CD_from STRING,
+        CD_from_ckAsset ASSET,
+        CD_label STRING,
+        CD_label_ckAsset ASSET,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE CD_FoodEntry (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE QUERYABLE,
+        CD_at TIMESTAMP,
+        CD_day STRING,
+        CD_day_ckAsset ASSET,
+        CD_entityName STRING,
+        CD_entryID STRING,
+        CD_mealRaw STRING,
+        CD_mealRaw_ckAsset ASSET,
+        CD_name STRING,
+        CD_name_ckAsset ASSET,
+        CD_protein INT64,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE CD_Profile (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE QUERYABLE,
+        CD_createdAt TIMESTAMP,
+        CD_doseHour INT64,
+        CD_doseLabel STRING,
+        CD_doseLabel_ckAsset ASSET,
+        CD_doseMinute INT64,
+        CD_entityName STRING,
+        CD_fiberTarget INT64,
+        CD_goalWeight DOUBLE,
+        CD_medicationRaw STRING,
+        CD_medicationRaw_ckAsset ASSET,
+        CD_onboarded INT64,
+        CD_proteinTarget INT64,
+        CD_questions STRING,
+        CD_questions_ckAsset ASSET,
+        CD_remindProtein INT64,
+        CD_remindRefill INT64,
+        CD_remindTablet INT64,
+        CD_remindWaitOver INT64,
+        CD_startWeight DOUBLE,
+        CD_tabletsLeft INT64,
+        CD_waitMinutes INT64,
+        CD_waterTarget INT64,
+        CD_weightUnitRaw STRING,
+        CD_weightUnitRaw_ckAsset ASSET,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE CD_SymptomEntry (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE QUERYABLE,
+        CD_at TIMESTAMP,
+        CD_day STRING,
+        CD_day_ckAsset ASSET,
+        CD_entityName STRING,
+        CD_kindRaw STRING,
+        CD_kindRaw_ckAsset ASSET,
+        CD_note STRING,
+        CD_note_ckAsset ASSET,
+        CD_severity INT64,
+        CD_triggers BYTES,
+        CD_triggers_ckAsset ASSET,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE CD_WeightEntry (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE QUERYABLE,
+        CD_at TIMESTAMP,
+        CD_day STRING,
+        CD_day_ckAsset ASSET,
+        CD_entityName STRING,
+        CD_value DOUBLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Users (
+        "___createTime" TIMESTAMP,
+        "___createdBy" REFERENCE,
+        "___etag" STRING,
+        "___modTime" TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID" REFERENCE,
+        roles LIST<INT64>,
+        GRANT WRITE TO "_creator",
+        GRANT READ TO "_world"
+    );

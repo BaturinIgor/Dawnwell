@@ -20,7 +20,32 @@ final class CloudSchemaTests: XCTestCase {
         }
     }
 
-    func testOffInNormalBuilds() {
-        XCTAssertFalse(CloudSchema.isEnabledInThisBuild)
+    /// The schema file imported into iCloud must match the data model, or iCloud rejects records.
+    /// After a model change, copy the generated text from the failure message into the file.
+    func testSchemaFileMatchesTheModel() throws {
+        let model = try XCTUnwrap(CloudSchema.managedObjectModel())
+        let generated = try CloudSchema.ckdb(for: model)
+        let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("CloudKit/schema.ckdb")
+        let saved = try String(contentsOf: file, encoding: .utf8)
+        XCTAssertEqual(saved, generated, "ios/CloudKit/schema.ckdb is out of date. It should be:\n\(generated)")
+    }
+
+    func testEveryAttributeHasACloudKitType() throws {
+        let model = try XCTUnwrap(CloudSchema.managedObjectModel())
+        for entity in model.entities {
+            for attr in entity.attributesByName.values {
+                XCTAssertNotNil(CloudSchema.fields(for: attr), "\(entity.name ?? "?").\(attr.name)")
+            }
+        }
+    }
+
+    func testStringsAndDataGetAnAssetFieldForLargeValues() throws {
+        let model = try XCTUnwrap(CloudSchema.managedObjectModel())
+        let text = try CloudSchema.ckdb(for: model)
+        XCTAssertTrue(text.contains("CD_note_ckAsset ASSET"))
+        XCTAssertTrue(text.contains("CD_triggers BYTES"))
+        XCTAssertTrue(text.contains("CD_entryID STRING,"), "UUIDs are plain strings without an asset field")
+        XCTAssertFalse(text.contains("CD_entryID_ckAsset"))
     }
 }
