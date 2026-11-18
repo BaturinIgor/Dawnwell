@@ -18,13 +18,13 @@ SHARED_OUT = os.path.join(IOS, "Shared", "Localization")
 APP_OUT = os.path.join(IOS, "Dawnwell", "Resources")
 
 LANGS = ["en", "de", "fr", "es", "it", "pt-BR", "pt-PT", "nl", "sv", "da", "nb", "fi",
-         "pl", "tr", "ja", "ko", "zh-Hans", "zh-Hant"]
+         "pl", "ru", "tr", "ja", "ko", "zh-Hans", "zh-Hant"]
 
 PLURALS = {
     "en": ["one", "other"], "de": ["one", "other"], "es": ["one", "other"], "it": ["one", "other"],
     "pt-BR": ["one", "other"], "pt-PT": ["one", "other"], "nl": ["one", "other"], "sv": ["one", "other"],
     "da": ["one", "other"], "nb": ["one", "other"], "fi": ["one", "other"], "tr": ["one", "other"],
-    "fr": ["one", "other"], "pl": ["one", "few", "many", "other"],
+    "fr": ["one", "other"], "pl": ["one", "few", "many", "other"], "ru": ["one", "few", "many", "other"],
     "ja": ["other"], "ko": ["other"], "zh-Hans": ["other"], "zh-Hant": ["other"],
 }
 

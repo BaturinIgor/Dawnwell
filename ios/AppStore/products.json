@@ -103,6 +103,10 @@
     "zh-Hant": {
      "name": "Plus 年繳",
      "description": "看診PDF報告與飲食分析"
+    },
+    "ru": {
+     "name": "Plus годовая",
+     "description": "PDF-отчёты для врача и аналитика питания"
     }
    }
   },
@@ -205,6 +209,10 @@
     "zh-Hant": {
      "name": "Plus 月繳",
      "description": "看診PDF報告與飲食分析"
+    },
+    "ru": {
+     "name": "Plus месячная",
+     "description": "PDF-отчёты для врача и аналитика питания"
     }
    }
   }
@@ -305,6 +313,10 @@
    "zh-Hant": {
     "name": "Plus 終身",
     "description": "看診PDF報告與飲食分析"
+   },
+   "ru": {
+    "name": "Plus навсегда",
+    "description": "PDF-отчёты для врача и аналитика питания"
    }
   }
  },

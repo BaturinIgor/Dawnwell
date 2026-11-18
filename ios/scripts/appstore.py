@@ -39,7 +39,7 @@ SHOT_LANG = {
     "en-US": "en", "en-GB": "en", "en-AU": "en", "en-CA": "en",
     "de-DE": "de", "fr-FR": "fr", "fr-CA": "fr", "es-ES": "es", "es-MX": "es", "it": "it",
     "pt-BR": "pt-BR", "pt-PT": "pt-PT", "nl-NL": "nl", "sv": "sv", "da": "da", "no": "nb",
-    "fi": "fi", "pl": "pl", "tr": "tr", "ja": "ja", "ko": "ko", "zh-Hans": "zh-Hans", "zh-Hant": "zh-Hant",
+    "fi": "fi", "pl": "pl", "ru": "ru", "tr": "tr", "ja": "ja", "ko": "ko", "zh-Hans": "zh-Hans", "zh-Hant": "zh-Hant",
 }
 LIMITS = {"name": 30, "subtitle": 30, "promotionalText": 170, "keywords": 100, "description": 4000}
 

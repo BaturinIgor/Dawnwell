@@ -4,7 +4,7 @@ Dawnwell is a native iOS app in SwiftUI (iOS 17+). The project lives in `ios/` a
 
 - The app never suggests or changes a dose. Medication details come only from what the user copies from their label.
 - User data must never be lost. Never delete or overwrite the store; on errors, fall back or roll back.
-- UI text is written in English and translated into 17 more languages (see Translations below).
+- UI text is written in English and translated into 18 more languages (see Translations below).
 - Every change comes with unit tests in `ios/DawnwellTests`, and CI (`.github/workflows/ios.yml`) must be green before merging.
 - Colors come from `ios/Dawnwell/UI/Theme.swift` (light and dark pairs). `PaletteTests` checks contrast in both themes; add new pairs there.
 - Keep logic pure and testable in `Model/`; views stay thin.
