@@ -66,6 +66,8 @@ schemes:
       targets:
         Dawnwell: all
         DawnwellTests: [test]
+    run:
+      storeKitConfiguration: StoreKit/Dawnwell.storekit
     test:
       gatherCoverageData: true
       targets:
