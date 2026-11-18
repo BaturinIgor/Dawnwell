@@ -11,6 +11,8 @@ final class PlusStore {
     private(set) var products: [Product] = []
     private(set) var isPlus = false
     private(set) var loadFailed = false
+    /// Whether this Apple ID can still get the free week. Both plans share one group, so one answer covers both.
+    private(set) var trialEligible = false
     private var updates: Task<Void, Never>?
 
     init() {
@@ -29,6 +31,7 @@ final class PlusStore {
         do {
             products = try await Product.products(for: Plus.productIDs).sorted { $0.price < $1.price }
             loadFailed = false
+            trialEligible = await products.first?.subscription?.isEligibleForIntroOffer ?? false
         } catch {
             loadFailed = true
         }

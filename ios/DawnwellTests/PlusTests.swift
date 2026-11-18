@@ -9,6 +9,24 @@ final class PlusTests: XCTestCase {
         XCTAssertEqual(Plus.yearlySaving(monthly: 0, yearly: 10), 0)
     }
 
+    func testFreeWeekOnlyPromisedToEligibleUsers() {
+        XCTAssertEqual(Plus.buyTitle(hasFreeTrial: true, eligibleForTrial: true, price: "$29.99"), "Start free week, then $29.99")
+        XCTAssertEqual(Plus.buyTitle(hasFreeTrial: true, eligibleForTrial: false, price: "$29.99"), "Subscribe for $29.99")
+        XCTAssertEqual(Plus.buyTitle(hasFreeTrial: false, eligibleForTrial: true, price: "$4.99"), "Subscribe for $4.99")
+    }
+
+    func testBothPlansShareOneSubscriptionGroup() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("StoreKit/Dawnwell.storekit")
+        guard let data = try? Data(contentsOf: url) else { throw XCTSkip("Store config not reachable from the simulator") }
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let groups = try XCTUnwrap(json["subscriptionGroups"] as? [[String: Any]])
+        // One group means one free week per Apple ID, not one per plan.
+        XCTAssertEqual(groups.count, 1)
+        let ids = (groups.first?["subscriptions"] as? [[String: Any]])?.compactMap { $0["productID"] as? String } ?? []
+        XCTAssertEqual(Set(ids), Set(Plus.productIDs))
+    }
+
     func testPerMonth() {
         XCTAssertEqual(Plus.perMonth(yearly: 29.99), Decimal(string: "2.5"))
     }
