@@ -10,7 +10,7 @@ final class DayKeyTests: XCTestCase {
 
     func testFormatsLocalDate() {
         // 2026-11-18 03:30 UTC is still Nov 17 in New York.
-        let d = Date(timeIntervalSince1970: 1_763_436_600)
+        let d = Date(timeIntervalSince1970: 1_794_972_600)
         XCTAssertEqual(DayKey.of(d, calendar: cal), "2026-11-17")
     }
 
