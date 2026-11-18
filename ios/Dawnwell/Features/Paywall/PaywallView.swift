@@ -70,8 +70,11 @@ struct PaywallView: View {
 
     private var trialText: String {
         guard let p = selected else { return "Continue" }
-        if p.subscription?.introductoryOffer?.paymentMode == .freeTrial { return "Start free week, then \(p.displayPrice)" }
-        return "Subscribe for \(p.displayPrice)"
+        return Plus.buyTitle(
+            hasFreeTrial: p.subscription?.introductoryOffer?.paymentMode == .freeTrial,
+            eligibleForTrial: store.trialEligible,
+            price: p.displayPrice
+        )
     }
 
     private func plan(_ p: Product, isYearly: Bool) -> some View {
