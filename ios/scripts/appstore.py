@@ -427,6 +427,11 @@ def sync_subscription(asc, group_id, sub, note):
             "familySharable": False, "reviewNote": note,
         }, {"group": ref("subscriptionGroups", group_id)})
         print(f"  created {sub['productId']}")
+    # Personal health app: one person, one seat. Apple turns multiseat (Apple Business and School
+    # Manager) on by default, and then the subscription needs prices for those markets too.
+    if s["attributes"].get("multiSeatStatus", "DISABLED") != "DISABLED":
+        s = asc.update("subscriptions", s["id"], {"multiSeatStatus": "DISABLED"}).get("data", s)
+        print("  multiseat purchases turned off")
     return s
 
 
