@@ -29,6 +29,7 @@ struct TodayView: View {
                 .toolbar(.hidden, for: .navigationBar)
                 .navigationDestination(for: String.self) { route in
                     if route == "medication" { MedicationView() }
+                    if route == "data" { DataView() }
                 }
                 .sheet(isPresented: $showFood) { LogFoodView(day: key) }
                 .sheet(item: $symptomDetail) { kind in SymptomDetailView(day: key, initial: kind) }

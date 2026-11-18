@@ -23,6 +23,15 @@ struct MedicationView: View {
                     tablets(p)
                     reminders(p)
                     doseHistory
+                    NavigationLink(value: "data") {
+                        HStack {
+                            labelled("Your data", "Backup file and copies on this phone")
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundStyle(Palette.muted)
+                        }
+                        .card()
+                    }
+                    .buttonStyle(.plain)
                     Text("Dawnwell only records what your prescriber set. Talk to them before changing anything.")
                         .font(.footnote)
                         .foregroundStyle(Palette.muted)

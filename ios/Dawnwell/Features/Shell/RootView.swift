@@ -3,6 +3,7 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) private var scenePhase
     @Query(sort: \Profile.createdAt) private var profiles: [Profile]
 
     var body: some View {
@@ -14,6 +15,12 @@ struct RootView: View {
             }
         }
         .background(Palette.bg)
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            // One local copy a day, taken when the app comes to the front.
+            if phase == .active && !Persistence.isRunningTests {
+                DataSafety.takeDailyCopy(repo: Repository(context: context), copies: .standard)
+            }
+        }
     }
 }
 
@@ -22,28 +29,13 @@ struct MainTabs: View {
         TabView {
             TodayView()
                 .tabItem { Label("Today", systemImage: "sun.max") }
-            ComingSoonView(title: "Progress")
+            ProgressScreen()
                 .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
-            ComingSoonView(title: "Visit summary")
+            ReportView()
                 .tabItem { Label("Report", systemImage: "doc.text") }
-            ComingSoonView(title: "Learn")
+            LearnView()
                 .tabItem { Label("Learn", systemImage: "book") }
         }
-    }
-}
-
-/// Placeholder while screens are moved over from the first build.
-struct ComingSoonView: View {
-    let title: String
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.system(size: 28, weight: .heavy)).foregroundStyle(Palette.ink)
-            Text("Coming in the next update.").foregroundStyle(Palette.muted)
-            Spacer()
-        }
-        .padding(Metrics.gutter)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Palette.bg)
     }
 }
 
