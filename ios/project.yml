@@ -35,6 +35,7 @@ targets:
         INFOPLIST_KEY_UIBackgroundModes: remote-notification
         INFOPLIST_KEY_NSHealthShareUsageDescription: "Dawnwell reads your weight from Apple Health so you don't have to type it twice. It never shares it."
         CODE_SIGN_ENTITLEMENTS: Dawnwell/Dawnwell.entitlements
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: "NO"
   DawnwellWidgets:
     type: app-extension
     platform: iOS

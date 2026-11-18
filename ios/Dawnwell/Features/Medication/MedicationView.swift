@@ -13,6 +13,19 @@ struct MedicationView: View {
 
     private var repo: Repository { Repository(context: context) }
 
+    private var supportMail: URL? {
+        let info = Bundle.main.infoDictionary
+        var sys = utsname()
+        uname(&sys)
+        let model = withUnsafeBytes(of: &sys.machine) { String(decoding: $0.prefix { $0 != 0 }, as: UTF8.self) }
+        return Support.mailURL(
+            appVersion: info?["CFBundleShortVersionString"] as? String ?? "?",
+            build: info?["CFBundleVersion"] as? String ?? "?",
+            system: UIDevice.current.systemVersion,
+            device: model
+        )
+    }
+
     var body: some View {
         ScrollView {
             if let p = profiles.first {
@@ -28,6 +41,26 @@ struct MedicationView: View {
                             labelled("Your data", "Backup file and copies on this phone")
                             Spacer()
                             Image(systemName: "chevron.right").foregroundStyle(Palette.muted)
+                        }
+                        .card()
+                    }
+                    .buttonStyle(.plain)
+                    if let mail = supportMail {
+                        Link(destination: mail) {
+                            HStack {
+                                labelled("Write to us", Support.email)
+                                Spacer()
+                                Image(systemName: "envelope").foregroundStyle(Palette.muted)
+                            }
+                            .card()
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    Link(destination: Support.privacyPolicy) {
+                        HStack {
+                            labelled("Privacy policy", "Your data stays on your phone and in your iCloud")
+                            Spacer()
+                            Image(systemName: "arrow.up.right").foregroundStyle(Palette.muted)
                         }
                         .card()
                     }
