@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 
 /// Numbers for the Progress tab, built from a snapshot so they can be tested without a store.
 struct ProgressStats: Equatable {
