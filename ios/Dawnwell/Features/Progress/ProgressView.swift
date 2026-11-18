@@ -11,6 +11,8 @@ struct ProgressScreen: View {
     @Query private var weights: [WeightEntry]
 
     @State private var input = ""
+    @State private var healthOn = HealthWeight.isEnabled
+    @State private var healthNote: String?
     @FocusState private var focused: Bool
 
     private var repo: Repository { Repository(context: context) }
@@ -84,6 +86,23 @@ struct ProgressScreen: View {
                 .buttonStyle(FilledButtonStyle())
                 .frame(width: 88)
                 .disabled(Logic.parsePositive(input) == nil)
+            }
+            if HealthWeight.isAvailable {
+                if healthOn {
+                    Label(healthNote ?? "Weight from Apple Health is added here automatically.", systemImage: "heart.fill")
+                        .font(.footnote).foregroundStyle(Palette.muted)
+                } else {
+                    Button {
+                        Task {
+                            let added = await HealthWeight.connect(repo: repo)
+                            healthOn = HealthWeight.isEnabled
+                            healthNote = added > 0 ? "Added \(added) day\(added == 1 ? "" : "s") from Apple Health." : nil
+                        }
+                    } label: {
+                        Label("Get weight from Apple Health", systemImage: "heart.fill")
+                    }
+                    .buttonStyle(FilledButtonStyle(kind: .secondary))
+                }
             }
         }
         .card()
