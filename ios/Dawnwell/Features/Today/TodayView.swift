@@ -186,16 +186,19 @@ struct TodayView: View {
     // MARK: Actions
 
     private func take() {
+        let now = Date()
         repo.updateDay(key) {
-            $0.takenAt = Date()
+            $0.takenAt = now
             $0.skipped = false
         }
         if let p = profile, let left = p.tabletsLeft { p.tabletsLeft = max(0, left - 1); repo.save() }
+        if let p = profile { WaitActivityController.start(takenAt: now, waitMinutes: p.waitMinutes, medication: p.medication.label) }
     }
 
     private func undo() {
         repo.updateDay(key) { $0.takenAt = nil }
         if let p = profile, let left = p.tabletsLeft { p.tabletsLeft = left + 1; repo.save() }
+        WaitActivityController.end()
     }
 
     private func skip() {
