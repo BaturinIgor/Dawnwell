@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B4A40"/><stop offset="0.62" stop-color="#0F6B5C"/><stop offset="1" stop-color="#14806C"/></linearGradient>
+<radialGradient id="glow" cx="512" cy="600" r="420" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F2A46B" stop-opacity="0.42"/><stop offset="1" stop-color="#F2A46B" stop-opacity="0"/></radialGradient>
+<linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6C29C"/><stop offset="1" stop-color="#E07B39"/></linearGradient>
+<clipPath id="above"><rect x="0" y="0" width="1024" height="600"/></clipPath>
+</defs>
+<rect width="1024" height="1024" fill="url(#sky)"/>
+<rect width="1024" height="1024" fill="url(#glow)"/>
+<circle cx="512" cy="600" r="230" fill="url(#sun)" clip-path="url(#above)"/>
+<rect x="150" y="592" width="724" height="26" rx="13" fill="#FCE9DC"/>
+<rect x="262" y="672" width="500" height="26" rx="13" fill="#FCE9DC" opacity="0.6"/>
+<rect x="374" y="748" width="276" height="26" rx="13" fill="#FCE9DC" opacity="0.32"/>
+</svg>

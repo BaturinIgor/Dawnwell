@@ -5,7 +5,9 @@ It answers the questions that come up every morning: *did I take it, when can I 
 
 Dawnwell only reminds and records. It never suggests or changes a dose: everything about the medicine is copied from the user's prescription label.
 
-## What's in this version
+iPhone only, iOS 17 and later, written in SwiftUI.
+
+## What's in 1.0
 
 | Screen | What it does |
 | --- | --- |
@@ -14,57 +16,51 @@ Dawnwell only reminds and records. It never suggests or changes a dose: everythi
 | Add food | Searchable list sorted by protein, meal picker, custom item |
 | Symptom details | Severity 1–5, likely triggers, note for the visit; severe entries show a "contact your clinician" note |
 | Medication | Update from label (keeps a dose history), usual time, wait, tablets left and refill, reminder switches |
-| Your data | What is saved, backup file export and restore, daily copies on the phone |
-| Progress | Weight log and chart against goal, protein this week, 28-day tablet calendar, food noise trend |
-| Report | 30-day visit summary, questions for the clinician, share as text |
+| Your data | iCloud status, backup file export and restore, daily copies on the phone |
+| Progress | Weight log and chart against goal (optionally read from Apple Health), protein this week, 28-day tablet calendar, food noise trend |
+| Report | 30-day visit summary, questions for the clinician, share as text; PDF with Dawnwell Plus |
 | Learn | Stage tip by days on treatment and short articles |
+| Dawnwell Plus | $4.99 a month or $29.99 a year, first week free (StoreKit 2) |
 
-Local notifications: daily tablet reminder, 3 PM protein check, and a one-off "wait is over" alert after the tablet is logged.
+Also: reminders for the tablet, the end of the wait, a 3 PM protein check and a refill; a lock-screen Live Activity counting down the wait; light and dark themes.
 
-All data stays on the device. There is no Dawnwell server holding user data, by design.
+## How data is kept safe
 
-### How data is kept safe
+There is no Dawnwell server. Data lives in SwiftData on the phone and syncs to the user's own private iCloud database.
 
-- **SQLite, one row per day.** Writes are transactional and only touch what changed, so a crash can't corrupt the rest. Pending changes are written when the app goes to the background.
-- **Nothing unreadable is ever overwritten.** A record that can't be read is moved to a `set_aside` table and kept. If the database can't be opened, or was written by a newer app version, the app shows a notice and writes nothing.
-- **Upgrades.** `src/lib/data/schema.ts` normalizes every record and holds the upgrade steps between data versions; table changes are append-only steps in `src/lib/data/db.ts`. A copy is taken before an upgrade is written.
-- **Copies on the phone.** One copy a day for a week, plus a copy before every restore, under *Your data* in the app.
-- **Backup file.** Export and restore a JSON file, which also moves data between iPhone and Android.
-- **Data from the first build** (AsyncStorage) is imported once and the old copy is left in place.
+- If iCloud can't be opened, the app keeps working on the same local file. Nothing is deleted.
+- One copy a day is kept on the phone for a week, plus a copy before every restore.
+- A backup file can be exported and restored at any time. A restore that fails is rolled back.
 
-Planned: automatic backup to the user's own iCloud or Google Drive.
+## Build and test
 
-## Run it
+The Xcode project is generated from `ios/project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 ```bash
-npm install
-npx expo start
+cd ios
+xcodegen generate
+open Dawnwell.xcodeproj
 ```
 
-Then open it in Expo Go or a development build on iOS or Android. Notifications need a physical device.
-
-```bash
-npx tsc --noEmit   # type check
-npx expo lint      # lint
-npm test           # unit tests
-```
-
-## Stack
-
-Expo SDK 58, Expo Router (`src/app`), native tabs, React Compiler, `expo-notifications`, `react-native-svg`, `expo-sqlite`, `expo-file-system`, `expo-sharing`. Tests: Jest with `jest-expo`.
+CI (`.github/workflows/ios.yml`) builds and runs the tests on a simulator on every pull request. `ios/StoreKit/Dawnwell.storekit` lets you test the subscription in the simulator without App Store Connect.
 
 ## Layout
 
 ```
-src/app/           screens (file-based routes)
-src/app/(tabs)/    Today, Progress, Report, Learn
-src/components/    shared UI (ui.tsx, stepper.tsx)
-src/lib/           store, types, notifications, date helpers, food and symptom catalog
-src/constants/     theme tokens
+ios/Dawnwell/App/            app entry
+ios/Dawnwell/Features/       one folder per screen
+ios/Dawnwell/Model/          pure logic: reminders, stats, report, Health import, Plus
+ios/Dawnwell/Data/           SwiftData schema, repository, backups, iCloud status
+ios/Dawnwell/Notifications/  reminders and the Live Activity controller
+ios/Dawnwell/Store/          StoreKit 2
+ios/Dawnwell/UI/             theme (light and dark) and shared components
+ios/DawnwellWidgets/         Live Activity extension
+ios/Shared/                  code shared by the app and the extension
+ios/DawnwellTests/           unit tests
+design/                      app icon sources (SVG)
 ```
 
-## Not yet done
+## Before release: Apple setup
 
-- App icon and splash screen (still the Expo defaults)
-- Subscription paywall (planned: reports, insights and backup are paid; tablet, timer and protein stay free)
-- Backup to the user's iCloud / Google Drive, Apple Health / Health Connect, home screen widget
+- Identifiers: iCloud container `iCloud.com.dawnwell.app`; App ID `com.dawnwell.app` with iCloud (CloudKit), Push Notifications and HealthKit; App ID `com.dawnwell.app.widgets`.
+- App Store Connect: subscription group with `com.dawnwell.app.plus.monthly` and `com.dawnwell.app.plus.yearly`.
