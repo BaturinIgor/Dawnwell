@@ -53,7 +53,8 @@ struct PaywallView: View {
                     HStack {
                         Button("Restore purchases") { Task { await store.restore(); if store.isPlus { dismiss() } } }
                         Spacer()
-                        Link("Terms of Use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                        Link("Privacy", destination: Support.privacyPolicy)
+                        Link("Terms of Use", destination: Plus.termsOfUse)
                     }
                     .font(.footnote.weight(.semibold))
                     .foregroundStyle(Palette.accentText)

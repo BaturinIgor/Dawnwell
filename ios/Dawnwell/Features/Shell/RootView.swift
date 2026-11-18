@@ -21,8 +21,8 @@ struct RootView: View {
             if phase == .active {
                 DataSafety.takeDailyCopy(repo: Repository(context: context), copies: .standard)
                 WaitActivityController.tidy()
-                let repo = Repository(context: context)
-                Task { await HealthWeight.importNow(repo: repo) }
+                let unit = Repository(context: context).profile().weightUnit
+                Task { await HealthWeight.shared.refresh(unit: unit) }
             }
             if phase != .inactive { syncReminders() }
         }

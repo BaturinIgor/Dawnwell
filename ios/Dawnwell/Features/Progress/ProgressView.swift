@@ -11,6 +11,7 @@ struct ProgressScreen: View {
     @Query private var weights: [WeightEntry]
 
     @State private var input = ""
+    @State private var health = HealthWeight.shared
     @State private var healthOn = HealthWeight.isEnabled
     @State private var healthNote: String?
     @FocusState private var focused: Bool
@@ -18,7 +19,7 @@ struct ProgressScreen: View {
     private var repo: Repository { Repository(context: context) }
 
     var body: some View {
-        let stats = ProgressStats.make(from: repo.snapshot())
+        let stats = ProgressStats.make(from: HealthImport.adding(health.entries, to: repo.snapshot()))
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.gap) {
@@ -89,14 +90,14 @@ struct ProgressScreen: View {
             }
             if HealthWeight.isAvailable {
                 if healthOn {
-                    Label(healthNote ?? "Weight from Apple Health is added here automatically.", systemImage: "heart.fill")
+                    Label(healthNote ?? "Weight from Apple Health shows here. It stays in Health and is not copied to iCloud.", systemImage: "heart.fill")
                         .font(.footnote).foregroundStyle(Palette.muted)
                 } else {
                     Button {
                         Task {
-                            let added = await HealthWeight.connect(repo: repo)
+                            let found = await health.connect(unit: repo.profile().weightUnit)
                             healthOn = HealthWeight.isEnabled
-                            healthNote = added > 0 ? "Added \(added) day\(added == 1 ? "" : "s") from Apple Health." : nil
+                            healthNote = found > 0 ? "Showing \(found) day\(found == 1 ? "" : "s") from Apple Health." : nil
                         }
                     } label: {
                         Label("Get weight from Apple Health", systemImage: "heart.fill")

@@ -1,7 +1,10 @@
 import Foundation
 
-/// Rules for bringing weight from Apple Health into Dawnwell. Pure, so it can be tested.
+/// Rules for showing weight from Apple Health in Dawnwell. Pure, so it can be tested.
 ///
+/// - Health readings are never saved in Dawnwell's store. They are read from Health when the
+///   app opens and only joined with the user's own entries on screen. The store syncs to iCloud,
+///   and App Review Guideline 5.1.3(ii) does not allow health data from HealthKit in iCloud.
 /// - One weight per day, as everywhere in Dawnwell.
 /// - A weight the user typed in Dawnwell is never replaced by one from Health.
 /// - For a day with several Health readings, the latest one wins.
@@ -37,5 +40,14 @@ enum HealthImport {
         }
         return latest.map { Entry(day: $0.key, value: convert(kilograms: $0.value.kilograms, to: unit), at: $0.value.at) }
             .sorted { $0.day < $1.day }
+    }
+
+    /// The snapshot with Health readings added for days the user did not type a weight.
+    /// Only for showing on screen and in the report; never written back to the store.
+    static func adding(_ health: [Entry], to snapshot: Snapshot) -> Snapshot {
+        let typed = Set(snapshot.weights.map(\.day))
+        var out = snapshot
+        out.weights += health.filter { !typed.contains($0.day) }.map { Snapshot.WeightData(day: $0.day, value: $0.value, at: $0.at) }
+        return out
     }
 }

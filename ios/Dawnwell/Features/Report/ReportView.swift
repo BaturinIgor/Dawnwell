@@ -10,11 +10,12 @@ struct ReportView: View {
     @Query private var symptoms: [SymptomEntry]
     @Query private var weights: [WeightEntry]
     @State private var store = PlusStore.shared
+    @State private var health = HealthWeight.shared
     @State private var showPaywall = false
     @State private var pdfURL: URL?
 
     var body: some View {
-        let summary = VisitSummary.make(from: Repository(context: context).snapshot())
+        let summary = VisitSummary.make(from: HealthImport.adding(health.entries, to: Repository(context: context).snapshot()))
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.gap) {
