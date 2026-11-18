@@ -267,31 +267,39 @@ def sync_categories(asc, info_id):
     print("  Health & Fitness, then Medical")
 
 
+# Yes/no questions in Apple's age rating; every other question is a level where NONE means "none".
+AGE_RATING_YES_NO = {"advertising", "ageAssurance", "gambling", "healthOrWellnessTopics", "lootBox",
+                     "messagingAndChat", "parentalControls", "unrestrictedWebAccess", "userGeneratedContent",
+                     "seventeenPlus"}
+
+
 def sync_age_rating(asc, info_id):
     """Medical/treatment information: infrequent/mild, health topics: yes, everything else: none/no.
-    Apple adds questions over time, so unknown ones are answered one at a time and reported."""
+    Apple wants every question answered in one request and adds questions over time, so the answers
+    are built from what the declaration lists, plus any question an error names as missing."""
+    import re
     decl = asc.get(f"/v1/appInfos/{info_id}/ageRatingDeclaration")["data"]
-    attrs = decl.get("attributes", {})
-    wanted = {"medicalOrTreatmentInformation": "INFREQUENT_OR_MILD", "healthOrWellnessTopics": True}
     skip = ("override", "Override", "kidsAgeBand", "url", "Url")
-    for key, value in attrs.items():
-        if key in wanted or any(s in key for s in skip):
-            continue
-        wanted[key] = False if isinstance(value, bool) else "NONE"
-    for key, value in wanted.items():
-        if attrs.get(key) == value:
-            continue
+
+    def answer(key):
+        if key == "medicalOrTreatmentInformation":
+            return "INFREQUENT_OR_MILD"
+        if key == "healthOrWellnessTopics":
+            return True
+        return False if key in AGE_RATING_YES_NO else "NONE"
+
+    answers = {k: answer(k) for k in decl.get("attributes", {}) if not any(s in k for s in skip)}
+    for _ in range(4):
         try:
-            asc.update("ageRatingDeclarations", decl["id"], {key: value})
-        except ApiError:
-            # An unanswered question comes back as null, so its type is a guess: a level or a yes/no.
-            if value == "NONE":
-                asc.update("ageRatingDeclarations", decl["id"], {key: False})
-            elif value is True:
-                print(f"  {key} is not a question on this account, skipped")
-            else:
+            asc.update("ageRatingDeclarations", decl["id"], answers)
+            print(f"  {len(answers)} questions answered")
+            return
+        except ApiError as e:
+            missing = set(re.findall(r"attribute '(\w+)'", str(e))) - set(answers)
+            if not missing:
                 raise
-    print("  answered")
+            answers.update({k: answer(k) for k in missing})
+    raise RuntimeError("age rating still incomplete")
 
 
 def sync_review_details(asc, version_id, notes):
@@ -314,8 +322,12 @@ def sync_app_flags(asc, app_id):
     print("  no third-party content")
 
 
+def all_territories(asc):
+    return [t["id"] for t in asc.all("/v1/territories")]
+
+
 def territories(asc):
-    return [t["id"] for t in asc.all("/v1/territories") if t["id"] not in EXCLUDED_TERRITORIES]
+    return [t for t in all_territories(asc) if t not in EXCLUDED_TERRITORIES]
 
 
 def sync_app_price(asc, app_id):
@@ -352,7 +364,7 @@ def sync_app_availability(asc, app_id):
     if existing:
         print("  availability already set")
         return
-    ids = territories(asc)
+    ids = all_territories(asc)
     asc.call("POST", "/v2/appAvailabilities", {
         "data": {"type": "appAvailabilities", "attributes": {"availableInNewTerritories": True},
                  "relationships": {
@@ -360,10 +372,11 @@ def sync_app_availability(asc, app_id):
                      "territoryAvailabilities": {"data": [ref("territoryAvailabilities", f"${{{t}}}") for t in ids]},
                  }},
         "included": [{"type": "territoryAvailabilities", "id": f"${{{t}}}",
-                      "attributes": {"available": True, "releaseDate": None, "preOrderEnabled": False},
+                      "attributes": {"available": t not in EXCLUDED_TERRITORIES, "releaseDate": None,
+                                     "preOrderEnabled": False},
                       "relationships": {"territory": {"data": ref("territories", t)}}} for t in ids],
     })
-    print(f"  {len(ids)} countries and regions")
+    print(f"  {len(ids) - len(EXCLUDED_TERRITORIES)} countries and regions")
 
 
 # ---------- products ----------
