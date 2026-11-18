@@ -370,7 +370,8 @@
  "Alcohol": "Alkohol",
  "Not sure": "Osäker",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell läser din vikt från Apple Hälsa så att du slipper skriva in den två gånger. Den delas aldrig."
+  "NSHealthShareUsageDescription": "Dawnwell läser din vikt från Apple Hälsa så att du slipper skriva in den två gånger. Den delas aldrig.",
+  "NSHealthUpdateUsageDescription": "Dawnwell läser bara din vikt från Apple Hälsa. Appen skriver aldrig något till Apple Hälsa."
  },
  "Lifetime": "Livstid",
  "%@ once": "%@ en gång",

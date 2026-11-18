@@ -370,7 +370,8 @@
  "Alcohol": "Alcohol",
  "Not sure": "No estoy seguro",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell lee tu peso de Apple Salud para que no tengas que escribirlo dos veces. Nunca lo comparte."
+  "NSHealthShareUsageDescription": "Dawnwell lee tu peso de Apple Salud para que no tengas que escribirlo dos veces. Nunca lo comparte.",
+  "NSHealthUpdateUsageDescription": "Dawnwell solo lee tu peso de Apple Health. Nunca escribe nada en Apple Health."
  },
  "Lifetime": "De por vida",
  "%@ once": "%@ un solo pago",

@@ -370,7 +370,8 @@
  "Alcohol": "Alkoholi",
  "Not sure": "En ole varma",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell lukee painosi Apple Terveydestä, jotta sinun ei tarvitse kirjoittaa sitä kahdesti. Sitä ei koskaan jaeta."
+  "NSHealthShareUsageDescription": "Dawnwell lukee painosi Apple Terveydestä, jotta sinun ei tarvitse kirjoittaa sitä kahdesti. Sitä ei koskaan jaeta.",
+  "NSHealthUpdateUsageDescription": "Dawnwell lukee vain painosi Apple Terveydestä. Se ei koskaan kirjoita mitään Apple Terveyteen."
  },
  "Lifetime": "Elinikäinen",
  "%@ once": "%@ kertamaksu",

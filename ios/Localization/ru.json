@@ -388,7 +388,8 @@
  "Alcohol": "Алкоголь",
  "Not sure": "Не уверен(а)",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell берёт ваш вес из Apple Здоровья, чтобы не вводить его дважды. Он никуда не передаётся."
+  "NSHealthShareUsageDescription": "Dawnwell берёт ваш вес из Apple Здоровья, чтобы не вводить его дважды. Он никуда не передаётся.",
+  "NSHealthUpdateUsageDescription": "Dawnwell только читает ваш вес из Apple Здоровья. Приложение ничего туда не записывает."
  },
  "Lifetime": "Навсегда",
  "%@ once": "%@ разово",

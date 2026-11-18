@@ -361,7 +361,8 @@
  "Alcohol": "饮酒",
  "Not sure": "不确定",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell 从 Apple“健康”读取你的体重，省得你重复输入。它绝不会被分享。"
+  "NSHealthShareUsageDescription": "Dawnwell 从 Apple“健康”读取你的体重，省得你重复输入。它绝不会被分享。",
+  "NSHealthUpdateUsageDescription": "Dawnwell 只从“健康”App 读取你的体重，从不向“健康”App 写入任何数据。"
  },
  "Lifetime": "终身",
  "%@ once": "%@ 一次性",

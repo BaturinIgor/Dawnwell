@@ -370,7 +370,8 @@
  "Alcohol": "Alcool",
  "Not sure": "Je ne sais pas",
  "_InfoPlist": {
-  "NSHealthShareUsageDescription": "Dawnwell lit votre poids dans Apple Santé pour que vous n’ayez pas à le saisir deux fois. Il n’est jamais partagé."
+  "NSHealthShareUsageDescription": "Dawnwell lit votre poids dans Apple Santé pour que vous n’ayez pas à le saisir deux fois. Il n’est jamais partagé.",
+  "NSHealthUpdateUsageDescription": "Dawnwell lit seulement votre poids dans Apple Santé. Il n’écrit jamais rien dans Apple Santé."
  },
  "Lifetime": "À vie",
  "%@ once": "%@ une seule fois",
