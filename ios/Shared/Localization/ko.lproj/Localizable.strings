@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "알약 후 너무 일찍 먹음";
 "Alcohol" = "술";
 "Not sure" = "잘 모르겠음";
+"Lifetime" = "평생 이용";
+"%@ once" = "%@ 1회 결제";
+"Buy once for %@" = "%@에 한 번 구매";
+"One payment. No subscription to renew." = "한 번만 결제합니다. 갱신되는 구독이 없습니다.";

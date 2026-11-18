@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "Tabletten sonra çok erken yedim";
 "Alcohol" = "Alkol";
 "Not sure" = "Emin değilim";
+"Lifetime" = "Ömür boyu";
+"%@ once" = "Tek seferlik %@";
+"Buy once for %@" = "%@ karşılığında bir kez satın al";
+"One payment. No subscription to renew." = "Tek ödeme. Yenilenecek abonelik yok.";

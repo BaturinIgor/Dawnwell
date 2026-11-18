@@ -11,7 +11,7 @@ final class PlusStore {
     private(set) var products: [Product] = []
     private(set) var isPlus = false
     private(set) var loadFailed = false
-    /// Whether this Apple ID can still get the free week. Both plans share one group, so one answer covers both.
+    /// Whether this Apple ID can still get the free week. Both subscriptions share one group, so one answer covers both.
     private(set) var trialEligible = false
     private var updates: Task<Void, Never>?
 
@@ -26,12 +26,15 @@ final class PlusStore {
 
     var monthly: Product? { products.first { $0.id == Plus.monthlyID } }
     var yearly: Product? { products.first { $0.id == Plus.yearlyID } }
+    var lifetime: Product? { products.first { $0.id == Plus.lifetimeID } }
+
+    func product(for plan: Plus.Plan) -> Product? { products.first { $0.id == plan.productID } }
 
     func load() async {
         do {
             products = try await Product.products(for: Plus.productIDs).sorted { $0.price < $1.price }
             loadFailed = false
-            trialEligible = await products.first?.subscription?.isEligibleForIntroOffer ?? false
+            trialEligible = await products.first { $0.subscription != nil }?.subscription?.isEligibleForIntroOffer ?? false
         } catch {
             loadFailed = true
         }

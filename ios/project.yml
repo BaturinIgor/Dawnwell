@@ -92,6 +92,8 @@ schemes:
       targets:
         Dawnwell: all
         DawnwellUITests: [test]
+    run:
+      storeKitConfiguration: StoreKit/Dawnwell.storekit
     test:
       targets:
         - DawnwellUITests

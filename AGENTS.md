@@ -17,3 +17,9 @@ Dawnwell is a native iOS app in SwiftUI (iOS 17+). The project lives in `ios/` a
 - Translations live in `ios/Localization/<lang>.json`. Add the English key to `en.json` and every other file, then run `python3 ios/scripts/localize.py` to write the `.strings`, `.stringsdict` and `InfoPlist.strings` files. Never edit the generated files.
 - Counts that change the word ("1 tablet", "3 tablets") are plural keys: `{"one": "…", "other": "…"}`, with `few` and `many` for Polish.
 - `ios/scripts/extract_strings.py --check` lists any text in the code that has no translation. CI runs both checks.
+
+## App Store listing
+
+- Store texts per language are in `ios/AppStore/listing/<App Store locale>.json`, products and prices in `ios/AppStore/products.json`. `python3 ios/scripts/appstore.py --check` checks Apple's length limits; CI runs it.
+- The **App Store listing** workflow fills App Store Connect from these files and takes screenshots in every language (`ScreenshotTests` finds screens by tab position and accessibility identifier, so keep `medication` and `plus-pdf`).
+- No prices in descriptions: they differ by country. The app never gives dosing advice, in the listing too.

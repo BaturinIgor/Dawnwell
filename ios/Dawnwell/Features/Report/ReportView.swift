@@ -82,6 +82,7 @@ struct ReportView: View {
                         Button { showPaywall = true } label: {
                             Label("Share as PDF · Plus", systemImage: "lock.fill")
                         }
+                        .accessibilityIdentifier("plus-pdf")
                         .buttonStyle(FilledButtonStyle(kind: .secondary))
                     }
                     Text("Send it to yourself or your care team before the visit.")

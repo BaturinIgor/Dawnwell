@@ -1,6 +1,10 @@
 # App Store listing (1.0)
 
-Text to paste into App Store Connect. English (U.S.).
+The texts App Store Connect gets live in `ios/AppStore/` (one file per language in `listing/`, products and their prices in `products.json`, review notes in `review-notes.txt`). The **App Store listing** workflow (Actions → App Store listing → Run workflow) fills App Store Connect from them, with screenshots taken in every language. Start with `check`, then `everything`.
+
+What the workflow cannot do, done by hand once: App Privacy ("Data Not Collected"), the App Review contact name and phone, and Submit for Review.
+
+The English text below is kept for reading; `ios/AppStore/listing/en-US.json` wins if they differ.
 
 ## Name and subtitle
 
@@ -44,7 +48,7 @@ YOUR DATA STAYS YOURS
 Dawnwell only reminds and records. It never suggests or changes a dose. Medication details come from your prescription label. Always follow your prescriber's instructions.
 
 DAWNWELL PLUS
-$4.99 a month or $29.99 a year, with a free first week. Plus adds the PDF report. Payment is charged to your Apple ID. The subscription renews automatically unless cancelled at least 24 hours before the end of the period. Manage or cancel it in Settings.
+$4.99 a month or $29.99 a year, with a free first week, or $59.99 once for lifetime access. Plus adds the PDF report. Payment is charged to your Apple ID. The subscription renews automatically unless cancelled at least 24 hours before the end of the period. Manage or cancel it in Settings.
 
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://baturinigor.github.io/Dawnwell/privacy

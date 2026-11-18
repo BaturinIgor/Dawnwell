@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "Spiste for tidlig etter tabletten";
 "Alcohol" = "Alkohol";
 "Not sure" = "Usikker";
+"Lifetime" = "Livstid";
+"%@ once" = "%@ én gang";
+"Buy once for %@" = "Kjøp én gang for %@";
+"One payment. No subscription to renew." = "Én betaling. Ingen abonnement som fornyes.";

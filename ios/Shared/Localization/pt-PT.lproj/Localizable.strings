@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "Comi demasiado cedo após o comprimido";
 "Alcohol" = "Álcool";
 "Not sure" = "Não sei";
+"Lifetime" = "Vitalício";
+"%@ once" = "%@ uma vez";
+"Buy once for %@" = "Comprar uma vez por %@";
+"One payment. No subscription to renew." = "Um único pagamento. Sem subscrição para renovar.";

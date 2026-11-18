@@ -106,6 +106,7 @@ struct TodayView: View {
                     .background(Palette.card, in: Circle())
             }
             .accessibilityLabel("Medication and reminders")
+            .accessibilityIdentifier("medication")
         }
     }
 

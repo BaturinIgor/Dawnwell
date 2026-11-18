@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "服用後すぐに食べた";
 "Alcohol" = "アルコール";
 "Not sure" = "わからない";
+"Lifetime" = "買い切り";
+"%@ once" = "%@（1回のみ）";
+"Buy once for %@" = "%@で買い切り購入";
+"One payment. No subscription to renew." = "お支払いは1回のみ。更新されるサブスクリプションはありません。";

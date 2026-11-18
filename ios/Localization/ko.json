@@ -363,5 +363,9 @@
  "Not sure": "잘 모르겠음",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell은 체중을 두 번 입력하지 않도록 Apple 건강 앱에서 읽어 와요. 절대 공유하지 않아요."
- }
+ },
+ "Lifetime": "평생 이용",
+ "%@ once": "%@ 1회 결제",
+ "Buy once for %@": "%@에 한 번 구매",
+ "One payment. No subscription to renew.": "한 번만 결제합니다. 갱신되는 구독이 없습니다."
 }

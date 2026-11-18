@@ -372,5 +372,9 @@
  "Not sure": "Emin değilim",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell kilonuzu iki kez yazmak zorunda kalmamanız için Apple Sağlık'tan okur. Asla paylaşmaz."
- }
+ },
+ "Lifetime": "Ömür boyu",
+ "%@ once": "Tek seferlik %@",
+ "Buy once for %@": "%@ karşılığında bir kez satın al",
+ "One payment. No subscription to renew.": "Tek ödeme. Yenilenecek abonelik yok."
 }

@@ -1,7 +1,17 @@
 {
   "identifier" : "4A1F2C3D",
   "nonRenewingSubscriptions" : [],
-  "products" : [],
+  "products" : [
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : false,
+      "internalID" : "6700000003",
+      "localizations" : [ { "description" : "PDF visit reports and insights, for good", "displayName" : "Dawnwell Plus Lifetime", "locale" : "en_US" } ],
+      "productID" : "com.dawnwell.app.plus.lifetime",
+      "referenceName" : "Plus Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
   "settings" : {
     "_applicationInternalID" : "6700000000",
     "_developerTeamID" : "",

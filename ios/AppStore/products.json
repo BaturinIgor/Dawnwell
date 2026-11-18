@@ -1,0 +1,312 @@
+{
+ "group": {
+  "referenceName": "Dawnwell Plus",
+  "displayName": "Dawnwell Plus"
+ },
+ "subscriptions": [
+  {
+   "productId": "com.dawnwell.app.plus.yearly",
+   "referenceName": "Plus Yearly",
+   "period": "ONE_YEAR",
+   "groupLevel": 1,
+   "usd": "29.99",
+   "freeTrial": "ONE_WEEK",
+   "localizations": {
+    "en-US": {
+     "name": "Plus Yearly",
+     "description": "PDF visit reports and food insights"
+    },
+    "en-GB": {
+     "name": "Plus Yearly",
+     "description": "PDF visit reports and food insights"
+    },
+    "en-AU": {
+     "name": "Plus Yearly",
+     "description": "PDF visit reports and food insights"
+    },
+    "en-CA": {
+     "name": "Plus Yearly",
+     "description": "PDF visit reports and food insights"
+    },
+    "de-DE": {
+     "name": "Plus jährlich",
+     "description": "PDF-Arztberichte und Ernährungs-Einblicke"
+    },
+    "fr-FR": {
+     "name": "Plus annuel",
+     "description": "Rapports PDF et analyses alimentaires"
+    },
+    "fr-CA": {
+     "name": "Plus annuel",
+     "description": "Rapports PDF et analyses alimentaires"
+    },
+    "es-ES": {
+     "name": "Plus anual",
+     "description": "Informes PDF y análisis de comidas"
+    },
+    "es-MX": {
+     "name": "Plus anual",
+     "description": "Reportes PDF y análisis de comidas"
+    },
+    "it": {
+     "name": "Plus annuale",
+     "description": "Report PDF e analisi dei pasti"
+    },
+    "pt-BR": {
+     "name": "Plus anual",
+     "description": "Relatórios em PDF e análises de refeições"
+    },
+    "pt-PT": {
+     "name": "Plus anual",
+     "description": "Relatórios em PDF e análises de refeições"
+    },
+    "nl-NL": {
+     "name": "Plus jaarlijks",
+     "description": "PDF-rapporten en voedingsinzichten"
+    },
+    "sv": {
+     "name": "Plus årsvis",
+     "description": "PDF-rapporter och matinsikter"
+    },
+    "da": {
+     "name": "Plus årlig",
+     "description": "PDF-rapporter og madindsigt"
+    },
+    "no": {
+     "name": "Plus årlig",
+     "description": "PDF-rapporter og matinnsikt"
+    },
+    "fi": {
+     "name": "Plus vuosi",
+     "description": "PDF-raportit ja ruokaoivallukset"
+    },
+    "pl": {
+     "name": "Plus roczny",
+     "description": "Raporty PDF i analiza posiłków"
+    },
+    "tr": {
+     "name": "Plus yıllık",
+     "description": "PDF raporları ve beslenme içgörüleri"
+    },
+    "ja": {
+     "name": "Plus 年額",
+     "description": "受診用PDFレポートと食事の分析"
+    },
+    "ko": {
+     "name": "Plus 연간",
+     "description": "진료용 PDF 보고서와 식단 분석"
+    },
+    "zh-Hans": {
+     "name": "Plus 年度",
+     "description": "就诊PDF报告与饮食分析"
+    },
+    "zh-Hant": {
+     "name": "Plus 年繳",
+     "description": "看診PDF報告與飲食分析"
+    }
+   }
+  },
+  {
+   "productId": "com.dawnwell.app.plus.monthly",
+   "referenceName": "Plus Monthly",
+   "period": "ONE_MONTH",
+   "groupLevel": 2,
+   "usd": "4.99",
+   "freeTrial": "ONE_WEEK",
+   "localizations": {
+    "en-US": {
+     "name": "Plus Monthly",
+     "description": "PDF visit reports and food insights"
+    },
+    "en-GB": {
+     "name": "Plus Monthly",
+     "description": "PDF visit reports and food insights"
+    },
+    "en-AU": {
+     "name": "Plus Monthly",
+     "description": "PDF visit reports and food insights"
+    },
+    "en-CA": {
+     "name": "Plus Monthly",
+     "description": "PDF visit reports and food insights"
+    },
+    "de-DE": {
+     "name": "Plus monatlich",
+     "description": "PDF-Arztberichte und Ernährungs-Einblicke"
+    },
+    "fr-FR": {
+     "name": "Plus mensuel",
+     "description": "Rapports PDF et analyses alimentaires"
+    },
+    "fr-CA": {
+     "name": "Plus mensuel",
+     "description": "Rapports PDF et analyses alimentaires"
+    },
+    "es-ES": {
+     "name": "Plus mensual",
+     "description": "Informes PDF y análisis de comidas"
+    },
+    "es-MX": {
+     "name": "Plus mensual",
+     "description": "Reportes PDF y análisis de comidas"
+    },
+    "it": {
+     "name": "Plus mensile",
+     "description": "Report PDF e analisi dei pasti"
+    },
+    "pt-BR": {
+     "name": "Plus mensal",
+     "description": "Relatórios em PDF e análises de refeições"
+    },
+    "pt-PT": {
+     "name": "Plus mensal",
+     "description": "Relatórios em PDF e análises de refeições"
+    },
+    "nl-NL": {
+     "name": "Plus maandelijks",
+     "description": "PDF-rapporten en voedingsinzichten"
+    },
+    "sv": {
+     "name": "Plus månadsvis",
+     "description": "PDF-rapporter och matinsikter"
+    },
+    "da": {
+     "name": "Plus månedlig",
+     "description": "PDF-rapporter og madindsigt"
+    },
+    "no": {
+     "name": "Plus månedlig",
+     "description": "PDF-rapporter og matinnsikt"
+    },
+    "fi": {
+     "name": "Plus kuukausi",
+     "description": "PDF-raportit ja ruokaoivallukset"
+    },
+    "pl": {
+     "name": "Plus miesięczny",
+     "description": "Raporty PDF i analiza posiłków"
+    },
+    "tr": {
+     "name": "Plus aylık",
+     "description": "PDF raporları ve beslenme içgörüleri"
+    },
+    "ja": {
+     "name": "Plus 月額",
+     "description": "受診用PDFレポートと食事の分析"
+    },
+    "ko": {
+     "name": "Plus 월간",
+     "description": "진료용 PDF 보고서와 식단 분석"
+    },
+    "zh-Hans": {
+     "name": "Plus 月度",
+     "description": "就诊PDF报告与饮食分析"
+    },
+    "zh-Hant": {
+     "name": "Plus 月繳",
+     "description": "看診PDF報告與飲食分析"
+    }
+   }
+  }
+ ],
+ "lifetime": {
+  "productId": "com.dawnwell.app.plus.lifetime",
+  "referenceName": "Plus Lifetime",
+  "usd": "59.99",
+  "localizations": {
+   "en-US": {
+    "name": "Plus Lifetime",
+    "description": "PDF visit reports and food insights"
+   },
+   "en-GB": {
+    "name": "Plus Lifetime",
+    "description": "PDF visit reports and food insights"
+   },
+   "en-AU": {
+    "name": "Plus Lifetime",
+    "description": "PDF visit reports and food insights"
+   },
+   "en-CA": {
+    "name": "Plus Lifetime",
+    "description": "PDF visit reports and food insights"
+   },
+   "de-DE": {
+    "name": "Plus lebenslang",
+    "description": "PDF-Arztberichte und Ernährungs-Einblicke"
+   },
+   "fr-FR": {
+    "name": "Plus à vie",
+    "description": "Rapports PDF et analyses alimentaires"
+   },
+   "fr-CA": {
+    "name": "Plus à vie",
+    "description": "Rapports PDF et analyses alimentaires"
+   },
+   "es-ES": {
+    "name": "Plus de por vida",
+    "description": "Informes PDF y análisis de comidas"
+   },
+   "es-MX": {
+    "name": "Plus de por vida",
+    "description": "Reportes PDF y análisis de comidas"
+   },
+   "it": {
+    "name": "Plus a vita",
+    "description": "Report PDF e analisi dei pasti"
+   },
+   "pt-BR": {
+    "name": "Plus vitalício",
+    "description": "Relatórios em PDF e análises de refeições"
+   },
+   "pt-PT": {
+    "name": "Plus vitalício",
+    "description": "Relatórios em PDF e análises de refeições"
+   },
+   "nl-NL": {
+    "name": "Plus levenslang",
+    "description": "PDF-rapporten en voedingsinzichten"
+   },
+   "sv": {
+    "name": "Plus livstid",
+    "description": "PDF-rapporter och matinsikter"
+   },
+   "da": {
+    "name": "Plus livstid",
+    "description": "PDF-rapporter og madindsigt"
+   },
+   "no": {
+    "name": "Plus livstid",
+    "description": "PDF-rapporter og matinnsikt"
+   },
+   "fi": {
+    "name": "Plus elinikäinen",
+    "description": "PDF-raportit ja ruokaoivallukset"
+   },
+   "pl": {
+    "name": "Plus dożywotnio",
+    "description": "Raporty PDF i analiza posiłków"
+   },
+   "tr": {
+    "name": "Plus ömür boyu",
+    "description": "PDF raporları ve beslenme içgörüleri"
+   },
+   "ja": {
+    "name": "Plus 買い切り",
+    "description": "受診用PDFレポートと食事の分析"
+   },
+   "ko": {
+    "name": "Plus 평생 이용",
+    "description": "진료용 PDF 보고서와 식단 분석"
+   },
+   "zh-Hans": {
+    "name": "Plus 终身",
+    "description": "就诊PDF报告与饮食分析"
+   },
+   "zh-Hant": {
+    "name": "Plus 終身",
+    "description": "看診PDF報告與飲食分析"
+   }
+  }
+ },
+ "reviewNote": "Dawnwell Plus unlocks the PDF visit report (Report tab > Share as PDF) and food insights. The paywall opens from Report > Share as PDF · Plus. Everything else in the app is free."
+}

@@ -372,5 +372,9 @@
  "Not sure": "En ole varma",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell lukee painosi Apple Terveydestä, jotta sinun ei tarvitse kirjoittaa sitä kahdesti. Sitä ei koskaan jaeta."
- }
+ },
+ "Lifetime": "Elinikäinen",
+ "%@ once": "%@ kertamaksu",
+ "Buy once for %@": "Osta kerralla hintaan %@",
+ "One payment. No subscription to renew.": "Yksi maksu. Ei uusiutuvaa tilausta."
 }

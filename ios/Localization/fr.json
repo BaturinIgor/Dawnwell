@@ -372,5 +372,9 @@
  "Not sure": "Je ne sais pas",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell lit votre poids dans Apple Santé pour que vous n’ayez pas à le saisir deux fois. Il n’est jamais partagé."
- }
+ },
+ "Lifetime": "À vie",
+ "%@ once": "%@ une seule fois",
+ "Buy once for %@": "Acheter une fois pour %@",
+ "One payment. No subscription to renew.": "Un seul paiement. Aucun abonnement à renouveler."
 }
