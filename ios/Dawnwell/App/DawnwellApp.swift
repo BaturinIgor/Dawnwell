@@ -6,7 +6,14 @@ struct DawnwellApp: App {
     private let container: ModelContainer?
 
     init() {
-        container = try? Persistence.makeContainer(inMemory: Persistence.isRunningTests)
+        if Persistence.isRunningTests {
+            container = try? Persistence.makeContainer(inMemory: true)
+        } else if let (c, syncing) = try? Persistence.openAppStore() {
+            container = c
+            CloudStatus.storeSyncs = syncing
+        } else {
+            container = nil
+        }
     }
 
     var body: some Scene {

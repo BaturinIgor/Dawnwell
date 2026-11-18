@@ -13,6 +13,7 @@ struct DataView: View {
     @State private var importing = false
     @State private var pending: Pending?
     @State private var message: String?
+    @State private var cloudAccount: CloudStatus.Account = .unknown
 
     private struct Pending: Identifiable {
         let id = UUID()
@@ -30,7 +31,7 @@ struct DataView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("On this iPhone").font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
                     Text(summary).font(.system(size: 17, weight: .heavy)).foregroundStyle(Palette.ink)
-                    Text("Your logs stay on this phone. Dawnwell has no server and never sees them.")
+                    Text(CloudStatus.message(storeSyncs: CloudStatus.storeSyncs, account: cloudAccount))
                         .font(.footnote).foregroundStyle(Palette.muted)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -87,6 +88,7 @@ struct DataView: View {
         .navigationTitle("Your data")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: refresh)
+        .task { cloudAccount = await CloudStatus.account() }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
             switch result {
             case .success(let url): readFile(url)
