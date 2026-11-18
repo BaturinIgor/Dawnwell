@@ -31,6 +31,8 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_PREVIEWS: YES
         INFOPLIST_KEY_NSSupportsLiveActivities: YES
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "Dawnwell reads your weight from Apple Health so you don't have to type it twice. It never shares it."
+        CODE_SIGN_ENTITLEMENTS: Dawnwell/Dawnwell.entitlements
   DawnwellWidgets:
     type: app-extension
     platform: iOS
