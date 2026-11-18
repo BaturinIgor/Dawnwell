@@ -9,6 +9,9 @@ struct ReportView: View {
     @Query private var foods: [FoodEntry]
     @Query private var symptoms: [SymptomEntry]
     @Query private var weights: [WeightEntry]
+    @State private var store = PlusStore.shared
+    @State private var showPaywall = false
+    @State private var pdfURL: URL?
 
     var body: some View {
         let summary = VisitSummary.make(from: Repository(context: context).snapshot())
@@ -69,6 +72,15 @@ struct ReportView: View {
                         Text("Share summary")
                     }
                     .buttonStyle(FilledButtonStyle())
+                    if store.isPlus, let url = pdfURL {
+                        ShareLink(item: url) { Label("Share as PDF", systemImage: "doc.richtext") }
+                            .buttonStyle(FilledButtonStyle(kind: .secondary))
+                    } else if !store.isPlus {
+                        Button { showPaywall = true } label: {
+                            Label("Share as PDF · Plus", systemImage: "lock.fill")
+                        }
+                        .buttonStyle(FilledButtonStyle(kind: .secondary))
+                    }
                     Text("Send it to yourself or your care team before the visit.")
                         .font(.footnote)
                         .foregroundStyle(Palette.muted)
@@ -78,6 +90,11 @@ struct ReportView: View {
             }
             .background(Palette.bg)
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(isPresented: $showPaywall) { PaywallView() }
+            .task(id: summary.text + String(store.isPlus)) {
+                await store.refresh()
+                pdfURL = store.isPlus ? try? ReportPDF.file(summary) : nil
+            }
         }
     }
 
