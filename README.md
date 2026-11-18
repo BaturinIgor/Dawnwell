@@ -64,3 +64,12 @@ design/                      app icon sources (SVG)
 
 - Identifiers: iCloud container `iCloud.com.dawnwell.app`; App ID `com.dawnwell.app` with iCloud (CloudKit), Push Notifications and HealthKit; App ID `com.dawnwell.app.widgets`.
 - App Store Connect: subscription group with `com.dawnwell.app.plus.monthly` and `com.dawnwell.app.plus.yearly`.
+
+## First iCloud setup (once, no Mac needed)
+
+iCloud syncs only record types that exist in the container's Production schema.
+
+1. Actions → TestFlight → Run workflow with **iCloud environment: Development**. This build creates the record types on first launch (`CloudSchema`), in a throwaway store.
+2. Install it from TestFlight, signed in to iCloud, open it once on Wi-Fi.
+3. In [CloudKit Console](https://icloud.developer.apple.com/) → `iCloud.com.dawnwell.app` → Schema, check the `CD_` record types are there, then **Deploy Schema Changes** to Production.
+4. From then on, run the workflow with **Production** (the default). Never submit a Development build for review.

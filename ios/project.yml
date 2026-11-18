@@ -36,6 +36,8 @@ targets:
         INFOPLIST_KEY_NSHealthShareUsageDescription: "Dawnwell reads your weight from Apple Health so you don't have to type it twice. It never shares it."
         CODE_SIGN_ENTITLEMENTS: Dawnwell/Dawnwell.entitlements
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: "NO"
+        # Set to CLOUDKIT_SCHEMA_INIT only by the TestFlight workflow's Development option.
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) $(DAWNWELL_EXTRA_FLAGS)"
   DawnwellWidgets:
     type: app-extension
     platform: iOS
@@ -61,6 +63,18 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.dawnwell.app.tests
+  DawnwellUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - DawnwellUITests
+    dependencies:
+      - target: Dawnwell
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.dawnwell.app.uitests
+        TEST_TARGET_NAME: Dawnwell
 schemes:
   Dawnwell:
     build:
@@ -73,3 +87,11 @@ schemes:
       gatherCoverageData: true
       targets:
         - DawnwellTests
+  Screenshots:
+    build:
+      targets:
+        Dawnwell: all
+        DawnwellUITests: [test]
+    test:
+      targets:
+        - DawnwellUITests
