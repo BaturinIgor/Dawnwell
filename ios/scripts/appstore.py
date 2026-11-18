@@ -270,7 +270,7 @@ def sync_categories(asc, info_id):
 # Yes/no questions in Apple's age rating; every other question is a level where NONE means "none".
 AGE_RATING_YES_NO = {"advertising", "ageAssurance", "gambling", "healthOrWellnessTopics", "lootBox",
                      "messagingAndChat", "parentalControls", "unrestrictedWebAccess", "userGeneratedContent",
-                     "seventeenPlus"}
+                     "seventeenPlus", "socialMedia", "socialMediaAgeRestricted"}
 
 
 def sync_age_rating(asc, info_id):
@@ -295,9 +295,14 @@ def sync_age_rating(asc, info_id):
             print(f"  {len(answers)} questions answered")
             return
         except ApiError as e:
-            missing = set(re.findall(r"attribute '(\w+)'", str(e))) - set(answers)
-            if not missing:
+            text = str(e)
+            # A question whose type was guessed wrong: Apple names the type it expects.
+            flipped = {k: (False if t == "BOOLEAN" else "NONE")
+                       for k, t in re.findall(r"attribute '(\w+)'\. Expected an? (\w+)", text) if k in answers}
+            missing = set(re.findall(r"value for the attribute '(\w+)'", text)) - set(answers)
+            if not flipped and not missing:
                 raise
+            answers.update(flipped)
             answers.update({k: answer(k) for k in missing})
     raise RuntimeError("age rating still incomplete")
 
