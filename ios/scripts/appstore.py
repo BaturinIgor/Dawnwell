@@ -259,6 +259,15 @@ def sync_version_texts(asc, version_id, listing):
             print(f"  {loc}: added")
 
 
+COPYRIGHT = "2026 Igor Baturin"
+
+
+def sync_copyright(asc, version_id):
+    current = asc.get(f"/v1/appStoreVersions/{version_id}").get("data", {}).get("attributes", {}).get("copyright")
+    if current != COPYRIGHT:
+        asc.update("appStoreVersions", version_id, {"copyright": COPYRIGHT})
+
+
 def sync_categories(asc, info_id):
     asc.update("appInfos", info_id, relationships={
         "primaryCategory": ref("appCategories", "HEALTH_AND_FITNESS"),
@@ -639,6 +648,7 @@ def main():
         run.step("Name, subtitle and privacy link", sync_app_info_texts, asc, info["id"], listing)
         if version:
             run.step("Description, keywords, promo text, support link", sync_version_texts, asc, version["id"], listing)
+            run.step("Copyright", sync_copyright, asc, version["id"])
             run.step("Notes for App Review", sync_review_details, asc, version["id"],
                      (ROOT / "review-notes.txt").read_text().strip())
         run.step("Categories", sync_categories, asc, info["id"])
