@@ -17,7 +17,7 @@ struct RootView: View {
         .background(Palette.bg)
         .onChange(of: scenePhase, initial: true) { _, phase in
             // One local copy a day, taken when the app comes to the front.
-            guard !Persistence.isRunningTests else { return }
+            guard !Persistence.isSandboxed else { return }
             if phase == .active {
                 DataSafety.takeDailyCopy(repo: Repository(context: context), copies: .standard)
                 WaitActivityController.tidy()
@@ -28,7 +28,7 @@ struct RootView: View {
         }
         // Any saved change (tablet taken, food logged, settings) can change what to remind about.
         .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave)) { _ in
-            guard !Persistence.isRunningTests else { return }
+            guard !Persistence.isSandboxed else { return }
             syncReminders()
         }
     }
