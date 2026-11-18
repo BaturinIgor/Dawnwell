@@ -65,7 +65,7 @@ jobs:
       - name: Screenshots in every language
         run: |
           set -o pipefail
-          for pair in en:en_US de:de_DE fr:fr_FR es:es_ES it:it_IT pt-BR:pt_BR pt-PT:pt_PT nl:nl_NL sv:sv_SE da:da_DK nb:nb_NO fi:fi_FI pl:pl_PL tr:tr_TR ja:ja_JP ko:ko_KR zh-Hans:zh_CN zh-Hant:zh_TW; do
+          for pair in en:en_US de:de_DE fr:fr_FR es:es_ES it:it_IT pt-BR:pt_BR pt-PT:pt_PT nl:nl_NL sv:sv_SE da:da_DK nb:nb_NO fi:fi_FI pl:pl_PL ru:ru_RU tr:tr_TR ja:ja_JP ko:ko_KR zh-Hans:zh_CN zh-Hant:zh_TW; do
             lang="${pair%%:*}"; locale="${pair#*:}"
             dir="$RUNNER_TEMP/shots/$lang"; mkdir -p "$dir"
             echo "::group::$lang"

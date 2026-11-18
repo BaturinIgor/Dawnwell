@@ -1,11 +1,11 @@
 import XCTest
 @testable import Dawnwell
 
-/// The app ships in 18 languages. These checks run against the built app, so they also catch
+/// The app ships in 19 languages. These checks run against the built app, so they also catch
 /// a language folder that did not make it into the bundle.
 final class LocalizationTests: XCTestCase {
     static let languages = ["en", "de", "fr", "es", "it", "pt-BR", "pt-PT", "nl", "sv", "da", "nb", "fi",
-                            "pl", "tr", "ja", "ko", "zh-Hans", "zh-Hant"]
+                            "pl", "ru", "tr", "ja", "ko", "zh-Hans", "zh-Hant"]
 
     private func bundle(_ lang: String) throws -> Bundle {
         let path = try XCTUnwrap(Bundle.main.path(forResource: lang, ofType: "lproj"), "\(lang).lproj is not in the app")
@@ -72,6 +72,10 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(try format("pl", key, 1), "Została 1 tabletka. Czas na kolejną receptę.")
         XCTAssertEqual(try format("pl", key, 3), "Zostały 3 tabletki. Czas na kolejną receptę.")
         XCTAssertEqual(try format("pl", key, 5), "Zostało 5 tabletek. Czas na kolejną receptę.")
+        XCTAssertEqual(try format("ru", key, 1), "Осталась 1 таблетка. Пора за новым рецептом.")
+        XCTAssertEqual(try format("ru", key, 3), "Осталось 3 таблетки. Пора за новым рецептом.")
+        XCTAssertEqual(try format("ru", key, 5), "Осталось 5 таблеток. Пора за новым рецептом.")
+        XCTAssertEqual(try format("ru", key, 21), "Осталась 21 таблетка. Пора за новым рецептом.")
         XCTAssertEqual(try format("ja", key, 2), "残り2錠です。補充を依頼しましょう。")
     }
 
