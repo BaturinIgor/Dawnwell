@@ -14,7 +14,7 @@ import { useNow } from '@/hooks/use-now';
 const timestamp = () => Date.now();
 
 export default function Today() {
-  const { data, update, updateDay } = useStore();
+  const { data, setAside, update, updateDay } = useStore();
   const s = data.settings;
   const key = dayKey();
   const day = data.days[key] ?? emptyDay();
@@ -92,6 +92,15 @@ export default function Today() {
       </Row>
 
       <WeekStrip />
+
+      {setAside > 0 ? (
+        <Pressable accessibilityRole="button" onPress={() => router.push('/data')} style={styles.refill}>
+          <Text style={{ color: C.warmInk, fontSize: 14, fontWeight: '700', flex: 1 }}>
+            Some saved records couldn&apos;t be read. Nothing was deleted. Tap to check.
+          </Text>
+          <Text style={{ color: C.warmInk, fontSize: 18 }}>›</Text>
+        </Pressable>
+      ) : null}
 
       {s.reminders.refill && s.tabletsLeft !== null && s.tabletsLeft <= REFILL_AT ? (
         <Pressable accessibilityRole="button" onPress={() => router.push('/medication')} style={styles.refill}>

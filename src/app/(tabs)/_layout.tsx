@@ -2,11 +2,14 @@ import { Redirect } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
 import { C } from '@/constants/theme';
+import { StorageProblem } from '@/components/storage-problem';
 import { useStore } from '@/lib/store';
 
 export default function TabsLayout() {
-  const { ready, data } = useStore();
+  const { ready, status, data } = useStore();
   if (!ready) return null;
+  // Never send someone to onboarding when their data exists but can't be opened.
+  if (status === 'failed' || status === 'newer') return <StorageProblem newer={status === 'newer'} />;
   if (!data.settings.onboarded) return <Redirect href="/onboarding" />;
 
   return (

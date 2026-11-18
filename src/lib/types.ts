@@ -53,7 +53,7 @@ export type WeightEntry = { date: string; value: number };
 export type DoseChange = { label: string; from: string };
 
 export type AppData = {
-  version: 1;
+  version: number;
   settings: Settings;
   days: Record<string, DayLog>;
   weights: WeightEntry[];
