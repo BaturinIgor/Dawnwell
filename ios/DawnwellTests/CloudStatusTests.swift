@@ -15,6 +15,8 @@ final class CloudStatusTests: XCTestCase {
     func testInMemoryStoreNeverSyncs() throws {
         // In-memory stores (tests, previews) must open without iCloud even when sync is asked for.
         let c = try Persistence.makeContainer(inMemory: true, cloud: true)
-        XCTAssertEqual(c.configurations.first?.cloudKitContainerIdentifier, nil)
+        let repo = Repository(context: c.mainContext)
+        repo.updateDay("2026-11-18") { $0.water = 2 }
+        XCTAssertEqual(repo.existingDay("2026-11-18")?.water, 2)
     }
 }

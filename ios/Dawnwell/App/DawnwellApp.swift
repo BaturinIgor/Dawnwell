@@ -8,9 +8,9 @@ struct DawnwellApp: App {
     init() {
         if Persistence.isRunningTests {
             container = try? Persistence.makeContainer(inMemory: true)
-        } else if let (c, syncing) = try? Persistence.openAppStore() {
-            container = c
-            CloudStatus.storeSyncs = syncing
+        } else if let opened = try? Persistence.openAppStore() {
+            container = opened.0
+            CloudStatus.storeSyncs = opened.syncing
         } else {
             container = nil
         }
