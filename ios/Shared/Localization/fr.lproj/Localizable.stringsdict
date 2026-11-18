@@ -56,6 +56,24 @@
 			<string>%lld éléments</string>
 		</dict>
 	</dict>
+	<key>%lld patterns found in your logs.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>many</key>
+			<string>%lld tendances trouvées dans vos données.</string>
+			<key>one</key>
+			<string>%lld tendance trouvée dans vos données.</string>
+			<key>other</key>
+			<string>%lld tendances trouvées dans vos données.</string>
+		</dict>
+	</dict>
 	<key>%lld tablets left. Time to ask for a refill.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

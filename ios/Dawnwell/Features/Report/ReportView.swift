@@ -13,23 +13,36 @@ struct ReportView: View {
     @State private var health = HealthWeight.shared
     @State private var showPaywall = false
     @State private var pdfURL: URL?
+    /// 30 days for everyone, 90 with Plus.
+    @State private var period = VisitSummary.span
 
     var body: some View {
-        let summary = VisitSummary.make(from: HealthImport.adding(health.entries, to: Repository(context: context).snapshot()))
+        let days = store.isPlus ? period : VisitSummary.span
+        let summary = VisitSummary.make(from: HealthImport.adding(health.entries, to: Repository(context: context).snapshot()), span: days)
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.gap) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Visit summary").font(.system(size: 28, weight: .heavy))
-                        Text("Last \(VisitSummary.span) days").font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
+                        Text("Last \(summary.span) days").font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
                     }
+                    Picker("Period", selection: Binding(
+                        get: { days },
+                        set: { new in
+                            if new == VisitSummary.plusSpan && !store.isPlus { showPaywall = true } else { period = new }
+                        }
+                    )) {
+                        Text("30 days").tag(VisitSummary.span)
+                        Text("90 days · Plus").tag(VisitSummary.plusSpan)
+                    }
+                    .pickerStyle(.segmented)
                     VStack(alignment: .leading, spacing: 12) {
                         Text(summary.medication).font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
                         Group { if summary.dose.isEmpty { Text("Dose not set") } else { Text(Loc.doseDaily(summary.dose)) } }
                             .font(.system(size: 17, weight: .heavy))
                         Divider()
                         HStack(alignment: .top) {
-                            stat("\(summary.daysTaken)/\(VisitSummary.span)", "Days taken")
+                            stat("\(summary.daysTaken)/\(summary.span)", "Days taken")
                             let unitName = summary.unit.rawValue
                             stat(summary.weightChange.map { "\($0 > 0 ? "+" : "")\(VisitSummary.num($0))" } ?? "–", "Weight, \(unitName)")
                             stat(summary.averageProtein.map { "\($0) g" } ?? "–", "Protein a day")

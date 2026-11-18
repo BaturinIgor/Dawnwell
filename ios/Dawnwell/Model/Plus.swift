@@ -27,12 +27,13 @@ enum Plus {
     static let termsOfUse = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 
     enum Feature: CaseIterable {
-        case pdfReport, insights
+        case pdfReport, insights, longSummary
 
         var title: String {
             switch self {
             case .pdfReport: return String(localized: "Visit report as a PDF")
             case .insights: return String(localized: "Insights about your symptoms and food")
+            case .longSummary: return String(localized: "Visit summary for the last 90 days")
             }
         }
     }
@@ -40,7 +41,8 @@ enum Plus {
     /// What Plus adds, shown on the paywall.
     static var benefits: [String] { [
         String(localized: "A clean PDF report to send or print for each visit"),
-        String(localized: "Insights: which foods line up with your nausea"),
+        String(localized: "Insights: which foods and habits line up with your symptoms"),
+        String(localized: "A visit summary for the last 90 days, not just 30"),
         String(localized: "Support a small, independent app"),
     ] }
 

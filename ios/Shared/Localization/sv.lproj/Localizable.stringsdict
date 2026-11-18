@@ -50,6 +50,22 @@
 			<string>%lld saker</string>
 		</dict>
 	</dict>
+	<key>%lld patterns found in your logs.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld mönster hittat i dina anteckningar.</string>
+			<key>other</key>
+			<string>%lld mönster hittade i dina anteckningar.</string>
+		</dict>
+	</dict>
 	<key>%lld tablets left. Time to ask for a refill.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

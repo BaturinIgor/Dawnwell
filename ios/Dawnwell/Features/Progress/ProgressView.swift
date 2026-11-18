@@ -14,18 +14,23 @@ struct ProgressScreen: View {
     @State private var health = HealthWeight.shared
     @State private var healthOn = HealthWeight.isEnabled
     @State private var healthNote: String?
+    @State private var store = PlusStore.shared
+    @State private var showPaywall = false
     @FocusState private var focused: Bool
 
     private var repo: Repository { Repository(context: context) }
 
     var body: some View {
-        let stats = ProgressStats.make(from: HealthImport.adding(health.entries, to: repo.snapshot()))
+        let snapshot = HealthImport.adding(health.entries, to: repo.snapshot())
+        let stats = ProgressStats.make(from: snapshot)
+        let insights = Insights.make(from: snapshot)
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.gap) {
                     Text("Progress").font(.system(size: 28, weight: .heavy)).foregroundStyle(Palette.ink)
                     weightCard(stats)
                     proteinCard(stats)
+                    insightsCard(insights)
                     tabletCard(stats)
                     noiseCard(stats)
                 }
@@ -34,7 +39,72 @@ struct ProgressScreen: View {
             .scrollDismissesKeyboard(.interactively)
             .background(Palette.bg)
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(isPresented: $showPaywall) { PaywallView() }
         }
+    }
+
+    // MARK: Insights (Plus)
+
+    private func insightsCard(_ i: Insights) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Insights").font(.system(size: 17, weight: .heavy))
+                Spacer()
+                if !store.isPlus {
+                    Image(systemName: "lock.fill").foregroundStyle(Palette.muted).accessibilityHidden(true)
+                }
+            }
+            if !i.hasEnoughData {
+                let need = Insights.minimumDays, logged = i.loggedDays
+                Text("Insights appear after \(need) days of logs. You have \(logged) so far.")
+                    .font(.footnote).foregroundStyle(Palette.muted)
+            } else if !store.isPlus {
+                let found = i.findings.count
+                Group {
+                    if found > 0 {
+                        Text("\(found) patterns found in your logs.")
+                    } else {
+                        Text("See which foods and habits line up with your symptoms.")
+                    }
+                }
+                .font(.subheadline).foregroundStyle(Palette.inkSoft)
+                Button { showPaywall = true } label: { Text("See insights with Plus") }
+                    .buttonStyle(FilledButtonStyle(kind: .secondary))
+                    .accessibilityIdentifier("plus-insights")
+            } else {
+                if i.findings.isEmpty {
+                    Text("No clear patterns yet. Keep logging food and symptoms.")
+                        .font(.footnote).foregroundStyle(Palette.muted)
+                }
+                ForEach(Array(i.findings.enumerated()), id: \.offset) { _, f in
+                    Label {
+                        Text(f.text).font(.subheadline).foregroundStyle(Palette.ink)
+                    } icon: {
+                        Image(systemName: "sparkle").foregroundStyle(Palette.accentText)
+                    }
+                }
+                if i.symptomWeeks.contains(where: { $0 > 0 }) {
+                    Text("Days with symptoms, last 4 weeks").font(.caption.weight(.bold)).foregroundStyle(Palette.muted)
+                    HStack(alignment: .bottom, spacing: 8) {
+                        ForEach(Array(i.symptomWeeks.enumerated()), id: \.offset) { _, count in
+                            VStack(spacing: 4) {
+                                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                    .fill(Palette.warmSoft)
+                                    .frame(height: CGFloat(max(count, 0)) * 6 + 4)
+                                Text(verbatim: "\(count)").font(.caption2.weight(.bold)).foregroundStyle(Palette.inkSoft)
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(Text(verbatim: i.symptomWeeks.map(String.init).joined(separator: ", ")))
+                }
+            }
+            Text("Patterns in your own logs, not medical advice. Talk to your care team before changing anything.")
+                .font(.caption).foregroundStyle(Palette.muted)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .card()
     }
 
     // MARK: Weight

@@ -9,8 +9,11 @@ struct VisitSummary: Equatable {
         let notes: [String]
     }
 
+    /// The free summary covers 30 days; Plus can choose 90.
     static let span = 30
+    static let plusSpan = 90
 
+    let span: Int
     let from: String
     let to: String
     let medication: String
@@ -32,7 +35,7 @@ struct VisitSummary: Equatable {
         return b - a
     }
 
-    static func make(from s: Snapshot, today: Date = Date(), calendar: Calendar = .current) -> VisitSummary {
+    static func make(from s: Snapshot, today: Date = Date(), calendar: Calendar = .current, span: Int = VisitSummary.span) -> VisitSummary {
         let range = DayKey.last(span, endingAt: today, calendar: calendar).map { DayKey.of($0, calendar: calendar) }
         let inRange = Set(range)
         let from = range.first ?? "", to = range.last ?? ""
@@ -50,6 +53,7 @@ struct VisitSummary: Equatable {
         }.sorted { $0.days > $1.days }
         let p = s.profile
         return VisitSummary(
+            span: span,
             from: from, to: to,
             medication: Medication(rawValue: p?.medication ?? "")?.label ?? String(localized: "GLP-1 tablet"),
             dose: p?.doseLabel ?? "",
@@ -69,7 +73,6 @@ struct VisitSummary: Equatable {
 
     var text: String {
         func short(_ key: String) -> String { DayKey.date(key).map { $0.formatted(.dateTime.month(.abbreviated).day()) } ?? key }
-        let span = Self.span
         let medicationLine = dose.isEmpty ? medication : String(localized: "\(medication), \(dose) daily")
         var tablet = String(localized: "Tablet logged taken on \(daysTaken) of \(span) days")
         if daysSkipped > 0 { tablet = String(localized: "\(tablet), skipped \(daysSkipped)") }

@@ -46,7 +46,6 @@
  "Visit report as a PDF": "PDF 复诊报告",
  "Insights about your symptoms and food": "症状与饮食分析",
  "A clean PDF report to send or print for each visit": "每次复诊都可发送或打印的清晰 PDF 报告",
- "Insights: which foods line up with your nausea": "分析：哪些食物与你的恶心有关",
  "Support a small, independent app": "支持一款小型独立应用",
  "Start free week, then %@": "免费试用一周，之后 %@",
  "Subscribe for %@": "以 %@ 订阅",
@@ -367,5 +366,27 @@
  "Lifetime": "终身",
  "%@ once": "%@ 一次性",
  "Buy once for %@": "一次性购买 %@",
- "One payment. No subscription to renew.": "只需付款一次，无需续订。"
+ "One payment. No subscription to renew.": "只需付款一次，无需续订。",
+ "%@: “%@” marked on %lld of %lld entries.": "%1$@：%4$lld 条记录中有 %3$lld 条标记了“%2$@”。",
+ "%@: on %lld of %lld days with %@, and on %lld of %lld other days.": "%1$@：吃%4$@的 %3$lld 天中有 %2$lld 天，其他 %6$lld 天中有 %5$lld 天。",
+ "%@: on %lld of %lld days you ate before the wait was over, and on %lld of %lld other tablet days.": "%1$@：等待结束前进食的 %3$lld 天中有 %2$lld 天，其他服药日 %5$lld 天中有 %4$lld 天。",
+ "%@: on %lld of %lld days with a meal after 8 PM, and on %lld of %lld other days.": "%1$@：晚上 8 点后进餐的 %3$lld 天中有 %2$lld 天，其他 %5$lld 天中有 %4$lld 天。",
+ "%@: on those days you ate %lld g of protein on average, and %lld g on other days.": "%@：这些天平均摄入 %lld 克蛋白质，其他日子为 %lld 克。",
+ "%@: on those days you drank %@ glasses of water on average, and %@ on other days.": "%@：这些天平均喝 %@ 杯水，其他日子为 %@ 杯。",
+ "%lld patterns found in your logs.": {
+  "other": "在你的记录中发现 %lld 个规律。"
+ },
+ "30 days": "30 天",
+ "90 days · Plus": "90 天 · Plus",
+ "A visit summary for the last 90 days, not just 30": "90 天总结，而不只是 30 天",
+ "Days with symptoms, last 4 weeks": "有症状的天数，最近 4 周",
+ "Insights": "分析",
+ "Insights appear after %lld days of logs. You have %lld so far.": "记录满 %lld 天后显示分析。目前已有 %lld 天。",
+ "Insights: which foods and habits line up with your symptoms": "分析：哪些食物和习惯与你的症状同时出现",
+ "No clear patterns yet. Keep logging food and symptoms.": "暂无明显规律。请继续记录饮食和症状。",
+ "Patterns in your own logs, not medical advice. Talk to your care team before changing anything.": "这些是你自己记录中的规律，并非医疗建议。做任何改变前请先咨询医疗团队。",
+ "Period": "时间段",
+ "See insights with Plus": "通过 Plus 查看分析",
+ "See which foods and habits line up with your symptoms.": "看看哪些食物和习惯与你的症状同时出现。",
+ "Visit summary for the last 90 days": "最近 90 天总结"
 }
