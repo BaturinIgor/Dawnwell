@@ -27,7 +27,7 @@ You enter everything yourself. Depending on what you use, the app stores:
 
 ## Apple Health
 
-If you allow it, Dawnwell reads your body weight from Apple Health to show it on your progress chart. Dawnwell only reads weight; it does not write to Apple Health. Health data is never used for advertising, never shared with anyone, and never leaves your device except in your own iCloud as described above. You can turn off access any time in the Health app.
+If you allow it, Dawnwell reads your body weight from Apple Health to show it on your progress chart. Dawnwell only reads weight; it does not write to Apple Health. Readings from Apple Health are shown on screen but never saved by Dawnwell, so they are not copied to iCloud or into backup files. Health data is never used for advertising and never shared with anyone. You can turn off access any time in the Health app.
 
 ## What we do not do
 

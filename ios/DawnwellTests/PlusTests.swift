@@ -27,6 +27,11 @@ final class PlusTests: XCTestCase {
         XCTAssertEqual(Set(ids), Set(Plus.productIDs))
     }
 
+    func testPaywallLinksAreTheOnesAppStoreReviewChecks() {
+        XCTAssertEqual(Plus.termsOfUse.host, "www.apple.com")
+        XCTAssertEqual(Support.privacyPolicy.host, "baturinigor.github.io")
+    }
+
     func testPerMonth() {
         XCTAssertEqual(Plus.perMonth(yearly: 29.99), Decimal(string: "2.5"))
     }

@@ -6,6 +6,8 @@ enum Plus {
     static let monthlyID = "com.dawnwell.app.plus.monthly"
     static let yearlyID = "com.dawnwell.app.plus.yearly"
     static let productIDs = [monthlyID, yearlyID]
+    /// Apple's standard licence. Guideline 3.1.2 asks for it and the privacy policy on the paywall.
+    static let termsOfUse = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 
     enum Feature: CaseIterable {
         case pdfReport, insights

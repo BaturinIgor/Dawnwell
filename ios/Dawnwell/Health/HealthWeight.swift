@@ -1,13 +1,17 @@
 import Foundation
 import HealthKit
-import SwiftData
+import Observation
 
-/// Reads body weight from Apple Health. Dawnwell only reads; it never writes to Health in 1.0.
+/// Reads body weight from Apple Health. Dawnwell only reads, and keeps the readings in memory:
+/// they are never saved to the store, so they never reach iCloud (App Review Guideline 5.1.3(ii)).
 @MainActor
-enum HealthWeight {
+@Observable
+final class HealthWeight {
+    static let shared = HealthWeight()
+
     /// A setting, not health data, so it lives in UserDefaults and not in the store.
     static let enabledKey = "healthWeightEnabled"
-    static let lookBackDays = 90
+    static let lookBackDays = 365
 
     static var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
     static var isEnabled: Bool {
@@ -15,36 +19,34 @@ enum HealthWeight {
         set { UserDefaults.standard.set(newValue, forKey: enabledKey) }
     }
 
-    private static let store = HKHealthStore()
-    private static let bodyMass = HKQuantityType(.bodyMass)
+    /// One reading per day from the last year, in the user's unit. In memory only.
+    private(set) var entries: [HealthImport.Entry] = []
 
-    /// Ask for read access, then import. Returns how many days were added.
-    static func connect(repo: Repository) async -> Int {
-        guard isAvailable else { return 0 }
+    @ObservationIgnored private let store = HKHealthStore()
+    @ObservationIgnored private let bodyMass = HKQuantityType(.bodyMass)
+
+    /// Ask for read access, then read. Returns how many days Health has.
+    func connect(unit: WeightUnit) async -> Int {
+        guard Self.isAvailable else { return 0 }
         do {
             try await store.requestAuthorization(toShare: [], read: [bodyMass])
         } catch {
             return 0
         }
-        isEnabled = true
-        return await importNow(repo: repo)
-    }
-
-    /// Bring in readings from the last 90 days that Dawnwell doesn't have yet.
-    @discardableResult
-    static func importNow(repo: Repository, now: Date = Date()) async -> Int {
-        guard isAvailable, isEnabled else { return 0 }
-        let start = Calendar.current.date(byAdding: .day, value: -lookBackDays, to: now) ?? now
-        let samples = (try? await readSamples(since: start)) ?? []
-        let existing = Set(((try? repo.context.fetch(FetchDescriptor<WeightEntry>())) ?? []).map(\.day))
-        let unit = repo.profile().weightUnit
-        let entries = HealthImport.entries(from: samples, existingDays: existing, unit: unit)
-        for e in entries { repo.context.insert(WeightEntry(day: e.day, value: e.value, at: e.at)) }
-        if !entries.isEmpty { repo.save() }
+        Self.isEnabled = true
+        await refresh(unit: unit)
         return entries.count
     }
 
-    private static func readSamples(since start: Date) async throws -> [HealthImport.Sample] {
+    /// Read again from Health, e.g. when the app comes to the front.
+    func refresh(unit: WeightUnit, now: Date = Date()) async {
+        guard Self.isAvailable, Self.isEnabled else { entries = []; return }
+        let start = Calendar.current.date(byAdding: .day, value: -Self.lookBackDays, to: now) ?? now
+        let samples = (try? await readSamples(since: start)) ?? []
+        entries = HealthImport.entries(from: samples, existingDays: [], unit: unit)
+    }
+
+    private func readSamples(since start: Date) async throws -> [HealthImport.Sample] {
         let predicate = HKQuery.predicateForSamples(withStart: start, end: nil)
         let descriptor = HKSampleQueryDescriptor(
             predicates: [.quantitySample(type: bodyMass, predicate: predicate)],
