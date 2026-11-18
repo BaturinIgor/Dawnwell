@@ -372,5 +372,9 @@
  "Not sure": "Não sei",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "O Dawnwell lê seu peso do app Saúde para você não ter que digitar duas vezes. Ele nunca é compartilhado."
- }
+ },
+ "Lifetime": "Vitalício",
+ "%@ once": "%@ uma vez",
+ "Buy once for %@": "Comprar uma vez por %@",
+ "One payment. No subscription to renew.": "Um único pagamento. Sem assinatura para renovar."
 }

@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "Söin liian pian tabletin jälkeen";
 "Alcohol" = "Alkoholi";
 "Not sure" = "En ole varma";
+"Lifetime" = "Elinikäinen";
+"%@ once" = "%@ kertamaksu";
+"Buy once for %@" = "Osta kerralla hintaan %@";
+"One payment. No subscription to renew." = "Yksi maksu. Ei uusiutuvaa tilausta.";

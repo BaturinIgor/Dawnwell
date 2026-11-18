@@ -372,5 +372,9 @@
  "Not sure": "Osäker",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell läser din vikt från Apple Hälsa så att du slipper skriva in den två gånger. Den delas aldrig."
- }
+ },
+ "Lifetime": "Livstid",
+ "%@ once": "%@ en gång",
+ "Buy once for %@": "Köp en gång för %@",
+ "One payment. No subscription to renew.": "En betalning. Ingen prenumeration som förnyas."
 }

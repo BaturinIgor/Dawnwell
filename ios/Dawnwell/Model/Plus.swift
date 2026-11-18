@@ -5,7 +5,24 @@ import Foundation
 enum Plus {
     static let monthlyID = "com.dawnwell.app.plus.monthly"
     static let yearlyID = "com.dawnwell.app.plus.yearly"
-    static let productIDs = [monthlyID, yearlyID]
+    /// One payment, Plus for good. A non-consumable, so it restores like the subscriptions.
+    static let lifetimeID = "com.dawnwell.app.plus.lifetime"
+    /// The two plans in the one subscription group (one free week per Apple ID).
+    static let subscriptionIDs = [monthlyID, yearlyID]
+    static let productIDs = subscriptionIDs + [lifetimeID]
+
+    /// The plans on the paywall, in the order shown.
+    enum Plan: CaseIterable {
+        case yearly, monthly, lifetime
+
+        var productID: String {
+            switch self {
+            case .yearly: return Plus.yearlyID
+            case .monthly: return Plus.monthlyID
+            case .lifetime: return Plus.lifetimeID
+            }
+        }
+    }
     /// Apple's standard licence. Guideline 3.1.2 asks for it and the privacy policy on the paywall.
     static let termsOfUse = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 
@@ -45,7 +62,8 @@ enum Plus {
     /// The buy button's text. The free week is promised only to someone Apple says can still get it:
     /// Apple gives one trial per Apple ID per subscription group, so after a trial or a past
     /// subscription the button shows the plain price instead.
-    static func buyTitle(hasFreeTrial: Bool, eligibleForTrial: Bool, price: String) -> String {
-        hasFreeTrial && eligibleForTrial ? String(localized: "Start free week, then \(price)") : String(localized: "Subscribe for \(price)")
+    static func buyTitle(plan: Plan = .yearly, hasFreeTrial: Bool, eligibleForTrial: Bool, price: String) -> String {
+        if plan == .lifetime { return String(localized: "Buy once for \(price)") }
+        return hasFreeTrial && eligibleForTrial ? String(localized: "Start free week, then \(price)") : String(localized: "Subscribe for \(price)")
     }
 }

@@ -332,3 +332,7 @@
 "Ate too soon after tablet" = "服藥後太早進食";
 "Alcohol" = "喝酒";
 "Not sure" = "不確定";
+"Lifetime" = "終身";
+"%@ once" = "%@ 一次性";
+"Buy once for %@" = "一次性購買 %@";
+"One payment. No subscription to renew." = "只需付款一次，無需續訂。";

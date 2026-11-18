@@ -372,5 +372,9 @@
  "Not sure": "Ved ikke",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell læser din vægt fra Apple Sundhed, så du ikke skal taste den to gange. Den deles aldrig."
- }
+ },
+ "Lifetime": "Livstid",
+ "%@ once": "%@ én gang",
+ "Buy once for %@": "Køb én gang for %@",
+ "One payment. No subscription to renew.": "Én betaling. Intet abonnement, der fornyes."
 }

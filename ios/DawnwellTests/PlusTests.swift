@@ -24,7 +24,25 @@ final class PlusTests: XCTestCase {
         // One group means one free week per Apple ID, not one per plan.
         XCTAssertEqual(groups.count, 1)
         let ids = (groups.first?["subscriptions"] as? [[String: Any]])?.compactMap { $0["productID"] as? String } ?? []
-        XCTAssertEqual(Set(ids), Set(Plus.productIDs))
+        XCTAssertEqual(Set(ids), Set(Plus.subscriptionIDs))
+    }
+
+    func testLifetimeIsANonConsumableOutsideTheGroup() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("StoreKit/Dawnwell.storekit")
+        guard let data = try? Data(contentsOf: url) else { throw XCTSkip("Store config not reachable from the simulator") }
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let products = try XCTUnwrap(json["products"] as? [[String: Any]])
+        let lifetime = try XCTUnwrap(products.first { $0["productID"] as? String == Plus.lifetimeID })
+        XCTAssertEqual(lifetime["type"] as? String, "NonConsumable")
+        XCTAssertEqual(lifetime["displayPrice"] as? String, "59.99")
+        XCTAssertFalse(Plus.subscriptionIDs.contains(Plus.lifetimeID))
+        XCTAssertTrue(Plus.productIDs.contains(Plus.lifetimeID))
+    }
+
+    func testLifetimeButtonNeverPromisesATrial() {
+        XCTAssertEqual(Plus.buyTitle(plan: .lifetime, hasFreeTrial: true, eligibleForTrial: true, price: "$59.99"), "Buy once for $59.99")
+        XCTAssertEqual(Plus.Plan.allCases.map(\.productID), [Plus.yearlyID, Plus.monthlyID, Plus.lifetimeID])
     }
 
     func testPaywallLinksAreTheOnesAppStoreReviewChecks() {

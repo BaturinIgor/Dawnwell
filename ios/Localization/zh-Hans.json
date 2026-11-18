@@ -363,5 +363,9 @@
  "Not sure": "不确定",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell 从 Apple“健康”读取你的体重，省得你重复输入。它绝不会被分享。"
- }
+ },
+ "Lifetime": "终身",
+ "%@ once": "%@ 一次性",
+ "Buy once for %@": "一次性购买 %@",
+ "One payment. No subscription to renew.": "只需付款一次，无需续订。"
 }

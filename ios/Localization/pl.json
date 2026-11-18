@@ -390,5 +390,9 @@
  "Not sure": "Nie wiem",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell odczytuje Twoją wagę z aplikacji Zdrowie, aby nie trzeba było wpisywać jej dwa razy. Nigdy jej nie udostępnia."
- }
+ },
+ "Lifetime": "Dożywotnio",
+ "%@ once": "%@ jednorazowo",
+ "Buy once for %@": "Kup raz za %@",
+ "One payment. No subscription to renew.": "Jedna płatność. Bez odnawianej subskrypcji."
 }

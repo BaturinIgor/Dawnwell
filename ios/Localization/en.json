@@ -372,5 +372,9 @@
  "Not sure": "Not sure",
  "_InfoPlist": {
   "NSHealthShareUsageDescription": "Dawnwell reads your weight from Apple Health so you don't have to type it twice. It never shares it."
- }
+ },
+ "Lifetime": "Lifetime",
+ "%@ once": "%@ once",
+ "Buy once for %@": "Buy once for %@",
+ "One payment. No subscription to renew.": "One payment. No subscription to renew."
 }

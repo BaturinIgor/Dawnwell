@@ -44,7 +44,7 @@ YOUR DATA STAYS YOURS
 Dawnwell only reminds and records. It never suggests or changes a dose. Medication details come from your prescription label. Always follow your prescriber's instructions.
 
 DAWNWELL PLUS
-$4.99 a month or $29.99 a year, with a free first week. Plus adds the PDF report. Payment is charged to your Apple ID. The subscription renews automatically unless cancelled at least 24 hours before the end of the period. Manage or cancel it in Settings.
+$4.99 a month or $29.99 a year, with a free first week, or $59.99 once for lifetime access. Plus adds the PDF report. Payment is charged to your Apple ID. The subscription renews automatically unless cancelled at least 24 hours before the end of the period. Manage or cancel it in Settings.
 
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://baturinigor.github.io/Dawnwell/privacy

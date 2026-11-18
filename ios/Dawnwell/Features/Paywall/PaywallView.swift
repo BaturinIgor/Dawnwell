@@ -4,10 +4,10 @@ import SwiftUI
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var store = PlusStore.shared
-    @State private var yearly = true
+    @State private var plan: Plus.Plan = .yearly
     @State private var busy = false
 
-    private var selected: Product? { yearly ? store.yearly : store.monthly }
+    private var selected: Product? { store.product(for: plan) }
 
     var body: some View {
         NavigationStack {
@@ -37,8 +37,9 @@ struct PaywallView: View {
                         }
                         .font(.footnote).foregroundStyle(Palette.muted)
                     } else {
-                        if let y = store.yearly { plan(y, isYearly: true) }
-                        if let m = store.monthly { plan(m, isYearly: false) }
+                        ForEach(Plus.Plan.allCases, id: \.self) { p in
+                            if let product = store.product(for: p) { row(product, plan: p) }
+                        }
                     }
 
                     Button {
@@ -54,8 +55,14 @@ struct PaywallView: View {
                     .buttonStyle(FilledButtonStyle())
                     .disabled(selected == nil || busy)
 
-                    Text("Cancel any time in Settings. The subscription renews automatically unless you cancel at least 24 hours before the end of the period.")
-                        .font(.caption).foregroundStyle(Palette.muted)
+                    Group {
+                        if plan == .lifetime {
+                            Text("One payment. No subscription to renew.")
+                        } else {
+                            Text("Cancel any time in Settings. The subscription renews automatically unless you cancel at least 24 hours before the end of the period.")
+                        }
+                    }
+                    .font(.caption).foregroundStyle(Palette.muted)
                     HStack {
                         Button("Restore purchases") { Task { await store.restore(); if store.isPlus { dismiss() } } }
                         Spacer()
@@ -78,23 +85,41 @@ struct PaywallView: View {
     private var trialText: String {
         guard let p = selected else { return String(localized: "Continue") }
         return Plus.buyTitle(
+            plan: plan,
             hasFreeTrial: p.subscription?.introductoryOffer?.paymentMode == .freeTrial,
             eligibleForTrial: store.trialEligible,
             price: p.displayPrice
         )
     }
 
-    private func plan(_ p: Product, isYearly: Bool) -> some View {
-        let on = yearly == isYearly
-        return Button { yearly = isYearly } label: {
+    @ViewBuilder
+    private func title(_ plan: Plus.Plan) -> some View {
+        switch plan {
+        case .yearly: Text("Yearly")
+        case .monthly: Text("Monthly")
+        case .lifetime: Text("Lifetime")
+        }
+    }
+
+    @ViewBuilder
+    private func priceLine(_ plan: Plus.Plan, _ price: String) -> some View {
+        switch plan {
+        case .yearly: Text("\(price) a year")
+        case .monthly: Text("\(price) a month")
+        case .lifetime: Text("\(price) once")
+        }
+    }
+
+    private func row(_ p: Product, plan this: Plus.Plan) -> some View {
+        let on = plan == this
+        return Button { plan = this } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    let price = p.displayPrice
-                    (isYearly ? Text("Yearly") : Text("Monthly")).font(.system(size: 17, weight: .heavy)).foregroundStyle(Palette.ink)
-                    (isYearly ? Text("\(price) a year") : Text("\(price) a month")).font(.footnote).foregroundStyle(Palette.muted)
+                    title(this).font(.system(size: 17, weight: .heavy)).foregroundStyle(Palette.ink)
+                    priceLine(this, p.displayPrice).font(.footnote).foregroundStyle(Palette.muted)
                 }
                 Spacer()
-                if isYearly, let m = store.monthly {
+                if this == .yearly, let m = store.monthly {
                     let saving = Plus.yearlySaving(monthly: m.price, yearly: p.price)
                     if saving > 0 {
                         Text("Save \(saving)%")
