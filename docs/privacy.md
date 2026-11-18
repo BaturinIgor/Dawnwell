@@ -67,4 +67,4 @@ If this policy changes, the new version will be posted on this page with a new d
 
 ## Contact
 
-Questions about privacy: **CONTACT_EMAIL**
+Questions about privacy: [dawnwell.app@gmail.com](mailto:dawnwell.app@gmail.com)
