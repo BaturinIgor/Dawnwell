@@ -17,10 +17,22 @@ struct RootView: View {
         .background(Palette.bg)
         .onChange(of: scenePhase, initial: true) { _, phase in
             // One local copy a day, taken when the app comes to the front.
-            if phase == .active && !Persistence.isRunningTests {
+            guard !Persistence.isRunningTests else { return }
+            if phase == .active {
                 DataSafety.takeDailyCopy(repo: Repository(context: context), copies: .standard)
             }
+            if phase != .inactive { syncReminders() }
         }
+        // Any saved change (tablet taken, food logged, settings) can change what to remind about.
+        .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave)) { _ in
+            guard !Persistence.isRunningTests else { return }
+            syncReminders()
+        }
+    }
+
+    private func syncReminders() {
+        let repo = Repository(context: context)
+        Task { await ReminderScheduler.sync(repo: repo) }
     }
 }
 
