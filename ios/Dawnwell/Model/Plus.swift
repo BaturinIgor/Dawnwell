@@ -39,4 +39,11 @@ enum Plus {
         NSDecimalRound(&out, &raw, 2, .plain)
         return out
     }
+
+    /// The buy button's text. The free week is promised only to someone Apple says can still get it:
+    /// Apple gives one trial per Apple ID per subscription group, so after a trial or a past
+    /// subscription the button shows the plain price instead.
+    static func buyTitle(hasFreeTrial: Bool, eligibleForTrial: Bool, price: String) -> String {
+        hasFreeTrial && eligibleForTrial ? "Start free week, then \(price)" : "Subscribe for \(price)"
+    }
 }
