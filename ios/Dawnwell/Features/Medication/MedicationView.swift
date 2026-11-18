@@ -48,7 +48,7 @@ struct MedicationView: View {
                     if let mail = supportMail {
                         Link(destination: mail) {
                             HStack {
-                                labelled("Write to us", Support.email)
+                                labelled("Write to us", "\(Support.email)")
                                 Spacer()
                                 Image(systemName: "envelope").foregroundStyle(Palette.muted)
                             }
@@ -83,8 +83,15 @@ struct MedicationView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Your tablet").font(.subheadline.weight(.bold)).foregroundStyle(.white.opacity(0.8))
             Text(p.medication.label).font(.system(size: 26, weight: .heavy)).foregroundStyle(.white)
-            Text("\(p.doseLabel.isEmpty ? "" : "\(p.doseLabel) · ")every day at \(Logic.clock(hour: p.doseHour, minute: p.doseMinute))")
-                .foregroundStyle(.white.opacity(0.9))
+            let time = Logic.clock(hour: p.doseHour, minute: p.doseMinute)
+            Group {
+                if p.doseLabel.isEmpty {
+                    Text("Every day at \(time)")
+                } else {
+                    Text("\(p.doseLabel) · every day at \(time)")
+                }
+            }
+            .foregroundStyle(.white.opacity(0.9))
             if !editing {
                 Button("Update from my label") {
                     medication = p.medication
@@ -143,7 +150,7 @@ struct MedicationView: View {
                 labelled("Wait before eating", "As written on your label")
                 Spacer()
                 StepperView(value: Binding(get: { p.waitMinutes }, set: { p.waitMinutes = $0; repo.save() }),
-                            unit: "min", step: 5, range: 5...120)
+                            unit: String(localized: "min"), step: 5, range: 5...120)
             }
         }
         .card()
@@ -176,7 +183,8 @@ struct MedicationView: View {
 
     private func reminders(_ p: Profile) -> some View {
         VStack(spacing: 0) {
-            toggle("Tablet reminder", "Every day at \(Logic.clock(hour: p.doseHour, minute: p.doseMinute))",
+            let time = Logic.clock(hour: p.doseHour, minute: p.doseMinute)
+            toggle("Tablet reminder", "Every day at \(time)",
                    Binding(get: { p.remindTablet }, set: { p.remindTablet = $0; repo.save() }))
             toggle("Wait is over", "Tells you when you can eat",
                    Binding(get: { p.remindWaitOver }, set: { p.remindWaitOver = $0; repo.save() }))
@@ -197,9 +205,10 @@ struct MedicationView: View {
                 }
                 ForEach(Array(history.enumerated()), id: \.offset) { i, h in
                     HStack {
-                        Text(h.label).fontWeight(i == 0 ? .bold : .regular)
+                        Text(Loc.doseDaily(h.label)).fontWeight(i == 0 ? .bold : .regular)
                         Spacer()
-                        Text("\(i == 0 ? "Since" : "From") \(DayKey.date(h.from).map { $0.formatted(.dateTime.month(.abbreviated).day()) } ?? h.from)")
+                        let date = DayKey.date(h.from).map { $0.formatted(.dateTime.month(.abbreviated).day()) } ?? h.from
+                        Group { if i == 0 { Text("Since \(date)") } else { Text("From \(date)") } }
                             .font(.footnote)
                             .foregroundStyle(Palette.muted)
                     }
@@ -209,14 +218,14 @@ struct MedicationView: View {
         }
     }
 
-    private func labelled(_ title: String, _ sub: String) -> some View {
+    private func labelled(_ title: LocalizedStringKey, _ sub: LocalizedStringKey) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title).font(.system(size: 15, weight: .heavy)).foregroundStyle(Palette.ink)
             Text(sub).font(.footnote).foregroundStyle(Palette.muted)
         }
     }
 
-    private func toggle(_ label: String, _ sub: String, _ value: Binding<Bool>) -> some View {
+    private func toggle(_ label: LocalizedStringKey, _ sub: LocalizedStringKey, _ value: Binding<Bool>) -> some View {
         Toggle(isOn: value) { labelled(label, sub) }.frame(minHeight: 60)
     }
 }

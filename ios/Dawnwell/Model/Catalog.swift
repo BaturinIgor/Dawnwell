@@ -9,9 +9,9 @@ enum Medication: String, CaseIterable, Identifiable, Codable {
 
     var label: String {
         switch self {
-        case .oralSemaglutide: return "Oral semaglutide"
-        case .orforglipron: return "Orforglipron"
-        case .other: return "Another GLP-1 tablet"
+        case .oralSemaglutide: return String(localized: "Oral semaglutide")
+        case .orforglipron: return String(localized: "Orforglipron")
+        case .other: return String(localized: "Another GLP-1 tablet")
         }
     }
 }
@@ -23,6 +23,16 @@ enum Meal: String, CaseIterable, Identifiable, Codable {
     case snack = "Snack"
 
     var id: String { rawValue }
+
+    /// The raw value is stored, so it stays English. This is what the user sees.
+    var label: String {
+        switch self {
+        case .breakfast: return String(localized: "Breakfast")
+        case .lunch: return String(localized: "Lunch")
+        case .dinner: return String(localized: "Dinner")
+        case .snack: return String(localized: "Snack")
+        }
+    }
 
     /// The meal that fits the time of day, used as the default when logging food.
     static func at(_ date: Date, calendar: Calendar = .current) -> Meal {
@@ -46,12 +56,12 @@ enum SymptomKind: String, CaseIterable, Identifiable, Codable {
 
     var label: String {
         switch self {
-        case .nausea: return "Nausea"
-        case .constipation: return "Constipation"
-        case .heartburn: return "Heartburn"
-        case .fatigue: return "Tired"
-        case .noAppetite: return "No appetite"
-        case .good: return "Feeling good"
+        case .nausea: return String(localized: "Nausea")
+        case .constipation: return String(localized: "Constipation")
+        case .heartburn: return String(localized: "Heartburn")
+        case .fatigue: return String(localized: "Tired")
+        case .noAppetite: return String(localized: "No appetite")
+        case .good: return String(localized: "Feeling good")
         }
     }
 }
@@ -70,7 +80,10 @@ struct Food: Identifiable, Hashable {
     var short: String? = nil
 
     var id: String { name }
-    var shortName: String { short ?? name }
+    /// `name` is stored with each entry, so it stays English. These are for display.
+    var displayName: String { Loc.text(name) }
+    var displayPortion: String { Loc.text(portion) }
+    var shortName: String { Loc.text(short ?? name) }
 }
 
 enum Catalog {
@@ -93,9 +106,16 @@ enum Catalog {
     static let quickFoods: [Food] = ["Greek yogurt, plain", "Eggs", "Protein shake", "Chicken breast"]
         .compactMap { name in foods.first { $0.name == name } }
 
+    /// Stored with each symptom in English. Show them with `Loc.text`.
     static let triggers = ["Fatty food", "Ate late", "Big portion", "Ate too soon after tablet", "Alcohol", "Not sure"]
-    static let severityWords = ["", "Barely there", "Mild", "Moderate", "Strong", "Severe"]
-    static let noiseWords = ["", "Quiet", "Low", "Some", "Loud", "Constant"]
+    static var severityWords: [String] {
+        ["", String(localized: "Barely there"), String(localized: "Mild"), String(localized: "Moderate"),
+         String(localized: "Strong"), String(localized: "Severe")]
+    }
+    static var noiseWords: [String] {
+        ["", String(localized: "Quiet"), String(localized: "Low"), String(localized: "Some"),
+         String(localized: "Loud"), String(localized: "Constant")]
+    }
 
     /// Show the refill heads-up at or below this many tablets.
     static let refillAt = 7

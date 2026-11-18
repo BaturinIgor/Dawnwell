@@ -54,14 +54,14 @@ struct ReminderPlan: Equatable {
             guard let day = calendar.date(byAdding: .day, value: offset, to: today) else { continue }
             let key = DayKey.of(day, calendar: calendar)
             if i.remindTablet, !i.loggedDays.contains(key), let t = at(offset, i.doseHour, i.doseMinute), t > now {
-                items.append(Item(kind: .tablet, id: "tablet-\(key)", at: t, title: "Time for your tablet",
-                                  body: "Take it as your label says, then wait \(i.waitMinutes) min before food, drinks or other medicines."))
+                items.append(Item(kind: .tablet, id: "tablet-\(key)", at: t, title: String(localized: "Time for your tablet"),
+                                  body: String(localized: "Take it as your label says, then wait \(i.waitMinutes) min before food, drinks or other medicines.")))
             }
             if i.remindProtein, let t = at(offset, proteinHour, 0), t > now, !(offset == 0 && i.proteinToday >= i.proteinTarget) {
                 let body = offset == 0 && i.proteinToday > 0
-                    ? "You're at \(i.proteinToday) of \(i.proteinTarget) g today. A protein snack helps."
-                    : "How's your protein today? Log what you've eaten."
-                items.append(Item(kind: .protein, id: "protein-\(key)", at: t, title: "Protein check", body: body))
+                    ? String(localized: "You're at \(i.proteinToday) of \(i.proteinTarget) g today. A protein snack helps.")
+                    : String(localized: "How's your protein today? Log what you've eaten.")
+                items.append(Item(kind: .protein, id: "protein-\(key)", at: t, title: String(localized: "Protein check"), body: body))
             }
         }
 
@@ -69,14 +69,14 @@ struct ReminderPlan: Equatable {
             let end = taken.addingTimeInterval(TimeInterval(i.waitMinutes * 60))
             if end > now {
                 items.append(Item(kind: .waitOver, id: "wait-\(DayKey.of(taken, calendar: calendar))", at: end,
-                                  title: "Your wait is over", body: "You can eat and drink now. Start with protein."))
+                                  title: String(localized: "Your wait is over"), body: String(localized: "You can eat and drink now. Start with protein.")))
             }
         }
 
         if i.remindRefill, let left = i.tabletsLeft, left <= Catalog.refillAt, let t = at(1, refillHour, 0) {
-            items.append(Item(kind: .refill, id: "refill", at: t, title: "Running low on tablets",
-                              body: left == 0 ? "You have no tablets left. Ask your pharmacy for a refill."
-                                              : "\(left) tablet\(left == 1 ? "" : "s") left. Time to ask for a refill."))
+            items.append(Item(kind: .refill, id: "refill", at: t, title: String(localized: "Running low on tablets"),
+                              body: left == 0 ? String(localized: "You have no tablets left. Ask your pharmacy for a refill.")
+                                              : String(localized: "\(left) tablets left. Time to ask for a refill.")))
         }
         return ReminderPlan(items: items.sorted { $0.at < $1.at })
     }

@@ -58,14 +58,17 @@ struct TodayView: View {
                     TabletCard(profile: profile, day: today, onTake: take, onUndo: undo, onSkip: skip)
                     proteinCard(target: profile.proteinTarget)
                     HStack(spacing: 12) {
-                        MiniCounter(title: "Water", value: today?.water ?? 0, goal: profile.waterTarget, unit: "glasses") { delta in
+                        MiniCounter(title: String(localized: "Water"), value: today?.water ?? 0, goal: profile.waterTarget, unit: String(localized: "glasses"),
+                                    less: "Less water", more: "More water") { delta in
                             repo.updateDay(key) { $0.water = max(0, $0.water + delta) }
                         }
-                        MiniCounter(title: "Fiber", value: today?.fiber ?? 0, goal: profile.fiberTarget, unit: "g", step: 5) { delta in
+                        MiniCounter(title: String(localized: "Fiber"), value: today?.fiber ?? 0, goal: profile.fiberTarget, unit: String(localized: "g"),
+                                    less: "Less fiber", more: "More fiber", step: 5) { delta in
                             repo.updateDay(key) { $0.fiber = max(0, $0.fiber + delta) }
                         }
                     }
-                    MiniCounter(title: "Strength", value: today?.strength ?? 0, goal: nil, unit: "min", step: 10) { delta in
+                    MiniCounter(title: String(localized: "Strength"), value: today?.strength ?? 0, goal: nil, unit: String(localized: "min"),
+                                less: "Less strength training", more: "More strength training", step: 10) { delta in
                         repo.updateDay(key) { $0.strength = max(0, $0.strength + delta) }
                     }
                 }
@@ -117,8 +120,14 @@ struct TodayView: View {
                 }
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Protein today").font(.subheadline.weight(.bold)).foregroundStyle(Palette.inkSoft)
-                    Text(protein >= target ? "Target reached. Nice work." : "\(target - protein) g to go. Protein helps you keep muscle.")
-                        .foregroundStyle(Palette.inkSoft)
+                    Group {
+                        if protein >= target {
+                            Text("Target reached. Nice work.")
+                        } else {
+                            Text("\(target - protein) g to go. Protein helps you keep muscle.")
+                        }
+                    }
+                    .foregroundStyle(Palette.inkSoft)
                 }
             }
             FlowLayout {
@@ -228,18 +237,23 @@ struct TabletCard: View {
         switch state {
         case .pending(let overdue):
             VStack(alignment: .leading, spacing: 12) {
-                Text(overdue ? "Due at \(Logic.clock(hour: profile.doseHour, minute: profile.doseMinute)) · not logged" : "Today's tablet")
+                let due = Logic.clock(hour: profile.doseHour, minute: profile.doseMinute)
+                Group { if overdue { Text("Due at \(due) · not logged") } else { Text("Today's tablet") } }
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(overdue ? Palette.warmInk : Color.white.opacity(0.85))
-                Text(overdue ? "Did you take your tablet this morning?" : "Take it on an empty stomach")
+                Group { if overdue { Text("Did you take your tablet this morning?") } else { Text("Take it on an empty stomach") } }
                     .font(.system(size: 24, weight: .heavy))
                     .foregroundStyle(overdue ? Palette.ink : Color.white)
-                Text(overdue
-                     ? "If you missed it, follow the missed-dose instructions on your label. Don't take two to catch up."
-                     : "With a small sip of water, then wait \(profile.waitMinutes) min before food, drinks or other medicines.")
-                    .font(.system(size: 15))
-                    .foregroundStyle(overdue ? Palette.inkSoft : Color.white.opacity(0.9))
-                Button(overdue ? "Yes, I took it" : "I took it", action: onTake)
+                Group {
+                    if overdue {
+                        Text("If you missed it, follow the missed-dose instructions on your label. Don't take two to catch up.")
+                    } else {
+                        Text("With a small sip of water, then wait \(profile.waitMinutes) min before food, drinks or other medicines.")
+                    }
+                }
+                .font(.system(size: 15))
+                .foregroundStyle(overdue ? Palette.inkSoft : Color.white.opacity(0.9))
+                Button(action: onTake) { overdue ? Text("Yes, I took it") : Text("I took it") }
                     .buttonStyle(FilledButtonStyle(kind: overdue ? .primary : .light))
                 if overdue {
                     Button("I skipped today", action: onSkip).buttonStyle(FilledButtonStyle(kind: .secondary))
@@ -263,7 +277,8 @@ struct TabletCard: View {
             let remaining = until.timeIntervalSince(now)
             VStack(alignment: .leading, spacing: 16) {
                 if let taken = day?.takenAt {
-                    Text("Taken at \(taken.formatted(date: .omitted, time: .shortened)) · empty-stomach wait")
+                    let time = taken.formatted(date: .omitted, time: .shortened)
+                    Text("Taken at \(time) · empty-stomach wait")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.white.opacity(0.85))
                 }
@@ -327,17 +342,25 @@ struct WeekStrip: View {
                 .frame(maxWidth: .infinity, minHeight: 68)
                 .background(isToday ? Palette.ink : Palette.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(d.formatted(date: .complete, time: .omitted)), tablet \(taken.contains(key) ? "taken" : "not logged")")
+                .accessibilityLabel(accessibility(d, taken: taken.contains(key)))
             }
         }
+    }
+
+    private func accessibility(_ d: Date, taken: Bool) -> Text {
+        let date = d.formatted(date: .complete, time: .omitted)
+        return taken ? Text("\(date), tablet taken") : Text("\(date), tablet not logged")
     }
 }
 
 struct MiniCounter: View {
+    /// Already in the user's language.
     let title: String
     let value: Int
     let goal: Int?
     let unit: String
+    let less: LocalizedStringKey
+    let more: LocalizedStringKey
     var step = 1
     let change: (Int) -> Void
 
@@ -349,8 +372,8 @@ struct MiniCounter: View {
                 Text(goal.map { "/ \($0) \(unit)" } ?? unit).font(.footnote).foregroundStyle(Palette.muted)
             }
             HStack(spacing: 8) {
-                counterButton("minus", "Less \(title.lowercased())") { change(-step) }
-                counterButton("plus", "More \(title.lowercased())") { change(step) }
+                counterButton("minus", less) { change(-step) }
+                counterButton("plus", more) { change(step) }
             }
         }
         .padding(16)
@@ -358,7 +381,7 @@ struct MiniCounter: View {
         .background(Palette.card, in: RoundedRectangle(cornerRadius: Metrics.radius, style: .continuous))
     }
 
-    private func counterButton(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
+    private func counterButton(_ symbol: String, _ label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
                 .font(.system(size: 15, weight: .bold))

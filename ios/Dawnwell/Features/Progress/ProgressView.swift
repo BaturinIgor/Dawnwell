@@ -47,13 +47,15 @@ struct ProgressScreen: View {
                     Text(s.latest.map { "\(VisitSummary.num($0.value)) \(s.unit.rawValue)" } ?? "–")
                         .font(.system(size: 30, weight: .heavy))
                     if let l = s.latest {
-                        Text("Logged \(short(l.day))").font(.footnote).foregroundStyle(Palette.muted)
+                        let date = short(l.day)
+                        Text("Logged \(date)").font(.footnote).foregroundStyle(Palette.muted)
                     }
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 4) {
                     if let c = s.changeSinceStart, abs(c) >= 0.05 {
-                        Text("\(c > 0 ? "−" : "+")\(VisitSummary.num(abs(c))) \(s.unit.rawValue) since start")
+                        let amount = "\(c > 0 ? "−" : "+")\(VisitSummary.num(abs(c))) \(s.unit.rawValue)"
+                        Text("\(amount) since start")
                             .font(.footnote.weight(.heavy))
                             .foregroundStyle(Palette.accentDark)
                             .padding(.horizontal, 12)
@@ -61,7 +63,8 @@ struct ProgressScreen: View {
                             .background(Palette.accentSoft, in: Capsule())
                     }
                     if let g = s.toGoal, g > 0 {
-                        Text("\(VisitSummary.num(g)) \(s.unit.rawValue) to goal").font(.footnote).foregroundStyle(Palette.muted)
+                        let amount = "\(VisitSummary.num(g)) \(s.unit.rawValue)"
+                        Text("\(amount) to goal").font(.footnote).foregroundStyle(Palette.muted)
                     }
                 }
             }
@@ -72,11 +75,12 @@ struct ProgressScreen: View {
                 weightChart(s)
             }
             HStack {
-                TextField("Today's weight, \(s.unit.rawValue)", text: $input)
+                let unitName = s.unit.rawValue
+                TextField("Today's weight, \(unitName)", text: $input)
                     .keyboardType(.decimalPad)
                     .focused($focused)
                     .fieldStyle()
-                    .accessibilityLabel("Today's weight in \(s.unit == .kg ? "kilograms" : "pounds")")
+                    .accessibilityLabel(s.unit == .kg ? Text("Today's weight in kilograms") : Text("Today's weight in pounds"))
                 Button("Log") {
                     if let v = Logic.parsePositive(input) {
                         repo.logWeight(v)
@@ -90,14 +94,14 @@ struct ProgressScreen: View {
             }
             if HealthWeight.isAvailable {
                 if healthOn {
-                    Label(healthNote ?? "Weight from Apple Health shows here. It stays in Health and is not copied to iCloud.", systemImage: "heart.fill")
+                    Label(healthNote ?? String(localized: "Weight from Apple Health shows here. It stays in Health and is not copied to iCloud."), systemImage: "heart.fill")
                         .font(.footnote).foregroundStyle(Palette.muted)
                 } else {
                     Button {
                         Task {
                             let found = await health.connect(unit: repo.profile().weightUnit)
                             healthOn = HealthWeight.isEnabled
-                            healthNote = found > 0 ? "Showing \(found) day\(found == 1 ? "" : "s") from Apple Health." : nil
+                            healthNote = found > 0 ? String(localized: "Showing \(found) days from Apple Health.") : nil
                         }
                     } label: {
                         Label("Get weight from Apple Health", systemImage: "heart.fill")
@@ -181,7 +185,7 @@ struct ProgressScreen: View {
                             }
                         }
                         .accessibilityElement()
-                        .accessibilityLabel("\(short(d.day)): \(d.mark == .taken ? "taken" : d.mark == .skipped ? "skipped" : "not logged")")
+                        .accessibilityLabel(markLabel(d))
                 }
             }
             HStack(spacing: 16) {
@@ -201,7 +205,16 @@ struct ProgressScreen: View {
         }
     }
 
-    private func legend(_ c: Color, _ label: String) -> some View {
+    private func markLabel(_ d: ProgressStats.TabletDay) -> Text {
+        let date = short(d.day)
+        switch d.mark {
+        case .taken: return Text("\(date): taken")
+        case .skipped: return Text("\(date): skipped")
+        case .none: return Text("\(date): not logged")
+        }
+    }
+
+    private func legend(_ c: Color, _ label: LocalizedStringKey) -> some View {
         HStack(spacing: 6) {
             RoundedRectangle(cornerRadius: 4).fill(c).frame(width: 12, height: 12)
             Text(label).font(.footnote).foregroundStyle(Palette.muted)
@@ -219,10 +232,17 @@ struct ProgressScreen: View {
                     Text("of 5, recent average").font(.subheadline.weight(.semibold)).foregroundStyle(Palette.muted)
                 }
                 if let before = s.noiseBefore {
-                    Text(now < before ? "Quieter than the week before (\(VisitSummary.num(before)))."
-                         : now > before ? "Louder than the week before (\(VisitSummary.num(before)))."
-                         : "About the same as the week before.")
-                        .font(.footnote).foregroundStyle(Palette.muted)
+                    let past = VisitSummary.num(before)
+                    Group {
+                        if now < before {
+                            Text("Quieter than the week before (\(past)).")
+                        } else if now > before {
+                            Text("Louder than the week before (\(past)).")
+                        } else {
+                            Text("About the same as the week before.")
+                        }
+                    }
+                    .font(.footnote).foregroundStyle(Palette.muted)
                 }
             } else {
                 Text("Rate your food noise on Today. After a few days you will see the trend here.")

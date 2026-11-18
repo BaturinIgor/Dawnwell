@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%lld days of logs</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni zapisów</string>
+			<key>many</key>
+			<string>%lld dni zapisów</string>
+			<key>one</key>
+			<string>%lld dzień zapisów</string>
+			<key>other</key>
+			<string>%lld dnia zapisów</string>
+		</dict>
+	</dict>
+	<key>%lld days · worst %lld/5</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@ · najsilniej %lld/5</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni</string>
+			<key>many</key>
+			<string>%lld dni</string>
+			<key>one</key>
+			<string>%lld dzień</string>
+			<key>other</key>
+			<string>%lld dnia</string>
+		</dict>
+	</dict>
+	<key>%lld items · %@</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@ · %@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld produkty</string>
+			<key>many</key>
+			<string>%lld produktów</string>
+			<key>one</key>
+			<string>%lld produkt</string>
+			<key>other</key>
+			<string>%lld produktu</string>
+		</dict>
+	</dict>
+	<key>%lld tablets left. Time to ask for a refill.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>Zostały %lld tabletki. Czas na kolejną receptę.</string>
+			<key>many</key>
+			<string>Zostało %lld tabletek. Czas na kolejną receptę.</string>
+			<key>one</key>
+			<string>Została %lld tabletka. Czas na kolejną receptę.</string>
+			<key>other</key>
+			<string>Zostało %lld tabletki. Czas na kolejną receptę.</string>
+		</dict>
+	</dict>
+	<key>%lld weight entries</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld pomiary wagi</string>
+			<key>many</key>
+			<string>%lld pomiarów wagi</string>
+			<key>one</key>
+			<string>%lld pomiar wagi</string>
+			<key>other</key>
+			<string>%lld pomiaru wagi</string>
+		</dict>
+	</dict>
+	<key>%lld-day streak</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni z rzędu</string>
+			<key>many</key>
+			<string>%lld dni z rzędu</string>
+			<key>one</key>
+			<string>%lld dzień z rzędu</string>
+			<key>other</key>
+			<string>%lld dnia z rzędu</string>
+		</dict>
+	</dict>
+	<key>- %@: %lld days, worst %lld/5</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>- %@: %#@n@, najsilniej %lld/5</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni</string>
+			<key>many</key>
+			<string>%lld dni</string>
+			<key>one</key>
+			<string>%lld dzień</string>
+			<key>other</key>
+			<string>%lld dnia</string>
+		</dict>
+	</dict>
+	<key>About %lld days left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>Zostały około %lld dni</string>
+			<key>many</key>
+			<string>Zostało około %lld dni</string>
+			<key>one</key>
+			<string>Zostało około %lld dnia</string>
+			<key>other</key>
+			<string>Zostało około %lld dnia</string>
+		</dict>
+	</dict>
+	<key>Showing %lld days from Apple Health.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>Widoczne %lld dni z aplikacji Zdrowie.</string>
+			<key>many</key>
+			<string>Widocznych %lld dni z aplikacji Zdrowie.</string>
+			<key>one</key>
+			<string>Widoczny %lld dzień z aplikacji Zdrowie.</string>
+			<key>other</key>
+			<string>Widoczne %lld dnia z aplikacji Zdrowie.</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

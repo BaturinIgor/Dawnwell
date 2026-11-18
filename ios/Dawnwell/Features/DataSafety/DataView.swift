@@ -92,7 +92,7 @@ struct DataView: View {
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
             switch result {
             case .success(let url): readFile(url)
-            case .failure: message = "That file couldn't be opened."
+            case .failure: message = String(localized: "That file couldn't be opened.")
             }
         }
         .confirmationDialog(pending?.title ?? "", isPresented: Binding(get: { pending != nil }, set: { if !$0 { pending = nil } }),
@@ -100,7 +100,8 @@ struct DataView: View {
             Button("Replace my data") { restore(p.snapshot) }
             Button("Cancel", role: .cancel) {}
         } message: { p in
-            Text("This brings back \(p.snapshot.summary). Your current data is copied first, so you can go back.")
+            let summary = p.snapshot.summary
+            Text("This brings back \(summary). Your current data is copied first, so you can go back.")
         }
     }
 
@@ -111,9 +112,10 @@ struct DataView: View {
 
     private func askRestore(_ c: LocalCopies.Copy) {
         do {
-            pending = Pending(title: "Restore the copy from \(c.takenAt.formatted(date: .abbreviated, time: .shortened))?", snapshot: try store.read(c))
+            let date = c.takenAt.formatted(date: .abbreviated, time: .shortened)
+            pending = Pending(title: String(localized: "Restore the copy from \(date)?"), snapshot: try store.read(c))
         } catch {
-            message = (error as? LocalizedError)?.errorDescription ?? "This copy can't be read."
+            message = (error as? LocalizedError)?.errorDescription ?? String(localized: "This copy can't be read.")
         }
     }
 
@@ -122,20 +124,21 @@ struct DataView: View {
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         do {
             let file = try BackupFile.decode(Data(contentsOf: url))
-            pending = Pending(title: "Restore the backup from \(file.exportedAt.formatted(date: .abbreviated, time: .omitted))?", snapshot: file.data)
+            let date = file.exportedAt.formatted(date: .abbreviated, time: .omitted)
+            pending = Pending(title: String(localized: "Restore the backup from \(date)?"), snapshot: file.data)
         } catch let e as BackupFile.ReadError {
             message = e.errorDescription
         } catch {
-            message = "That file couldn't be opened."
+            message = String(localized: "That file couldn't be opened.")
         }
     }
 
     private func restore(_ s: Snapshot) {
         do {
             try DataSafety.restore(s, repo: repo, copies: store)
-            message = "Done. Your data was restored, and the data you had before is kept as a copy."
+            message = String(localized: "Done. Your data was restored, and the data you had before is kept as a copy.")
         } catch {
-            message = "Nothing was changed. Your data could not be copied first, so it was left as it is."
+            message = String(localized: "Nothing was changed. Your data could not be copied first, so it was left as it is.")
         }
         refresh()
     }

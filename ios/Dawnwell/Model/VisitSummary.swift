@@ -51,7 +51,7 @@ struct VisitSummary: Equatable {
         let p = s.profile
         return VisitSummary(
             from: from, to: to,
-            medication: Medication(rawValue: p?.medication ?? "")?.label ?? "GLP-1 tablet",
+            medication: Medication(rawValue: p?.medication ?? "")?.label ?? String(localized: "GLP-1 tablet"),
             dose: p?.doseLabel ?? "",
             daysTaken: days.filter { $0.takenAt != nil }.count,
             daysSkipped: days.filter { $0.takenAt == nil && $0.skipped }.count,
@@ -69,31 +69,45 @@ struct VisitSummary: Equatable {
 
     var text: String {
         func short(_ key: String) -> String { DayKey.date(key).map { $0.formatted(.dateTime.month(.abbreviated).day()) } ?? key }
+        let span = Self.span
+        let medicationLine = dose.isEmpty ? medication : String(localized: "\(medication), \(dose) daily")
+        var tablet = String(localized: "Tablet logged taken on \(daysTaken) of \(span) days")
+        if daysSkipped > 0 { tablet = String(localized: "\(tablet), skipped \(daysSkipped)") }
         var lines = [
-            "Dawnwell visit summary, \(short(from)) – \(short(to))",
+            String(localized: "Dawnwell visit summary, \(short(from)) – \(short(to))"),
             "",
-            "Medication: \(medication)\(dose.isEmpty ? "" : ", \(dose) daily")",
-            "Tablet logged taken on \(daysTaken) of \(Self.span) days\(daysSkipped > 0 ? ", skipped \(daysSkipped)" : "")",
+            String(localized: "Medication: \(medicationLine)"),
+            tablet,
         ]
         if let a = firstWeight, let b = lastWeight, let c = weightChange {
-            lines.append("Weight: \(Self.num(a)) → \(Self.num(b)) \(unit.rawValue) (\(c > 0 ? "+" : "")\(Self.num(c)))")
+            let first = Self.num(a), last = Self.num(b), unitName = unit.rawValue
+            let change = "\(c > 0 ? "+" : "")\(Self.num(c))"
+            lines.append(String(localized: "Weight: \(first) → \(last) \(unitName) (\(change))"))
         }
-        if let p = averageProtein { lines.append("Protein: \(p) g a day on average (target \(proteinTarget) g)") }
-        if let w = averageWater { lines.append("Water: \(String(format: "%.1f", w)) glasses a day on average") }
-        lines += ["", "Symptoms:"]
-        if symptoms.isEmpty { lines.append("- None logged") }
+        if let p = averageProtein { lines.append(String(localized: "Protein: \(p) g a day on average (target \(proteinTarget) g)")) }
+        if let w = averageWater {
+            let glasses = Self.num(w)
+            lines.append(String(localized: "Water: \(glasses) glasses a day on average"))
+        }
+        lines += ["", String(localized: "Symptoms:")]
+        if symptoms.isEmpty { lines.append(String(localized: "- None logged")) }
         for s in symptoms {
-            lines.append("- \(s.kind.label): \(s.days) day\(s.days == 1 ? "" : "s"), worst \(s.worst)/5")
+            let name = s.kind.label
+            lines.append(String(localized: "- \(name): \(s.days) days, worst \(s.worst)/5"))
             for n in s.notes.prefix(3) { lines.append("  \"\(n)\"") }
         }
         if !doses.isEmpty {
-            lines += ["", "Dose history:"]
-            for d in doses { lines.append("- \(d.label) from \(short(d.from))") }
+            lines += ["", String(localized: "Dose history:")]
+            for d in doses {
+                let label = Loc.doseDaily(d.label), from = short(d.from)
+                lines.append(String(localized: "- \(label) from \(from)"))
+            }
         }
-        if !questions.isEmpty { lines += ["", "My questions:", questions] }
-        lines += ["", "Recorded by the patient in Dawnwell. Not medical advice."]
+        if !questions.isEmpty { lines += ["", String(localized: "My questions:"), questions] }
+        lines += ["", String(localized: "Recorded by the patient in Dawnwell. Not medical advice.")]
         return lines.joined(separator: "\n")
     }
 
-    static func num(_ v: Double) -> String { String(format: "%.1f", v) }
+    /// One decimal, with the decimal mark of the user's region ("97.5", "97,5").
+    static func num(_ v: Double) -> String { v.formatted(.number.precision(.fractionLength(1)).grouping(.never)) }
 }

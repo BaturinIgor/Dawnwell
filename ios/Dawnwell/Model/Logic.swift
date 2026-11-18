@@ -49,9 +49,9 @@ enum Logic {
 
     static func greeting(_ date: Date = Date(), calendar: Calendar = .current) -> String {
         let h = calendar.component(.hour, from: date)
-        if h < 12 { return "Good morning" }
-        if h < 18 { return "Good afternoon" }
-        return "Good evening"
+        if h < 12 { return String(localized: "Good morning") }
+        if h < 18 { return String(localized: "Good afternoon") }
+        return String(localized: "Good evening")
     }
 
     /// Reads "72.5" or "72,5". Returns nil for anything that isn't a positive number.

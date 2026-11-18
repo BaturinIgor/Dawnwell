@@ -25,7 +25,7 @@ struct SymptomDetailView: View {
                             ChipView(label: k.label, selected: kind == k, warm: true) { pick(k) }
                         }
                     }
-                    Text("How strong is the \(kind.label.lowercased())?")
+                    Text(question(kind))
                         .font(.system(size: 26, weight: .heavy))
                         .foregroundStyle(Palette.ink)
                     ScaleView(value: severity, words: Catalog.severityWords) { severity = $0 }
@@ -42,7 +42,7 @@ struct SymptomDetailView: View {
                     Text("Anything that might have caused it?").font(.system(size: 15, weight: .heavy))
                     FlowLayout {
                         ForEach(Catalog.triggers, id: \.self) { t in
-                            ChipView(label: t, selected: triggers.contains(t)) {
+                            ChipView(label: Loc.text(t), selected: triggers.contains(t)) {
                                 if let i = triggers.firstIndex(of: t) { triggers.remove(at: i) } else { triggers.append(t) }
                             }
                         }
@@ -77,6 +77,18 @@ struct SymptomDetailView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
             }
             .onAppear { pick(kind) }
+        }
+    }
+
+    /// Asked per symptom, so each language can phrase it naturally.
+    private func question(_ k: SymptomKind) -> String {
+        switch k {
+        case .nausea: return String(localized: "How strong is the nausea?")
+        case .constipation: return String(localized: "How strong is the constipation?")
+        case .heartburn: return String(localized: "How strong is the heartburn?")
+        case .fatigue: return String(localized: "How strong is the tiredness?")
+        case .noAppetite: return String(localized: "How strong is the loss of appetite?")
+        case .good: return String(localized: "How good do you feel?")
         }
     }
 

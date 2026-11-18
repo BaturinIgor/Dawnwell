@@ -21,17 +21,17 @@ enum CloudStatus {
 
     static func message(storeSyncs: Bool, account: Account) -> String {
         guard storeSyncs else {
-            return "Your logs are kept on this iPhone. iCloud copy isn't available in this build. Use a backup file to keep a copy."
+            return String(localized: "Your logs are kept on this iPhone. iCloud copy isn't available in this build. Use a backup file to keep a copy.")
         }
         switch account {
         case .available:
-            return "Your logs are on this iPhone and copied to your own iCloud. Dawnwell has no server and never sees them."
+            return String(localized: "Your logs are on this iPhone and copied to your own iCloud. Dawnwell has no server and never sees them.")
         case .noAccount:
-            return "Your logs are on this iPhone. Sign in to iCloud in Settings to keep a copy there, or save a backup file."
+            return String(localized: "Your logs are on this iPhone. Sign in to iCloud in Settings to keep a copy there, or save a backup file.")
         case .restricted:
-            return "iCloud is restricted on this iPhone, so your logs stay here. Save a backup file to keep a copy."
+            return String(localized: "iCloud is restricted on this iPhone, so your logs stay here. Save a backup file to keep a copy.")
         case .unavailable, .unknown:
-            return "Your logs are on this iPhone. The iCloud copy will catch up when iCloud is reachable."
+            return String(localized: "Your logs are on this iPhone. The iCloud copy will catch up when iCloud is reachable.")
         }
     }
 }

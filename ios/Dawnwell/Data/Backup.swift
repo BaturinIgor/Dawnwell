@@ -72,7 +72,8 @@ struct Snapshot: Codable, Equatable {
 
     var summary: String {
         let d = days.count, w = weights.count
-        return "\(d) day\(d == 1 ? "" : "s") of logs, \(w) weight entr\(w == 1 ? "y" : "ies")"
+        let logs = String(localized: "\(d) days of logs"), entries = String(localized: "\(w) weight entries")
+        return String(localized: "\(logs), \(entries)")
     }
 }
 
@@ -96,9 +97,9 @@ struct BackupFile: Codable {
         case notABackup, newerVersion, damaged
         var errorDescription: String? {
             switch self {
-            case .notABackup: return "This file isn't a Dawnwell backup."
-            case .newerVersion: return "This backup was made by a newer version of Dawnwell. Update the app, then try again."
-            case .damaged: return "This backup file is damaged and can't be read."
+            case .notABackup: return String(localized: "This file isn't a Dawnwell backup.")
+            case .newerVersion: return String(localized: "This backup was made by a newer version of Dawnwell. Update the app, then try again.")
+            case .damaged: return String(localized: "This backup file is damaged and can't be read.")
             }
         }
     }

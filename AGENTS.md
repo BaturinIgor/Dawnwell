@@ -4,7 +4,16 @@ Dawnwell is a native iOS app in SwiftUI (iOS 17+). The project lives in `ios/` a
 
 - The app never suggests or changes a dose. Medication details come only from what the user copies from their label.
 - User data must never be lost. Never delete or overwrite the store; on errors, fall back or roll back.
-- UI text is in English.
+- UI text is written in English and translated into 17 more languages (see Translations below).
 - Every change comes with unit tests in `ios/DawnwellTests`, and CI (`.github/workflows/ios.yml`) must be green before merging.
 - Colors come from `ios/Dawnwell/UI/Theme.swift` (light and dark pairs). `PaletteTests` checks contrast in both themes; add new pairs there.
 - Keep logic pure and testable in `Model/`; views stay thin.
+
+## Translations
+
+- Write UI text as `Text("…")` literals or `String(localized: "…")`; the English text is the key. A helper that shows a text it receives takes a `LocalizedStringKey`, or a `String` the caller already localized.
+- Don't put a ternary of string literals inside `Text(…)` or `Button(…)`; it skips translation. Use `cond ? Text("a") : Text("b")`.
+- Values stored in the database stay English (food names, triggers, meal names, dose labels). Show them with `Loc.text`, `Meal.label` or `Loc.doseDaily`.
+- Translations live in `ios/Localization/<lang>.json`. Add the English key to `en.json` and every other file, then run `python3 ios/scripts/localize.py` to write the `.strings`, `.stringsdict` and `InfoPlist.strings` files. Never edit the generated files.
+- Counts that change the word ("1 tablet", "3 tablets") are plural keys: `{"one": "…", "other": "…"}`, with `few` and `many` for Polish.
+- `ios/scripts/extract_strings.py --check` lists any text in the code that has no translation. CI runs both checks.
