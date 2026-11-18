@@ -1,0 +1,105 @@
+name: TestFlight
+
+# Builds a signed release and uploads it to App Store Connect (TestFlight).
+# Run it by hand: Actions -> TestFlight -> Run workflow.
+#
+# Needs three repository secrets from an App Store Connect API key with the Admin role
+# (Users and Access -> Integrations -> App Store Connect API). Admin lets Xcode create the
+# distribution certificate and profiles in the cloud, so no certificate files are stored here.
+#   ASC_KEY_ID       the key's ID
+#   ASC_ISSUER_ID    the issuer ID shown above the keys list
+#   ASC_PRIVATE_KEY  the whole contents of the downloaded AuthKey_XXXX.p8 file
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: macos-15
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check secrets
+        env:
+          KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ISSUER: ${{ secrets.ASC_ISSUER_ID }}
+          KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+        run: |
+          missing=""
+          [ -z "$KEY_ID" ] && missing="$missing ASC_KEY_ID"
+          [ -z "$ISSUER" ] && missing="$missing ASC_ISSUER_ID"
+          [ -z "$KEY" ] && missing="$missing ASC_PRIVATE_KEY"
+          if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing"; exit 1; fi
+
+      - name: Generate project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Write API key
+        env:
+          KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/asc"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/asc/AuthKey.p8"
+          chmod 600 "$RUNNER_TEMP/asc/AuthKey.p8"
+
+      - name: Archive
+        env:
+          KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ISSUER: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project Dawnwell.xcodeproj \
+            -scheme Dawnwell \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Dawnwell.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/asc/AuthKey.p8" \
+            -authenticationKeyID "$KEY_ID" \
+            -authenticationKeyIssuerID "$ISSUER" \
+            CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|ARCHIVE (SUCCEEDED|FAILED)" || (tail -150 "$RUNNER_TEMP/archive.log"; exit 1)
+
+      - name: Upload to App Store Connect
+        env:
+          KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ISSUER: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>46V47ZSX5V</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          PLIST
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Dawnwell.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/asc/AuthKey.p8" \
+            -authenticationKeyID "$KEY_ID" \
+            -authenticationKeyIssuerID "$ISSUER"
+          echo "Uploaded build ${{ github.run_number }}. It shows in TestFlight after Apple processes it (10-30 min)."
+
+      - name: Remove API key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/asc"
