@@ -70,7 +70,7 @@ struct OnboardingView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "checkmark")
                         .font(.system(size: 13, weight: .heavy))
-                        .foregroundStyle(Palette.accent)
+                        .foregroundStyle(Palette.accentText)
                         .frame(width: 28, height: 28)
                         .background(Palette.accentSoft, in: Circle())
                     Text(line).foregroundStyle(Palette.inkSoft)
@@ -96,7 +96,7 @@ struct OnboardingView: View {
                         Spacer()
                         Image(systemName: medication == m ? "largecircle.fill.circle" : "circle")
                             .font(.system(size: 22))
-                            .foregroundStyle(medication == m ? Palette.accent : Color(hex: 0xB9C2BB))
+                            .foregroundStyle(medication == m ? Palette.accentText : Palette.muted)
                     }
                     .padding(.horizontal, 16)
                     .frame(minHeight: 56)

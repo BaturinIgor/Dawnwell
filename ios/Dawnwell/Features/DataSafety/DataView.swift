@@ -66,7 +66,7 @@ struct DataView: View {
                             Spacer()
                             Button("Restore") { askRestore(c) }
                                 .font(.subheadline.weight(.bold))
-                                .foregroundStyle(Palette.accent)
+                                .foregroundStyle(Palette.accentText)
                         }
                         .frame(minHeight: 44)
                     }

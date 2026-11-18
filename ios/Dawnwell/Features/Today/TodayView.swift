@@ -132,8 +132,8 @@ struct TodayView: View {
                         }
                         .padding(.horizontal, 12)
                         .frame(minHeight: 44)
-                        .background(Color(hex: 0xFFF8F3), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color(hex: 0xF0DCCB), lineWidth: 1.5))
+                        .background(Palette.warmSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Palette.warmLight, lineWidth: 1.5))
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Add \(f.shortName), \(f.protein) grams protein")
@@ -317,10 +317,10 @@ struct WeekStrip: View {
                     Text(d.formatted(.dateTime.day()))
                         .font(.system(size: 17, weight: .heavy))
                     Circle()
-                        .fill(taken.contains(key) ? Palette.warm : (isToday ? Color.white.opacity(0.4) : Palette.line))
+                        .fill(taken.contains(key) ? Palette.warm : (isToday ? Palette.onInk.opacity(0.4) : Palette.line))
                         .frame(width: 6, height: 6)
                 }
-                .foregroundStyle(isToday ? Color.white : Palette.ink)
+                .foregroundStyle(isToday ? Palette.onInk : Palette.ink)
                 .frame(maxWidth: .infinity, minHeight: 68)
                 .background(isToday ? Palette.ink : Palette.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .accessibilityElement(children: .ignore)

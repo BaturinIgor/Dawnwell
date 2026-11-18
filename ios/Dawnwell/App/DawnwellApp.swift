@@ -19,8 +19,7 @@ struct DawnwellApp: App {
                     StorageProblemView()
                 }
             }
-            .preferredColorScheme(.light)
-            .tint(Palette.accent)
+            .tint(Palette.accentText)
         }
     }
 }
