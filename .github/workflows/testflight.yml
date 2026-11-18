@@ -12,12 +12,6 @@ name: TestFlight
 
 on:
   workflow_dispatch:
-    inputs:
-      cloudkit:
-        description: 'iCloud environment. Use Development once to create the iCloud schema, then Production.'
-        type: choice
-        options: [Production, Development]
-        default: Production
 
 concurrency:
   group: testflight
@@ -82,7 +76,6 @@ jobs:
             -authenticationKeyID "$KEY_ID" \
             -authenticationKeyIssuerID "$ISSUER" \
             CODE_SIGN_STYLE=Automatic \
-            DAWNWELL_EXTRA_FLAGS="${{ inputs.cloudkit == 'Development' && 'CLOUDKIT_SCHEMA_INIT' || '' }}" \
             CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|ARCHIVE (SUCCEEDED|FAILED)" || (tail -150 "$RUNNER_TEMP/archive.log"; exit 1)
 
@@ -101,7 +94,7 @@ jobs:
             <key>teamID</key><string>46V47ZSX5V</string>
             <key>signingStyle</key><string>automatic</string>
             <key>manageAppVersionAndBuildNumber</key><false/>
-            <key>iCloudContainerEnvironment</key><string>${{ inputs.cloudkit || 'Production' }}</string>
+            <key>iCloudContainerEnvironment</key><string>Production</string>
           </dict>
           </plist>
           PLIST
@@ -113,7 +106,7 @@ jobs:
             -authenticationKeyPath "$RUNNER_TEMP/asc/AuthKey.p8" \
             -authenticationKeyID "$KEY_ID" \
             -authenticationKeyIssuerID "$ISSUER"
-          echo "Uploaded build ${{ github.run_number }} (iCloud: ${{ inputs.cloudkit || 'Production' }}). It shows in TestFlight after Apple processes it (10-30 min)."
+          echo "Uploaded build ${{ github.run_number }}. It shows in TestFlight after Apple processes it (10-30 min)."
 
       - name: Remove API key
         if: always()

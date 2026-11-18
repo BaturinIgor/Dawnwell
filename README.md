@@ -69,7 +69,9 @@ design/                      app icon sources (SVG)
 
 iCloud syncs only record types that exist in the container's Production schema.
 
-1. Actions → TestFlight → Run workflow with **iCloud environment: Development**. This build creates the record types on first launch (`CloudSchema`), in a throwaway store.
-2. Install it from TestFlight, signed in to iCloud, open it once on Wi-Fi.
-3. In [CloudKit Console](https://icloud.developer.apple.com/) → `iCloud.com.dawnwell.app` → Schema, check the `CD_` record types are there, then **Deploy Schema Changes** to Production.
-4. From then on, run the workflow with **Production** (the default). Never submit a Development build for review.
+The record types are written down in `ios/CloudKit/schema.ckdb`. `CloudSchemaTests` checks that file against the app's data model, so a model change without a schema change fails CI. (App Store and TestFlight builds always use Production, so the usual "run a Development build once" route needs a Mac.)
+
+1. In [CloudKit Console](https://icloud.developer.apple.com/), open your profile → Manage Tokens → create a **Management Token**. Save it as the repository secret `CLOUDKIT_MANAGEMENT_TOKEN`.
+2. Actions → iCloud schema → Run workflow. It validates the file and imports it into the Development environment with `cktool`, then prints the schema it reads back.
+3. In CloudKit Console → `iCloud.com.dawnwell.app` → Schema, check the `CD_` record types, then **Deploy Schema Changes** to Production.
+4. Do this again after every model change (a new `SchemaV2`), before releasing it.

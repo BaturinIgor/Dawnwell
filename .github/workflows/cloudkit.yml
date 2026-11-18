@@ -1,0 +1,65 @@
+name: iCloud schema
+
+# Imports ios/CloudKit/schema.ckdb into the iCloud container's Development environment with cktool.
+# Then deploy it to Production by hand: CloudKit Console -> iCloud.com.dawnwell.app -> Schema ->
+# Deploy Schema Changes. Run it by hand: Actions -> iCloud schema -> Run workflow.
+# "check" only signs in, validates the file and prints the schema that is there now.
+#
+# Needs the repository secret CLOUDKIT_MANAGEMENT_TOKEN: CloudKit Console -> your profile ->
+# Manage Tokens -> Management Token.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'What to do'
+        type: choice
+        options: [check, import]
+        default: check
+
+concurrency:
+  group: cloudkit-schema
+  cancel-in-progress: false
+
+env:
+  TEAM: 46V47ZSX5V
+  CONTAINER: iCloud.com.dawnwell.app
+
+jobs:
+  schema:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Xcode 26 or later
+        run: |
+          X=$(ls -d /Applications/Xcode_*.app | grep -E '/Xcode_(2[6-9]|[3-9][0-9])[0-9.]*\.app$' | sort -V | tail -1)
+          [ -n "$X" ] || { ls -d /Applications/Xcode*.app; echo "::error::No Xcode 26 or later on this runner"; exit 1; }
+          sudo xcode-select -s "$X"
+          xcodebuild -version
+      - name: Check secret
+        env:
+          CLOUDKIT_MANAGEMENT_TOKEN: ${{ secrets.CLOUDKIT_MANAGEMENT_TOKEN }}
+        run: |
+          [ -n "$CLOUDKIT_MANAGEMENT_TOKEN" ] || { echo "::error::Add the CLOUDKIT_MANAGEMENT_TOKEN repository secret first."; exit 1; }
+      - name: Schema in Development now
+        env:
+          CLOUDKIT_MANAGEMENT_TOKEN: ${{ secrets.CLOUDKIT_MANAGEMENT_TOKEN }}
+        run: xcrun cktool export-schema --team-id "$TEAM" --container-id "$CONTAINER" --environment development
+      - name: Schema in Production now
+        env:
+          CLOUDKIT_MANAGEMENT_TOKEN: ${{ secrets.CLOUDKIT_MANAGEMENT_TOKEN }}
+        run: xcrun cktool export-schema --team-id "$TEAM" --container-id "$CONTAINER" --environment production
+      - name: Validate the file
+        env:
+          CLOUDKIT_MANAGEMENT_TOKEN: ${{ secrets.CLOUDKIT_MANAGEMENT_TOKEN }}
+        run: xcrun cktool validate-schema --team-id "$TEAM" --container-id "$CONTAINER" --environment development --file ios/CloudKit/schema.ckdb
+      - name: Import into Development
+        if: inputs.mode == 'import'
+        env:
+          CLOUDKIT_MANAGEMENT_TOKEN: ${{ secrets.CLOUDKIT_MANAGEMENT_TOKEN }}
+        run: |
+          xcrun cktool import-schema --team-id "$TEAM" --container-id "$CONTAINER" --environment development --file ios/CloudKit/schema.ckdb
+          echo "Imported. Schema in Development now:"
+          xcrun cktool export-schema --team-id "$TEAM" --container-id "$CONTAINER" --environment development
+          echo "::notice::Now deploy it: CloudKit Console -> $CONTAINER -> Schema -> Deploy Schema Changes to Production."
