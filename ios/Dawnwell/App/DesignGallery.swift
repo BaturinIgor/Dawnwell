@@ -13,7 +13,7 @@ enum DesignFlags {
         #endif
     }
 
-    static func value(_ name: String) -> String? {
+    static func argument(_ name: String) -> String? {
         #if DEBUG
         guard Persistence.isDemo else { return nil }
         let args = ProcessInfo.processInfo.arguments
@@ -25,12 +25,12 @@ enum DesignFlags {
     }
 
     /// First tab to show (0 Today, 1 Progress, 2 Report, 3 Learn).
-    static var initialTab: Int { Int(value("-design-tab") ?? "") ?? 0 }
+    static var initialTab: Int { Int(argument("-design-tab") ?? "") ?? 0 }
     /// First onboarding step (0 welcome, 1 tablet, 2 goals).
-    static var onboardingStep: Int { Int(value("-design-step") ?? "") ?? 0 }
+    static var onboardingStep: Int { Int(argument("-design-step") ?? "") ?? 0 }
     /// Plus unlocked without a purchase.
     static var plus: Bool { has("-design-plus") }
-    static var alert: String? { value("-design-alert") }
+    static var alert: String? { argument("-design-alert") }
 }
 
 #if DEBUG
@@ -40,7 +40,7 @@ enum DesignScreen: String, Identifiable {
     var id: String { rawValue }
     var isPush: Bool { self == .medication || self == .data }
 
-    static var requested: DesignScreen? { DesignFlags.value("-design-screen").flatMap(DesignScreen.init(rawValue:)) }
+    static var requested: DesignScreen? { DesignFlags.argument("-design-screen").flatMap(DesignScreen.init(rawValue:)) }
 
     @MainActor @ViewBuilder
     var content: some View {
