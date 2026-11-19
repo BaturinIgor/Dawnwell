@@ -9,6 +9,8 @@ enum CloudStatus {
     @MainActor static var storeSyncs = false
 
     static func account() async -> Account {
+        // Without iCloud sync the build may have no iCloud entitlement, and CKContainer then stops the app.
+        guard await storeSyncs else { return .unavailable }
         guard let status = try? await CKContainer(identifier: Persistence.cloudContainer).accountStatus() else { return .unavailable }
         switch status {
         case .available: return .available
