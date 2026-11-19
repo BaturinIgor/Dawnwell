@@ -4,7 +4,7 @@ import SwiftUI
 struct OnboardingView: View {
     @Environment(\.modelContext) private var context
 
-    @State private var step = 0
+    @State private var step = DesignFlags.onboardingStep
     @State private var medication: Medication = .oralSemaglutide
     @State private var dose = ""
     @State private var doseTime = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date()) ?? Date()

@@ -10,8 +10,14 @@ struct DawnwellApp: App {
             container = try? Persistence.makeContainer(inMemory: true)
         } else if Persistence.isDemo {
             let demo = try? Persistence.makeContainer(inMemory: true)
-            if let demo { try? Repository(context: demo.mainContext).replaceAll(with: DemoData.snapshot()) }
-            container = demo
+            var snapshot = DemoData.snapshot()
+            // Design catalog states (debug builds only): nothing logged yet, or not set up yet.
+            if DesignFlags.has("-design-empty") {
+                snapshot.days = []; snapshot.foods = []; snapshot.symptoms = []; snapshot.weights = []
+            }
+            if DesignFlags.has("-design-onboarding") { snapshot.profile?.onboarded = false }
+            if let demo { try? Repository(context: demo.mainContext).replaceAll(with: snapshot) }
+            container = DesignFlags.has("-design-storage-problem") ? nil : demo
         } else if let opened = try? Persistence.openAppStore() {
             container = opened.0
             CloudStatus.storeSyncs = opened.syncing
@@ -24,7 +30,7 @@ struct DawnwellApp: App {
         WindowGroup {
             Group {
                 if let container {
-                    RootView().modelContainer(container)
+                    RootView().modelContainer(container).designPresenter()
                 } else {
                     // Never start over when saved data can't be opened: show this and write nothing.
                     StorageProblemView()

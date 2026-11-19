@@ -1,0 +1,91 @@
+name: Design screens
+
+# Mockups of every screen, state and popup on the 6.9" iPhone, light and dark, from the demo data.
+# DawnwellUITests/DesignCatalogUITests opens each screen through ios/Dawnwell/App/DesignGallery.swift.
+# The PNGs are committed to design/<version>/screens on the same branch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      language:
+        description: "Interface language (en, ru, ...)"
+        default: "en"
+  push:
+    branches:
+      - "design/**"
+  pull_request:
+    paths:
+      - "ios/Dawnwell/App/DesignGallery.swift"
+      - "ios/DawnwellUITests/DesignCatalogUITests.swift"
+      - ".github/workflows/design.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: design-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shots:
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - name: Generate project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Boot a 6.9-inch iPhone
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          runtimes = sorted((k for k in devices if ".iOS-" in k), key=lambda k: [int(p) for p in k.rsplit(".iOS-", 1)[1].split("-")])
+          for rt in reversed(runtimes):
+              big = [d for d in devices[rt] if "Pro Max" in d["name"]]
+              if big:
+                  print(big[-1]["udid"]); break
+          ')
+          [ -n "$UDID" ] || { echo "::error::No Pro Max simulator"; exit 1; }
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Take design screenshots
+        env:
+          TEST_RUNNER_DESIGN_DIR: ${{ runner.temp }}/design
+          TEST_RUNNER_DESIGN_LANG: ${{ inputs.language || 'en' }}
+        run: |
+          mkdir -p "$TEST_RUNNER_DESIGN_DIR"
+          set -o pipefail
+          xcodebuild test \
+            -project Dawnwell.xcodeproj \
+            -scheme Screenshots \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -only-testing:DawnwellUITests/DesignCatalogUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            > xcodebuild.log 2>&1 || { grep -E "error:|failed" xcodebuild.log | sort -u | head -80; tail -80 xcodebuild.log; exit 1; }
+          grep -E "==== DESIGN" xcodebuild.log || true
+          ls "$TEST_RUNNER_DESIGN_DIR" | wc -l
+      - name: Commit screenshots to design/<version>/screens
+        run: |
+          set -euo pipefail
+          VERSION=$(grep -m1 'MARKETING_VERSION' project.yml | sed 's/.*: *//; s/"//g' | cut -d. -f1,2)
+          DEST="../design/$VERSION/screens"
+          rm -rf "$DEST" && mkdir -p "$DEST"
+          cp "${{ runner.temp }}"/design/*.png "$DEST"/
+          cp "${{ runner.temp }}"/design/report-*.txt "$DEST"/ || true
+          cd ..
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "design/$VERSION/screens"
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Design screens $VERSION: $(ls design/$VERSION/screens/*.png | wc -l | tr -d ' ') screenshots"
+          git push origin HEAD:${{ github.head_ref || github.ref_name }}

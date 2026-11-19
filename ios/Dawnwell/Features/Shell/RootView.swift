@@ -40,16 +40,22 @@ struct RootView: View {
 }
 
 struct MainTabs: View {
+    @State private var tab = DesignFlags.initialTab
+
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             TodayView()
                 .tabItem { Label("Today", systemImage: "sun.max") }
+                .tag(0)
             ProgressScreen()
                 .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
+                .tag(1)
             ReportView()
                 .tabItem { Label("Report", systemImage: "doc.text") }
+                .tag(2)
             LearnView()
                 .tabItem { Label("Learn", systemImage: "book") }
+                .tag(3)
         }
     }
 }

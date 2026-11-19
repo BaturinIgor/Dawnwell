@@ -89,6 +89,19 @@ struct DataView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: refresh)
         .task { cloudAccount = await CloudStatus.account() }
+        .task {
+            // Design catalog (debug builds only): the restore question and the unreadable-file message.
+            switch DesignFlags.alert {
+            case "restore":
+                try? await Task.sleep(for: .milliseconds(800))
+                let date = Date().addingTimeInterval(-86_400).formatted(date: .abbreviated, time: .shortened)
+                pending = Pending(title: String(localized: "Restore the copy from \(date)?"), snapshot: repo.snapshot())
+            case "fileError":
+                message = String(localized: "That file couldn't be opened.")
+            default:
+                break
+            }
+        }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
             switch result {
             case .success(let url): readFile(url)
