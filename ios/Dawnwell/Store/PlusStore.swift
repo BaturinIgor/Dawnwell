@@ -42,6 +42,7 @@ final class PlusStore {
     }
 
     func refresh() async {
+        if DesignFlags.plus { isPlus = true; return }
         var active = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let t) = result, Plus.productIDs.contains(t.productID), t.revocationDate == nil {
