@@ -31,7 +31,7 @@ If you allow it, Dawnwell reads your body weight from Apple Health to show it on
 
 ## Anonymous usage statistics
 
-To learn which parts of the app help people, Dawnwell counts a few anonymous events, such as "finished setup", "logged a tablet", "opened Plus" or "bought Plus" with the plan name. They are sent to TelemetryDeck, an analytics service built for privacy. Each event carries the app version, iOS version and device model, and a random identifier that is scrambled on your phone before it is sent. There is no name, email, Apple ID or advertising identifier, and the events are not linked to you.
+To learn which parts of the app help people, Dawnwell counts a few anonymous events, such as "finished setup", "logged a tablet", "opened Plus" or "bought Plus" with the plan name. They are sent to Google Analytics for Firebase. Along with the events, Firebase receives a random install ID, the app version, iOS version and device model, and a rough location (country or region) worked out from the IP address. There is no name, email, Apple ID or advertising identifier, ad signals are turned off, and the events are not linked to you or used for tracking. Google's handling of this data is described at https://firebase.google.com/support/privacy.
 
 Nothing you log is ever in these events: no medication, dose, tablet times, food, protein, symptoms, weight or notes, and nothing from Apple Health.
 

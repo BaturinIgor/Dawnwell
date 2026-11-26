@@ -4,10 +4,11 @@ options:
   deploymentTarget:
     iOS: "17.0"
   createIntermediateGroups: true
+# Google Analytics for Firebase: anonymous usage, no IDFA (same setup as the other apps).
 packages:
-  TelemetryDeck:
-    url: https://github.com/TelemetryDeck/SwiftSDK
-    from: 2.0.0
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: "13.0.0"
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -23,7 +24,20 @@ targets:
       - Shared
     dependencies:
       - target: DawnwellWidgets
-      - package: TelemetryDeck
+      # FirebaseAnalyticsCore, not FirebaseAnalytics: no IDFA (AdSupport). The module is still FirebaseAnalytics.
+      - package: Firebase
+        product: FirebaseAnalyticsCore
+    info:
+      path: Dawnwell/Info.plist
+      properties:
+        # GoogleService-Info.plist is added only by the TestFlight build (scripts/add_firebase_config.sh).
+        FirebaseAutomaticScreenReportingEnabled: false
+        FirebaseAppDelegateProxyEnabled: false
+        GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS: false
+        GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED: false
+        GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED: false
+        # Nothing is collected until Analytics.start() turns it on, and only if the user has not opted out.
+        FIREBASE_ANALYTICS_COLLECTION_ENABLED: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dawnwell.app
@@ -42,6 +56,8 @@ targets:
         INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Dawnwell only reads your weight from Apple Health. It never writes anything to Apple Health."
         CODE_SIGN_ENTITLEMENTS: Dawnwell/Dawnwell.entitlements
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: "NO"
+        # Firebase through Swift Package Manager needs -ObjC.
+        OTHER_LDFLAGS: ["$(inherited)", "-ObjC"]
   DawnwellWidgets:
     type: app-extension
     platform: iOS

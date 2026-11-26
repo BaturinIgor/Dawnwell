@@ -1,39 +1,79 @@
+import FirebaseAnalytics
+import FirebaseCore
 import Foundation
-import TelemetryDeck
+import StoreKit
 
-/// Anonymous usage counts, sent to TelemetryDeck: which steps people reach, never what they log.
-/// No health data ever goes in a signal: no medication, dose, weight, food, symptom or time of a dose.
-/// Off when `appID` is empty, in tests and demo runs, and when the user turns it off in "Your data".
+/// Anonymous usage through Google Analytics for Firebase: which steps people reach, never what they log.
+/// No health data ever goes in an event: no medication, dose, weight, food, symptom, note or time of a dose.
+/// No IDFA (FirebaseAnalyticsCore, no AdSupport); IDFV and ad signals are off in Info.plist.
+/// Nothing is sent without GoogleService-Info.plist (only the TestFlight / App Store build gets it),
+/// in tests and demo runs, in Debug builds, on the simulator, or after the user turns it off in "Your data".
+@MainActor
 enum Analytics {
-    /// TelemetryDeck app ID. Not a secret: it ships inside the app either way.
-    static let appID = ""
-    static let optOutKey = "analyticsOptedOut"
+    nonisolated static let optOutKey = "analyticsOptedOut"
 
     enum Event: String, CaseIterable {
-        case onboardingFinished = "Onboarding.finished"
-        case tabletTaken = "Tablet.taken"
-        case paywallShown = "Paywall.shown"
-        case purchaseCompleted = "Purchase.completed"
-        case purchaseRestored = "Purchase.restored"
-        case reportShared = "Report.shared"
+        case onboardingFinished = "onboarding_finished"
+        case tabletTaken = "tablet_taken"
+        case paywallShown = "paywall_shown"
+        case purchaseCompleted = "purchase_completed"
+        case purchaseRestored = "purchase_restored"
+        case reportShared = "report_shared"
     }
 
-    private static var started = false
+    private static var configured = false
 
-    static var isEnabled: Bool {
-        !appID.isEmpty && !Persistence.isSandboxed && !UserDefaults.standard.bool(forKey: optOutKey)
+    private static var configPath: String? { Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") }
+
+    /// The build can send at all: it has the Firebase config and is a release build on a device.
+    static var isAvailable: Bool {
+        guard configPath != nil, !Persistence.isSandboxed else { return false }
+        #if DEBUG || targetEnvironment(simulator)
+        return ProcessInfo.processInfo.arguments.contains("-AnalyticsDebug")
+        #else
+        return true
+        #endif
+    }
+
+    nonisolated static func isUserEnabled(_ defaults: UserDefaults = .standard) -> Bool {
+        !defaults.bool(forKey: optOutKey)
     }
 
     static func start() {
-        guard isEnabled, !started else { return }
-        TelemetryDeck.initialize(config: TelemetryDeck.Config(appID: appID))
-        started = true
+        guard isAvailable, !configured, let path = configPath,
+              // A broken plist would crash FirebaseApp.configure(); this way there is just no analytics.
+              let options = FirebaseOptions(contentsOfFile: path) else { return }
+        FirebaseApp.configure(options: options)
+        configured = true
+        // Collection is off in Info.plist (FIREBASE_ANALYTICS_COLLECTION_ENABLED = false) and only turned on here.
+        let enabled = isUserEnabled()
+        FirebaseAnalytics.Analytics.setAnalyticsCollectionEnabled(enabled)
+        if enabled { setBuildType() }
     }
 
-    /// `parameters` must never carry anything the user logged. Plan names and screen names are fine.
+    /// The switch in "Your data".
+    static func setEnabled(_ enabled: Bool) {
+        UserDefaults.standard.set(!enabled, forKey: optOutKey)
+        guard configured else { return }
+        FirebaseAnalytics.Analytics.setAnalyticsCollectionEnabled(enabled)
+        if enabled { setBuildType() } else { FirebaseAnalytics.Analytics.resetAnalyticsData() }
+    }
+
+    /// `parameters` must never carry anything the user logged. Plan and format names are fine.
     static func send(_ event: Event, _ parameters: [String: String] = [:]) {
-        guard isEnabled else { return }
-        start()
-        TelemetryDeck.signal(event.rawValue, parameters: parameters)
+        guard configured, isUserEnabled() else { return }
+        FirebaseAnalytics.Analytics.logEvent(event.rawValue, parameters: parameters.isEmpty ? nil : parameters)
+    }
+
+    /// user property build_type (testflight / appstore), so reports can leave out test installs.
+    private static func setBuildType() {
+        Task {
+            guard let result = try? await AppTransaction.shared else { return }
+            let environment: AppStore.Environment
+            switch result {
+            case .verified(let t), .unverified(let t, _): environment = t.environment
+            }
+            FirebaseAnalytics.Analytics.setUserProperty(environment == .production ? "appstore" : "testflight", forName: "build_type")
+        }
     }
 }

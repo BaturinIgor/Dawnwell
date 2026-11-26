@@ -66,9 +66,25 @@ final class ReviewPromptTests: XCTestCase {
     }
 }
 
+@MainActor
 final class AnalyticsTests: XCTestCase {
     func testNeverSendsFromTests() {
-        XCTAssertFalse(Analytics.isEnabled)
+        XCTAssertFalse(Analytics.isAvailable)
+    }
+
+    func testOptOutIsRemembered() {
+        let d = UserDefaults(suiteName: "AnalyticsTests")!
+        d.removePersistentDomain(forName: "AnalyticsTests")
+        XCTAssertTrue(Analytics.isUserEnabled(d))
+        d.set(true, forKey: Analytics.optOutKey)
+        XCTAssertFalse(Analytics.isUserEnabled(d))
+    }
+
+    /// Firebase allows letters, digits and _, up to 40 characters, starting with a letter.
+    func testEventNamesAreValidFirebaseNames() {
+        for e in Analytics.Event.allCases {
+            XCTAssertNotNil(e.rawValue.range(of: "^[a-z][a-z0-9_]{0,39}$", options: .regularExpression), e.rawValue)
+        }
     }
 
     /// Signal names are about steps in the app, never about what the user logged.

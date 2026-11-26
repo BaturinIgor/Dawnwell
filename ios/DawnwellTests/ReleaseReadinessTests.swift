@@ -10,12 +10,17 @@ final class ReleaseReadinessTests: XCTestCase {
             PropertyListSerialization.propertyList(from: Data(contentsOf: url), format: nil) as? [String: Any]
         )
         XCTAssertEqual(plist["NSPrivacyTracking"] as? Bool, false)
-        // Only anonymous product interaction for analytics: not linked to the user, not tracking.
+        // Only what Firebase Analytics collects, for analytics: never linked to the user, never tracking.
         let collected = try XCTUnwrap(plist["NSPrivacyCollectedDataTypes"] as? [[String: Any]])
-        XCTAssertEqual(collected.count, 1)
-        XCTAssertEqual(collected.first?["NSPrivacyCollectedDataType"] as? String, "NSPrivacyCollectedDataTypeProductInteraction")
-        XCTAssertEqual(collected.first?["NSPrivacyCollectedDataTypeLinked"] as? Bool, false)
-        XCTAssertEqual(collected.first?["NSPrivacyCollectedDataTypeTracking"] as? Bool, false)
+        XCTAssertEqual(Set(collected.compactMap { $0["NSPrivacyCollectedDataType"] as? String }), [
+            "NSPrivacyCollectedDataTypeProductInteraction", "NSPrivacyCollectedDataTypeDeviceID",
+            "NSPrivacyCollectedDataTypeCoarseLocation", "NSPrivacyCollectedDataTypePurchaseHistory",
+        ])
+        for c in collected {
+            XCTAssertEqual(c["NSPrivacyCollectedDataTypeLinked"] as? Bool, false)
+            XCTAssertEqual(c["NSPrivacyCollectedDataTypeTracking"] as? Bool, false)
+            XCTAssertEqual(c["NSPrivacyCollectedDataTypePurposes"] as? [String], ["NSPrivacyCollectedDataTypePurposeAnalytics"])
+        }
         let apis = try XCTUnwrap(plist["NSPrivacyAccessedAPITypes"] as? [[String: Any]])
         let defaults = apis.first { $0["NSPrivacyAccessedAPIType"] as? String == "NSPrivacyAccessedAPICategoryUserDefaults" }
         XCTAssertEqual(defaults?["NSPrivacyAccessedAPITypeReasons"] as? [String], ["CA92.1"])

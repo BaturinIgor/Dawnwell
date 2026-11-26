@@ -72,7 +72,7 @@ Medical/Treatment Information: Infrequent/Mild. Everything else: None.
 
 ## App Privacy ("nutrition label")
 
-From 1.0.1 the app sends anonymous usage events through TelemetryDeck (see `ios/Dawnwell/App/Analytics.swift`). Answer: **Data is collected** → **Usage Data → Product Interaction**, used for **Analytics**, **not linked** to the user, **not used for tracking**. Everything the user logs still stays on the device and in their private iCloud, which Apple does not count as collection.
+From 1.0.1 the app sends anonymous usage events through Google Analytics for Firebase, without IDFA (see `ios/Dawnwell/App/Analytics.swift`). Answer **Data is collected**, every type used for **Analytics** only, **not linked** to the user, **not used for tracking**: **Identifiers → Device ID**, **Usage Data → Product Interaction**, **Location → Coarse Location**, **Purchases → Purchase History**. This matches `PrivacyInfo.xcprivacy`. Everything the user logs still stays on the device and in their private iCloud, which Apple does not count as collection.
 
 ## Export compliance
 
