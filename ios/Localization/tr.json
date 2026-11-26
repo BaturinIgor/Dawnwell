@@ -406,5 +406,59 @@
  "Take it as your label says. No wait before food is set.": "Prospektüsünde yazdığı gibi alın. Yemekten önce bekleme ayarlanmadı.",
  "Take it as your label says.": "Prospektüsünde yazdığı gibi alın.",
  "Share anonymous usage": "Anonim kullanımı paylaş",
- "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "“Kurulum bitti” veya “Plus açıldı” gibi sayımlar; ad veya hesap yok. Kaydettiğiniz hiçbir şey gönderilmez."
+ "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "“Kurulum bitti” veya “Plus açıldı” gibi sayımlar; ad veya hesap yok. Kaydettiğiniz hiçbir şey gönderilmez.",
+ "%lld days": {
+  "one": "%lld gün",
+  "other": "%lld gün"
+ },
+ "%lld days without a tablet logged.": {
+  "one": "Tablet kaydedilmeyen %lld gün.",
+  "other": "Tablet kaydedilmeyen %lld gün."
+ },
+ "%lld of %lld days": {
+  "format": "%lld / %#@n@",
+  "one": "%lld gün",
+  "other": "%lld gün"
+ },
+ "Symptoms on %lld days, nausea on %lld": {
+  "format": "%#@n@ belirti, %lld gün bulantı",
+  "one": "%lld gün",
+  "other": "%lld gün"
+ },
+ "1 week free": "1 hafta ücretsiz",
+ "A clean PDF report and a 90-day summary for each visit": "Her ziyaret için düzenli bir PDF rapor ve 90 günlük özet",
+ "A record of your own logs, not medical advice. Your prescriber decides your dose.": "Kendi kayıtlarınızın özeti, tıbbi tavsiye değildir. Dozunuza reçeteyi yazan karar verir.",
+ "Add your dose in Medication. Each time it changes, you will see how you felt on it here.": "Dozunuzu İlaç bölümüne ekleyin. Her değiştiğinde nasıl hissettiğinizi burada görürsünüz.",
+ "Better than the week before": "Önceki haftadan daha iyi",
+ "Days with symptoms": "Belirtili günler",
+ "Days with symptoms each week, with dose changes marked": "Haftalık belirtili günler, doz değişiklikleri işaretli",
+ "Days with symptoms per week, last 12 weeks. Lines mark a new dose.": "Haftalık belirtili günler, son 12 hafta. Çizgiler yeni dozu gösterir.",
+ "Dose change": "Doz değişikliği",
+ "Doses and symptoms": "Dozlar ve belirtiler",
+ "Export CSV": "CSV olarak dışa aktar",
+ "Export CSV · Plus": "CSV olarak dışa aktar · Plus",
+ "Export everything to a spreadsheet (CSV)": "Her şeyi bir tabloya aktarın (CSV)",
+ "Most logged: %@": "En çok kaydedilen: %@",
+ "No symptoms logged": "Kaydedilmiş belirti yok",
+ "Protein goal": "Protein hedefi",
+ "See how your tablet, protein and symptoms went this week.": "Bu hafta tablet, protein ve belirtilerin nasıl gittiğine bakın.",
+ "Since %@ · day %lld": "%@ tarihinden beri · %lld. gün",
+ "Spreadsheet": "Tablo",
+ "Sunday at 6 PM, a look back at your week": "Pazar 18.00'de haftanıza bir bakış",
+ "Symptoms around each dose change, with days on every dose": "Her doz değişikliği çevresindeki belirtiler ve her dozdaki gün sayısı",
+ "Tablet": "Tablet",
+ "Taken at %@": "%@ saatinde alındı",
+ "Try every Plus feature free for 7 days. Cancel before it ends and you pay nothing.": "Tüm Plus özelliklerini 7 gün ücretsiz deneyin. Bitmeden iptal ederseniz hiçbir ücret ödemezsiniz.",
+ "Water goal": "Su hedefi",
+ "Week": "Hafta",
+ "Weight %@ this week": "Bu hafta kilo: %@",
+ "Worse than the week before": "Önceki haftadan daha kötü",
+ "You can eat, have coffee and take your other medicines now. Start with protein.": "Artık yemek yiyebilir, kahve içebilir ve diğer ilaçlarınızı alabilirsiniz. Proteinle başlayın.",
+ "Your days, food, symptoms and doses as CSV files for Numbers, Excel or Google Sheets.": "Günleriniz, yemekleriniz, belirtileriniz ve dozlarınız Numbers, Excel veya Google E-Tablolar için CSV dosyaları olarak.",
+ "Your first week shows here once you start logging.": "Kayıt yapmaya başladığınızda ilk haftanız burada görünür.",
+ "Your week": "Haftanız",
+ "Your week at a glance: tablet, protein, water and symptoms, next to the week before": "Haftanıza hızlı bakış: tablet, protein, su ve belirtiler, önceki haftayla karşılaştırmalı",
+ "Your week in Dawnwell": "Dawnwell'de haftanız",
+ "See your doses with Plus": "Dozlarınızı Plus ile görün",
+ "See your week with Plus": "Haftanızı Plus ile görün"
 }

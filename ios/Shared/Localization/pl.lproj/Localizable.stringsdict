@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni</string>
+			<key>many</key>
+			<string>%lld dni</string>
+			<key>one</key>
+			<string>%lld dzień</string>
+			<key>other</key>
+			<string>%lld dnia</string>
+		</dict>
+	</dict>
 	<key>%lld days of logs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -20,6 +40,26 @@
 			<string>%lld dzień zapisów</string>
 			<key>other</key>
 			<string>%lld dnia zapisów</string>
+		</dict>
+	</dict>
+	<key>%lld days without a tablet logged.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni bez zapisanej tabletki.</string>
+			<key>many</key>
+			<string>%lld dni bez zapisanej tabletki.</string>
+			<key>one</key>
+			<string>%lld dzień bez zapisanej tabletki.</string>
+			<key>other</key>
+			<string>%lld dnia bez zapisanej tabletki.</string>
 		</dict>
 	</dict>
 	<key>%lld days · worst %lld/5</key>
@@ -60,6 +100,26 @@
 			<string>%lld produkt</string>
 			<key>other</key>
 			<string>%lld produktu</string>
+		</dict>
+	</dict>
+	<key>%lld of %lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%lld z %#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni</string>
+			<key>many</key>
+			<string>%lld dni</string>
+			<key>one</key>
+			<string>%lld dnia</string>
+			<key>other</key>
+			<string>%lld dnia</string>
 		</dict>
 	</dict>
 	<key>%lld patterns found in your logs.</key>
@@ -200,6 +260,26 @@
 			<string>Widoczny %lld dzień z aplikacji Zdrowie.</string>
 			<key>other</key>
 			<string>Widoczne %lld dnia z aplikacji Zdrowie.</string>
+		</dict>
+	</dict>
+	<key>Symptoms on %lld days, nausea on %lld</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Objawy przez %#@n@, mdłości przez %lld</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>few</key>
+			<string>%lld dni</string>
+			<key>many</key>
+			<string>%lld dni</string>
+			<key>one</key>
+			<string>%lld dzień</string>
+			<key>other</key>
+			<string>%lld dnia</string>
 		</dict>
 	</dict>
 </dict>

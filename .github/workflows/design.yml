@@ -35,6 +35,13 @@ jobs:
         working-directory: ios
     steps:
       - uses: actions/checkout@v4
+      - name: Use Xcode 26 or later
+        run: |
+          # Firebase needs Swift tools 6.2, which comes with Xcode 26.
+          X=$(ls -d /Applications/Xcode_*.app | grep -E '/Xcode_(2[6-9]|[3-9][0-9])[0-9.]*\.app$' | sort -V | tail -1)
+          [ -n "$X" ] || { ls -d /Applications/Xcode*.app; echo "::error::No Xcode 26 or later on this runner"; exit 1; }
+          sudo xcode-select -s "$X"
+          xcodebuild -version
         with:
           ref: ${{ github.head_ref || github.ref_name }}
       - name: Generate project

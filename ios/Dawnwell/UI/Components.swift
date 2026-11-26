@@ -193,3 +193,28 @@ struct FlowLayout: Layout {
         }
     }
 }
+
+/// A Plus card for someone without Plus: their own numbers, blurred, with one button to unlock.
+/// Showing the real thing under glass tells people what they get better than a lock icon.
+struct PlusPreview<Content: View>: View {
+    let isPlus: Bool
+    let unlock: LocalizedStringKey
+    let action: () -> Void
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        if isPlus {
+            content()
+        } else {
+            content()
+                .blur(radius: 7)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+                .overlay {
+                    Button(action: action) { Label(unlock, systemImage: "lock.open.fill") }
+                        .buttonStyle(FilledButtonStyle())
+                        .padding(.horizontal, 24)
+                }
+        }
+    }
+}

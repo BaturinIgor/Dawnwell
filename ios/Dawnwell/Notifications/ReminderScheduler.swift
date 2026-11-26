@@ -16,7 +16,8 @@ enum ReminderScheduler {
             remindTablet: p.remindTablet, remindWaitOver: p.remindWaitOver, remindProtein: p.remindProtein,
             remindRefill: p.remindRefill, doseHour: p.doseHour, doseMinute: p.doseMinute, waitMinutes: p.waitMinutes,
             proteinTarget: p.proteinTarget, tabletsLeft: p.tabletsLeft, loggedDays: logged,
-            takenAtToday: todayLog?.takenAt, proteinToday: repo.foods(today).reduce(0) { $0 + $1.protein })
+            takenAtToday: todayLog?.takenAt, proteinToday: repo.foods(today).reduce(0) { $0 + $1.protein },
+            remindWeekly: NotificationActions.remindWeekly)
     }
 
     static func sync(repo: Repository) async {
@@ -40,6 +41,8 @@ enum ReminderScheduler {
             content.body = item.body
             content.sound = .default
             if item.kind == .waitOver || item.kind == .tablet { content.interruptionLevel = .timeSensitive }
+            if item.kind == .tablet { content.categoryIdentifier = NotificationActions.tabletCategory }
+            if item.kind == .weekly { content.userInfo = [NotificationActions.routeKey: AppRouter.progress] }
             let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: item.at)
             let request = UNNotificationRequest(identifier: prefix + item.id, content: content,
                                                 trigger: UNCalendarNotificationTrigger(dateMatching: parts, repeats: false))

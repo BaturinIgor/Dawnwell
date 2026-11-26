@@ -15,6 +15,9 @@ struct DataView: View {
     @State private var message: String?
     @State private var cloudAccount: CloudStatus.Account = .unknown
     @State private var shareUsage = Analytics.isUserEnabled()
+    @State private var plus = PlusStore.shared
+    @State private var csvFiles: [URL] = []
+    @State private var paywall: Plus.Source?
 
     private struct Pending: Identifiable {
         let id = UUID()
@@ -48,6 +51,21 @@ struct DataView: View {
                     }
                     Button("Restore from a file") { importing = true }
                         .buttonStyle(FilledButtonStyle(kind: .secondary))
+                }
+                .card()
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Spreadsheet").font(.system(size: 17, weight: .heavy))
+                    Text("Your days, food, symptoms and doses as CSV files for Numbers, Excel or Google Sheets.")
+                        .font(.footnote).foregroundStyle(Palette.muted)
+                    if !plus.isPlus {
+                        Button { paywall = .csvExport } label: { Label("Export CSV · Plus", systemImage: "lock.fill") }
+                            .buttonStyle(FilledButtonStyle(kind: .secondary))
+                            .accessibilityIdentifier("plus-csv")
+                    } else if !csvFiles.isEmpty {
+                        ShareLink(items: csvFiles) { Label("Export CSV", systemImage: "tablecells") }
+                            .buttonStyle(FilledButtonStyle(kind: .secondary))
+                    }
                 }
                 .card()
 
@@ -101,6 +119,8 @@ struct DataView: View {
         .navigationTitle("Your data")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: refresh)
+        .onChange(of: plus.isPlus) { _, _ in refresh() }
+        .sheet(item: $paywall) { PaywallView(source: $0) }
         .task { cloudAccount = await CloudStatus.account() }
         .task {
             // Design catalog (debug builds only): the restore question and the unreadable-file message.
@@ -134,6 +154,7 @@ struct DataView: View {
     private func refresh() {
         copies = store.list()
         exportURL = try? DataSafety.exportFile(repo: repo)
+        csvFiles = plus.isPlus ? ((try? CSVExport.write(CSVExport.make(from: repo.snapshot()))) ?? []) : []
     }
 
     private func askRestore(_ c: LocalCopies.Copy) {

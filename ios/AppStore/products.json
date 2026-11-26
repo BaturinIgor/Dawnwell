@@ -108,6 +108,15 @@
      "name": "Plus годовая",
      "description": "PDF-отчёты для врача и аналитика питания"
     }
+   },
+   "familySharable": true,
+   "winBack": {
+    "offerId": "winback_yearly_half",
+    "referenceName": "Win-back yearly half price",
+    "usd": "14.99",
+    "duration": "ONE_YEAR",
+    "offerMode": "PAY_UP_FRONT",
+    "periodCount": 1
    }
   },
   {
@@ -214,6 +223,15 @@
      "name": "Plus месячная",
      "description": "PDF-отчёты для врача и аналитика питания"
     }
+   },
+   "familySharable": true,
+   "winBack": {
+    "offerId": "winback_monthly_half",
+    "referenceName": "Win-back monthly half price",
+    "usd": "2.49",
+    "duration": "ONE_MONTH",
+    "offerMode": "PAY_AS_YOU_GO",
+    "periodCount": 3
    }
   }
  ],
@@ -318,7 +336,8 @@
     "name": "Plus навсегда",
     "description": "PDF-отчёты для врача и аналитика питания"
    }
-  }
+  },
+  "familySharable": true
  },
  "reviewNote": "Dawnwell Plus unlocks the PDF visit report (Report tab > Share as PDF), a 90-day visit summary (Report tab > 90 days) and Insights (Progress tab). Everything else in the app is free."
 }

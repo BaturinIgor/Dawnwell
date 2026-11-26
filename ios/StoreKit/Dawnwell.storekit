@@ -4,7 +4,7 @@
   "products" : [
     {
       "displayPrice" : "59.99",
-      "familyShareable" : false,
+      "familyShareable" : true,
       "internalID" : "6700000003",
       "localizations" : [ { "description" : "PDF visit reports and insights, for good", "displayName" : "Dawnwell Plus Lifetime", "locale" : "en_US" } ],
       "productID" : "com.dawnwell.app.plus.lifetime",
@@ -30,7 +30,7 @@
           "adHocOffers" : [],
           "codeOffers" : [],
           "displayPrice" : "4.99",
-          "familyShareable" : false,
+          "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "6700000001",
           "introductoryOffer" : { "internalID" : "6700000011", "paymentMode" : "free", "subscriptionPeriod" : "P1W" },
@@ -45,7 +45,7 @@
           "adHocOffers" : [],
           "codeOffers" : [],
           "displayPrice" : "29.99",
-          "familyShareable" : false,
+          "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "6700000002",
           "introductoryOffer" : { "internalID" : "6700000012", "paymentMode" : "free", "subscriptionPeriod" : "P1W" },

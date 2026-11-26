@@ -200,11 +200,7 @@ struct TodayView: View {
 
     private func take() {
         let now = Date()
-        repo.updateDay(key) {
-            $0.takenAt = now
-            $0.skipped = false
-        }
-        if let p = profile, let left = p.tabletsLeft { p.tabletsLeft = max(0, left - 1); repo.save() }
+        guard repo.logTabletTaken(day: key, at: now) else { return }
         if let p = profile { WaitActivityController.start(takenAt: now, waitMinutes: p.waitMinutes, medication: p.medication.label) }
         Analytics.send(.tabletTaken)
         askForReviewIfDue()
@@ -336,6 +332,12 @@ struct TabletCard: View {
 
         case .clear:
             VStack(alignment: .leading, spacing: 8) {
+                if let taken = day?.takenAt {
+                    let time = taken.formatted(date: .omitted, time: .shortened)
+                    Label("Taken at \(time)", systemImage: "checkmark.circle.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white.opacity(0.85))
+                }
                 Text("You're clear to eat").font(.system(size: 22, weight: .heavy)).foregroundStyle(.white)
                 Text("Start with protein: about 30 g at breakfast helps protect muscle.").foregroundStyle(.white.opacity(0.9))
             }

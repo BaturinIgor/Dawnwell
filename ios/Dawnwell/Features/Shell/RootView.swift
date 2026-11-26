@@ -16,6 +16,8 @@ struct RootView: View {
         }
         .background(Palette.bg)
         .onChange(of: scenePhase, initial: true) { _, phase in
+            // Plus is known before any screen asks, not only after the Report tab has been opened.
+            if phase == .active { Task { await PlusStore.shared.refresh() } }
             // One local copy a day, taken when the app comes to the front.
             guard !Persistence.isSandboxed else { return }
             if phase == .active {
@@ -40,10 +42,10 @@ struct RootView: View {
 }
 
 struct MainTabs: View {
-    @State private var tab = DesignFlags.initialTab
+    @State private var router = AppRouter.shared
 
     var body: some View {
-        TabView(selection: $tab) {
+        TabView(selection: $router.tab) {
             TodayView()
                 .tabItem { Label("Today", systemImage: "sun.max") }
                 .tag(0)

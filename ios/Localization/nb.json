@@ -406,5 +406,59 @@
  "Take it as your label says. No wait before food is set.": "Ta den slik pakningsvedlegget sier. Ingen ventetid før mat er satt.",
  "Take it as your label says.": "Ta den slik pakningsvedlegget sier.",
  "Share anonymous usage": "Del anonym bruk",
- "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "Tellinger som «oppsett fullført» eller «åpnet Plus», uten navn eller konto. Ingenting du logger, blir sendt."
+ "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "Tellinger som «oppsett fullført» eller «åpnet Plus», uten navn eller konto. Ingenting du logger, blir sendt.",
+ "%lld days": {
+  "one": "%lld dag",
+  "other": "%lld dager"
+ },
+ "%lld days without a tablet logged.": {
+  "one": "%lld dag uten loggført tablett.",
+  "other": "%lld dager uten loggført tablett."
+ },
+ "%lld of %lld days": {
+  "format": "%lld av %#@n@",
+  "one": "%lld dag",
+  "other": "%lld dager"
+ },
+ "Symptoms on %lld days, nausea on %lld": {
+  "format": "Plager %#@n@, kvalme %lld",
+  "one": "%lld dag",
+  "other": "%lld dager"
+ },
+ "1 week free": "1 uke gratis",
+ "A clean PDF report and a 90-day summary for each visit": "En oversiktlig PDF-rapport og et 90-dagers sammendrag til hvert besøk",
+ "A record of your own logs, not medical advice. Your prescriber decides your dose.": "En oversikt over dine egne registreringer, ikke medisinske råd. Legen din bestemmer dosen.",
+ "Add your dose in Medication. Each time it changes, you will see how you felt on it here.": "Legg til dosen under Medisin. Hver gang den endres, ser du her hvordan du hadde det.",
+ "Better than the week before": "Bedre enn uken før",
+ "Days with symptoms": "Dager med plager",
+ "Days with symptoms each week, with dose changes marked": "Dager med plager per uke, med doseendringer markert",
+ "Days with symptoms per week, last 12 weeks. Lines mark a new dose.": "Dager med plager per uke, siste 12 uker. Linjer viser en ny dose.",
+ "Dose change": "Doseendring",
+ "Doses and symptoms": "Doser og plager",
+ "Export CSV": "Eksporter CSV",
+ "Export CSV · Plus": "Eksporter CSV · Plus",
+ "Export everything to a spreadsheet (CSV)": "Eksporter alt til et regneark (CSV)",
+ "Most logged: %@": "Oftest loggført: %@",
+ "No symptoms logged": "Ingen plager loggført",
+ "Protein goal": "Proteinmål",
+ "See how your tablet, protein and symptoms went this week.": "Se hvordan det gikk med tablett, protein og plager denne uken.",
+ "Since %@ · day %lld": "Siden %@ · dag %lld",
+ "Spreadsheet": "Regneark",
+ "Sunday at 6 PM, a look back at your week": "Søndag kl. 18, et tilbakeblikk på uken din",
+ "Symptoms around each dose change, with days on every dose": "Plager rundt hver doseendring, med dager på hver dose",
+ "Tablet": "Tablett",
+ "Taken at %@": "Tatt kl. %@",
+ "Try every Plus feature free for 7 days. Cancel before it ends and you pay nothing.": "Prøv alle Plus-funksjoner gratis i 7 dager. Avslutt før slutten, så betaler du ingenting.",
+ "Water goal": "Vannmål",
+ "Week": "Uke",
+ "Weight %@ this week": "Vekt denne uken: %@",
+ "Worse than the week before": "Dårligere enn uken før",
+ "You can eat, have coffee and take your other medicines now. Start with protein.": "Nå kan du spise, drikke kaffe og ta de andre medisinene dine. Start med protein.",
+ "Your days, food, symptoms and doses as CSV files for Numbers, Excel or Google Sheets.": "Dagene, måltidene, plagene og dosene dine som CSV-filer for Numbers, Excel eller Google Regneark.",
+ "Your first week shows here once you start logging.": "Den første uken din vises her når du begynner å loggføre.",
+ "Your week": "Uken din",
+ "Your week at a glance: tablet, protein, water and symptoms, next to the week before": "Uken din i et blikk: tablett, protein, vann og plager sammenlignet med uken før",
+ "Your week in Dawnwell": "Uken din i Dawnwell",
+ "See your doses with Plus": "Se dosene dine med Plus",
+ "See your week with Plus": "Se uken din med Plus"
 }

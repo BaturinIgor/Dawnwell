@@ -14,7 +14,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 DIRS = ["Dawnwell", "DawnwellWidgets", "Shared"]
 
 # Calls whose first string literal is a LocalizedStringKey (or String(localized:)).
-FIRST = r'(?:String\(localized:\s*|Text\(|Button\(|Label\(|\.accessibilityLabel\(|\.accessibilityHint\(|\.navigationTitle\(|Picker\(|DatePicker\(|TextField\(|Link\(|Section\(|prompt:\s*|\.value\(|toggle\(|labelled\(|title\(|fieldLabel\(|less:\s*|more:\s*)'
+FIRST = r'(?:String\(localized:\s*|Text\(|Button\(|Label\(|\.accessibilityLabel\(|\.accessibilityHint\(|\.navigationTitle\(|Picker\(|DatePicker\(|TextField\(|Link\(|Section\(|prompt:\s*|\.value\(|toggle\(|labelled\(|title\(|fieldLabel\(|less:\s*|more:\s*|unlock:\s*)'
 # Helpers whose second argument is a LocalizedStringKey.
 SECOND = r'(?:toggle\(|labelled\(|title\(|legend\(|stat\()'
 
@@ -25,7 +25,7 @@ INT_EXPRS = {
     "saving", "found", "s.proteinHitDays", "s.proteinTarget", "s.takenCount", "VisitSummary.span",
     "s.days", "s.worst", "count", "total", "day", "a.minutes", "d", "w", "daysTaken", "span",
     "daysSkipped", "p", "proteinTarget", "hits", "of", "otherHits", "otherOf", "with", "without", "need",
-    "logged", "summary.span",
+    "logged", "summary.span", "days", "n",
 }
 # Literals the patterns catch that are not shown to anyone (SF Symbol names).
 NOT_TEXT = {"minus", "plus"}

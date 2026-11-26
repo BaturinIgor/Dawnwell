@@ -10,6 +10,7 @@ struct MedicationView: View {
     @State private var medication: Medication = .oralSemaglutide
     @State private var dose = ""
     @State private var packCount = ""
+    @AppStorage(NotificationActions.weeklyKey) private var remindWeekly = true
 
     private var repo: Repository { Repository(context: context) }
 
@@ -192,6 +193,8 @@ struct MedicationView: View {
                    Binding(get: { p.remindProtein }, set: { p.remindProtein = $0; repo.save() }))
             toggle("Refill heads-up", "Shown on Today at \(Catalog.refillAt) tablets",
                    Binding(get: { p.remindRefill }, set: { p.remindRefill = $0; repo.save() }))
+            toggle("Your week", "Sunday at 6 PM, a look back at your week",
+                   Binding(get: { remindWeekly }, set: { remindWeekly = $0; let r = repo; Task { await ReminderScheduler.sync(repo: r) } }))
         }
         .card()
     }
@@ -208,7 +211,8 @@ struct MedicationView: View {
                         Text(Loc.doseDaily(h.label)).fontWeight(i == 0 ? .bold : .regular)
                         Spacer()
                         let date = DayKey.date(h.from).map { $0.formatted(.dateTime.month(.abbreviated).day()) } ?? h.from
-                        Group { if i == 0 { Text("Since \(date)") } else { Text("From \(date)") } }
+                        let day = DoseHistory.days(from: h.from, through: DayKey.today())
+                        Group { if i == 0 && day > 0 { Text("Since \(date) · day \(day)") } else if i == 0 { Text("Since \(date)") } else { Text("From \(date)") } }
                             .font(.footnote)
                             .foregroundStyle(Palette.muted)
                     }

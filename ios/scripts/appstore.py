@@ -424,10 +424,19 @@ def sync_subscription(asc, group_id, sub, note):
         s = asc.create("subscriptions", {
             "name": sub["referenceName"], "productId": sub["productId"],
             "subscriptionPeriod": sub["period"], "groupLevel": sub["groupLevel"],
-            "familySharable": False, "reviewNote": note,
+            "familySharable": sub.get("familySharable", False), "reviewNote": note,
         }, {"group": ref("subscriptionGroups", group_id)})
         print(f"  created {sub['productId']}")
+    sync_family_sharing(asc, "subscriptions", s, sub)
     return s
+
+
+def sync_family_sharing(asc, type_, record, item):
+    """Turns Family Sharing on when products.json asks for it. Apple never lets it be turned off again."""
+    if item.get("familySharable") and not record["attributes"].get("familySharable"):
+        asc.update(type_, record["id"], {"familySharable": True},
+                   path=f"/v2/inAppPurchases/{record['id']}" if type_ == "inAppPurchases" else None)
+        print(f"  Family Sharing on for {item['productId']}")
 
 
 def sync_localizations(asc, list_path, type_, parent_key, parent, locs):
@@ -499,13 +508,49 @@ def sync_free_week(asc, sub_id, duration, ids):
     print(f"  free week in {len(ids)} countries and regions ({added} added)")
 
 
+def sync_win_back(asc, sub_id, wb, ids):
+    """Half price for people who paid before and left: shown by the App Store and in the app (iOS 18+).
+
+    Eligible after at least one paid month, from one month to two years after the subscription ended.
+    Prices follow Apple's equalization of the U.S. price in every country and region the app is sold in.
+    """
+    existing = asc.all(f"/v1/subscriptions/{sub_id}/winBackOffers")
+    if any(o["attributes"].get("offerId") == wb["offerId"] for o in existing):
+        print(f"  {wb['offerId']} already set")
+        return
+    points = asc.all(f"/v1/subscriptions/{sub_id}/pricePoints", **{"filter[territory]": "USA"})
+    base = next(p for p in points if p["attributes"]["customerPrice"] in (wb["usd"], wb["usd"].rstrip("0")))
+    targets = {"USA": base["id"]}
+    for eq in asc.all(f"/v1/subscriptionPricePoints/{base['id']}/equalizations", include="territory"):
+        t = eq.get("relationships", {}).get("territory", {}).get("data", {}).get("id")
+        if t and t in ids:
+            targets[t] = eq["id"]
+    included = [{"type": "winBackOfferPrices", "id": f"${{price-{i}}}",
+                 "relationships": {"subscriptionPricePoint": {"data": ref("subscriptionPricePoints", point)}}}
+                for i, point in enumerate(targets.values())]
+    start = time.strftime("%Y-%m-%d", time.gmtime(time.time() + 86400))
+    asc.create("winBackOffers", {
+        "referenceName": wb["referenceName"], "offerId": wb["offerId"],
+        "duration": wb["duration"], "offerMode": wb["offerMode"], "periodCount": wb["periodCount"],
+        "customerEligibilityPaidSubscriptionDurationInMonths": 1,
+        "customerEligibilityTimeSinceLastSubscribedInMonths": {"minimum": 1, "maximum": 24},
+        "customerEligibilityWaitBetweenOffersInMonths": 6,
+        "startDate": start, "priority": "HIGH", "promotionIntent": "USE_AUTO_GENERATED_ASSETS",
+    }, {
+        "subscription": ref("subscriptions", sub_id),
+        "prices": [{"type": "winBackOfferPrices", "id": x["id"]} for x in included],
+    }, included=included)
+    print(f"  {wb['offerId']}: ${wb['usd']} in the U.S. and {len(targets) - 1} more, from {start}")
+
+
 def sync_lifetime(asc, app_id, item, note):
     found = asc.all(f"/v1/apps/{app_id}/inAppPurchasesV2", **{"filter[productId]": item["productId"]})
     if found:
+        sync_family_sharing(asc, "inAppPurchases", found[0], item)
         return found[0]
     iap = asc.create("inAppPurchases", {
         "name": item["referenceName"], "productId": item["productId"],
-        "inAppPurchaseType": "NON_CONSUMABLE", "familySharable": False, "reviewNote": note,
+        "inAppPurchaseType": "NON_CONSUMABLE", "familySharable": item.get("familySharable", False), "reviewNote": note,
     }, {"app": ref("apps", app_id)}, path="/v2/inAppPurchases")
     print(f"  created {item['productId']}")
     return iap
@@ -680,6 +725,8 @@ def main():
                     run.step(f"{sub['referenceName']}: availability", sync_subscription_availability, asc, s["id"], ids)
                     run.step(f"{sub['referenceName']}: prices", sync_subscription_prices, asc, s["id"], sub["usd"], ids)
                     run.step(f"{sub['referenceName']}: free week", sync_free_week, asc, s["id"], sub["freeTrial"], ids)
+                    if sub.get("winBack"):
+                        run.step(f"{sub['referenceName']}: win-back offer", sync_win_back, asc, s["id"], sub["winBack"], ids)
         life = products["lifetime"]
         iap = run.step(life["referenceName"], sync_lifetime, asc, app_id, life, products["reviewNote"])
         if iap:

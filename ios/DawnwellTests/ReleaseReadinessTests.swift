@@ -36,7 +36,7 @@ final class ReleaseReadinessTests: XCTestCase {
     }
 
     func testVersionIsSet() {
-        XCTAssertEqual(info["CFBundleShortVersionString"] as? String, "1.0.1")
+        XCTAssertEqual(info["CFBundleShortVersionString"] as? String, "1.1.0")
         XCTAssertNotNil(info["CFBundleVersion"])
     }
 }
