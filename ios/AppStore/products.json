@@ -109,7 +109,15 @@
      "description": "PDF-отчёты для врача и аналитика питания"
     }
    },
-   "familySharable": true
+   "familySharable": true,
+   "winBack": {
+    "offerId": "winback_yearly_half",
+    "referenceName": "Win-back yearly half price",
+    "usd": "14.99",
+    "duration": "ONE_YEAR",
+    "offerMode": "PAY_UP_FRONT",
+    "periodCount": 1
+   }
   },
   {
    "productId": "com.dawnwell.app.plus.monthly",
@@ -216,7 +224,15 @@
      "description": "PDF-отчёты для врача и аналитика питания"
     }
    },
-   "familySharable": true
+   "familySharable": true,
+   "winBack": {
+    "offerId": "winback_monthly_half",
+    "referenceName": "Win-back monthly half price",
+    "usd": "2.49",
+    "duration": "ONE_MONTH",
+    "offerMode": "PAY_AS_YOU_GO",
+    "periodCount": 3
+   }
   }
  ],
  "lifetime": {
