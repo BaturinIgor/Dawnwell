@@ -1,0 +1,39 @@
+name: Release
+
+# Releases and submits versions through the App Store Connect API (ios/scripts/release.py).
+# Run it by hand: Actions -> Release -> Run workflow.
+#   status   versions, builds and purchases with their states (changes nothing)
+#   release  puts the version that is Pending Developer Release on the App Store
+#   prepare  makes the version from ios/AppStore/whats-new.json, fills What's New, attaches the newest build
+#   submit   prepare, then send it to App Review (set App Privacy in App Store Connect first: it has no API)
+#
+# Uses the same App Store Connect API key secrets as the other workflows.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'What to do'
+        type: choice
+        options: [status, release, prepare, submit]
+        default: status
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pip install --quiet pyjwt cryptography requests
+      - name: Run
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          ACTION: ${{ inputs.action }}
+        run: python3 ios/scripts/release.py "$ACTION"
