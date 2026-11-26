@@ -9,9 +9,18 @@ enum Medication: String, CaseIterable, Identifiable, Codable {
 
     var label: String {
         switch self {
-        case .oralSemaglutide: return String(localized: "Oral semaglutide")
-        case .orforglipron: return String(localized: "Orforglipron")
+        case .oralSemaglutide: return String(localized: "Wegovy pill or Rybelsus (semaglutide)")
+        case .orforglipron: return String(localized: "Foundayo (orforglipron)")
         case .other: return String(localized: "Another GLP-1 tablet")
+        }
+    }
+
+    /// Minutes to wait before food when the user picks this medication. They can change it.
+    /// Semaglutide tablets are taken on an empty stomach; Foundayo can be taken with or without food.
+    var defaultWaitMinutes: Int {
+        switch self {
+        case .oralSemaglutide, .other: return 30
+        case .orforglipron: return 0
         }
     }
 }

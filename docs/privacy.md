@@ -4,7 +4,7 @@ title: Dawnwell Privacy Policy
 
 # Dawnwell Privacy Policy
 
-*Last updated: November 18, 2026*
+*Last updated: November 26, 2026*
 
 Dawnwell is a daily companion for people taking a GLP-1 medicine as a tablet. This policy explains what the app stores and where. The short version: **your data stays on your iPhone and in your own iCloud account. We do not run a server, and we cannot see your data.**
 
@@ -29,11 +29,19 @@ You enter everything yourself. Depending on what you use, the app stores:
 
 If you allow it, Dawnwell reads your body weight from Apple Health to show it on your progress chart. Dawnwell only reads weight; it does not write to Apple Health. Readings from Apple Health are shown on screen but never saved by Dawnwell, so they are not copied to iCloud or into backup files. Health data is never used for advertising and never shared with anyone. You can turn off access any time in the Health app.
 
+## Anonymous usage statistics
+
+To learn which parts of the app help people, Dawnwell counts a few anonymous events, such as "finished setup", "logged a tablet", "opened Plus" or "bought Plus" with the plan name. They are sent to TelemetryDeck, an analytics service built for privacy. Each event carries the app version, iOS version and device model, and a random identifier that is scrambled on your phone before it is sent. There is no name, email, Apple ID or advertising identifier, and the events are not linked to you.
+
+Nothing you log is ever in these events: no medication, dose, tablet times, food, protein, symptoms, weight or notes, and nothing from Apple Health.
+
+You can turn this off at any time in the app under **Your data → Share anonymous usage**.
+
 ## What we do not do
 
 - No account, no sign-up, no email collection.
-- No analytics, tracking or advertising tools, and no data sold or shared with third parties.
-- No Dawnwell server. The app does not send your data to us.
+- No tracking or advertising tools, and no data sold or shared for advertising.
+- No Dawnwell server. The app does not send your logs to us.
 
 ## Notifications
 

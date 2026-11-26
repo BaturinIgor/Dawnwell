@@ -46,7 +46,10 @@ struct PaywallView: View {
                         guard let p = selected else { return }
                         busy = true
                         Task {
-                            if await store.buy(p) { dismiss() }
+                            if await store.buy(p) {
+                                Analytics.send(.purchaseCompleted, ["plan": "\(plan)"])
+                                dismiss()
+                            }
                             busy = false
                         }
                     } label: {
@@ -64,7 +67,12 @@ struct PaywallView: View {
                     }
                     .font(.caption).foregroundStyle(Palette.muted)
                     HStack {
-                        Button("Restore purchases") { Task { await store.restore(); if store.isPlus { dismiss() } } }
+                        Button("Restore purchases") {
+                            Task {
+                                await store.restore()
+                                if store.isPlus { Analytics.send(.purchaseRestored); dismiss() }
+                            }
+                        }
                         Spacer()
                         Link("Privacy", destination: Support.privacyPolicy)
                         Link("Terms of Use", destination: Plus.termsOfUse)
@@ -78,6 +86,7 @@ struct PaywallView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Not now") { dismiss() } }
             }
+            .onAppear { Analytics.send(.paywallShown) }
             .task { await store.load() }
         }
     }

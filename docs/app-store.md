@@ -2,7 +2,7 @@
 
 The texts App Store Connect gets live in `ios/AppStore/` (one file per language in `listing/`, products and their prices in `products.json`, review notes in `review-notes.txt`). The **App Store listing** workflow (Actions → App Store listing → Run workflow) fills App Store Connect from them, with screenshots taken in every language. Start with `check`, then `everything`.
 
-What the workflow cannot do, done by hand once: App Privacy ("Data Not Collected"), the App Review contact name and phone, and Submit for Review.
+What the workflow cannot do, done by hand once: App Privacy (see below), the App Review contact name and phone, and Submit for Review.
 
 The English text below is kept for reading; `ios/AppStore/listing/en-US.json` wins if they differ.
 
@@ -72,7 +72,7 @@ Medical/Treatment Information: Infrequent/Mild. Everything else: None.
 
 ## App Privacy ("nutrition label")
 
-Answer **Data Not Collected**. The developer receives no data: everything stays on the device and in the user's private iCloud, which Apple does not count as collection. No third-party SDKs.
+From 1.0.1 the app sends anonymous usage events through TelemetryDeck (see `ios/Dawnwell/App/Analytics.swift`). Answer: **Data is collected** → **Usage Data → Product Interaction**, used for **Analytics**, **not linked** to the user, **not used for tracking**. Everything the user logs still stays on the device and in their private iCloud, which Apple does not count as collection.
 
 ## Export compliance
 

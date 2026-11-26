@@ -150,7 +150,7 @@ struct MedicationView: View {
                 labelled("Wait before eating", "As written on your label")
                 Spacer()
                 StepperView(value: Binding(get: { p.waitMinutes }, set: { p.waitMinutes = $0; repo.save() }),
-                            unit: String(localized: "min"), step: 5, range: 5...120)
+                            unit: String(localized: "min"), step: 5, range: 0...120)
             }
         }
         .card()
