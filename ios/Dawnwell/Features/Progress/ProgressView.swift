@@ -208,7 +208,8 @@ struct ProgressScreen: View {
                                         .foregroundStyle(Palette.accent)
                                         .lineStyle(StrokeStyle(lineWidth: 2, dash: [3, 3]))
                                         .annotation(position: .top, alignment: .leading) {
-                                            Text(Loc.doseDaily(label)).font(.caption2.weight(.bold)).foregroundStyle(Palette.accentText)
+                                            // Just the dose ("7 mg"): labels of changes a few weeks apart must not overlap.
+                                            Text(label).font(.caption2.weight(.bold)).foregroundStyle(Palette.accentText)
                                         }
                                 }
                             }

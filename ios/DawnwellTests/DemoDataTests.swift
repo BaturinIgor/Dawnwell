@@ -16,6 +16,30 @@ final class DemoDataTests: XCTestCase {
         XCTAssertFalse(s.symptoms.isEmpty)
     }
 
+    func testDemoIsAlwaysAtNineFortyOneInTheMorning() {
+        // Every quarter hour of a day, the chosen zone is a real one and its clock reads 9:41.
+        for step in 0..<96 {
+            let at = Date(timeIntervalSince1970: 1_795_000_000 + Double(step * 900))
+            let offset = DemoData.morningOffset(now: at)
+            XCTAssertTrue((-12 * 3600...14 * 3600).contains(offset), "offset \(offset)")
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.timeZone = TimeZone(secondsFromGMT: offset)!
+            let c = calendar.dateComponents([.hour, .minute], from: at)
+            XCTAssertEqual(c.hour, 9)
+            XCTAssertEqual(c.minute, 41)
+        }
+    }
+
+    func testKilogramsOutsideTheUS() {
+        let us = DemoData.snapshot(now: now, locale: Locale(identifier: "en_US"))
+        XCTAssertEqual(us.profile?.weightUnit, "lb")
+        XCTAssertEqual(us.weights.first?.value, 212)
+        let de = DemoData.snapshot(now: now, locale: Locale(identifier: "de_DE"))
+        XCTAssertEqual(de.profile?.weightUnit, "kg")
+        XCTAssertEqual(de.weights.first?.value, 96.2)
+        XCTAssertEqual(de.profile?.goalWeight, 84)
+    }
+
     func testNothingInTheFuture() {
         let s = DemoData.snapshot(now: now)
         XCTAssertTrue(s.foods.allSatisfy { $0.at < now })

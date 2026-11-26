@@ -5,7 +5,24 @@ import Foundation
 enum DemoData {
     static let launchArgument = "-demo"
 
-    static func snapshot(now: Date = Date(), calendar: Calendar = .current) -> Snapshot {
+    /// The screenshots' status bar says 9:41. Seconds from GMT of a time zone where it is 9:41 at `now`,
+    /// so the greeting, wait timer and breakfast time show a morning whenever the screenshots are taken.
+    static func morningOffset(now: Date = Date()) -> Int {
+        let utc = Int(now.timeIntervalSince1970.rounded(.down)) % 86_400 / 60
+        var minutes = 9 * 60 + 41 - utc
+        if minutes < -12 * 60 { minutes += 24 * 60 }
+        return minutes * 60
+    }
+
+    /// Runs the demo in the time zone where it is 9:41 now. Call it before making the demo data.
+    static func useMorningTimeZone() {
+        if let zone = TimeZone(secondsFromGMT: morningOffset()) { NSTimeZone.default = zone }
+    }
+
+    static func snapshot(now: Date = Date(), calendar: Calendar = .current, locale: Locale = .current) -> Snapshot {
+        // Pounds in the US, kilograms everywhere else, as onboarding suggests.
+        let unit: WeightUnit = locale.measurementSystem == .us ? .lb : .kg
+        func weight(_ lb: Double) -> Double { ((unit == .lb ? lb : lb * 0.45359237) * 10).rounded() / 10 }
         let dates = DayKey.last(35, endingAt: now, calendar: calendar)
         let todayKey = DayKey.of(now, calendar: calendar)
         func at(_ day: Date, _ hour: Int, _ minute: Int = 0) -> Date {
@@ -38,7 +55,7 @@ enum DemoData {
             }
             if i % 3 == 0 || isToday {
                 let lb = 212 - Double(i) * 0.36
-                weights.append(.init(day: key, value: (lb * 10).rounded() / 10, at: at(d, 7)))
+                weights.append(.init(day: key, value: weight(lb), at: at(d, 7)))
             }
         }
 
@@ -46,8 +63,8 @@ enum DemoData {
         return Snapshot(
             profile: .init(createdAt: first, onboarded: true, medication: Medication.oralSemaglutide.rawValue,
                            doseLabel: "14 mg", doseHour: 7, doseMinute: 0, waitMinutes: 30,
-                           proteinTarget: 100, fiberTarget: 25, waterTarget: 8, weightUnit: "lb",
-                           startWeight: 212, goalWeight: 185, tabletsLeft: 21,
+                           proteinTarget: 100, fiberTarget: 25, waterTarget: 8, weightUnit: unit.rawValue,
+                           startWeight: weight(212), goalWeight: unit == .lb ? 185 : 84, tabletsLeft: 21,
                            remindTablet: true, remindWaitOver: true, remindProtein: true, remindRefill: true,
                            questions: String(localized: "Is it OK to take it later on weekends?")),
             days: days, foods: foods, symptoms: symptoms, weights: weights,
