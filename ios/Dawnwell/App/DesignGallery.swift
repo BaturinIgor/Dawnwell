@@ -101,3 +101,78 @@ extension View {
         #endif
     }
 }
+
+/// App Store screenshots: a headline that sells, over the real screen on the demo data.
+/// The headline goes through the app's own translations, so every language gets its own.
+/// Launched with `-demo -store-caption <id>`; debug builds only.
+enum StoreCaption: String {
+    case wait, week, doses, visit, protein, learn
+
+    var text: String {
+        switch self {
+        case .wait: return String(localized: "Know exactly when you can eat after your tablet")
+        case .week: return String(localized: "Your whole week at a glance")
+        case .doses: return String(localized: "See how you feel on each dose")
+        case .visit: return String(localized: "Bring a clear summary to every visit")
+        case .protein: return String(localized: "Hit your protein to keep your muscle")
+        case .learn: return String(localized: "Clear answers about life on a GLP-1 tablet")
+        }
+    }
+
+    static var requested: StoreCaption? { DesignFlags.argument("-store-caption").flatMap(StoreCaption.init(rawValue:)) }
+}
+
+extension View {
+    @ViewBuilder
+    func storeFrame() -> some View {
+        #if DEBUG
+        if let caption = StoreCaption.requested { StoreFrame(caption: caption.text) { self } } else { self }
+        #else
+        self
+        #endif
+    }
+}
+
+#if DEBUG
+private struct StoreFrame<Content: View>: View {
+    let caption: String
+    @ViewBuilder let content: () -> Content
+
+    /// The real screen insets: inside `ignoresSafeArea` SwiftUI reports zero.
+    private var insets: UIEdgeInsets {
+        UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first?.safeAreaInsets ?? .zero
+    }
+
+    var body: some View {
+        GeometryReader { geo in
+            let top = insets.top, bottom = insets.bottom
+            let width = geo.size.width, height = geo.size.height
+            let scale: CGFloat = 0.78
+            VStack(spacing: 0) {
+                Text(caption)
+                    .font(.system(size: 34, weight: .heavy))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.5)
+                    .padding(.horizontal, 28)
+                    .frame(width: width, height: height * (1 - scale) - top)
+                // The app at full size, with room for its tab bar, scaled into a rounded card.
+                content()
+                    .padding(.top, 16)
+                    .padding(.bottom, bottom)
+                    .frame(width: width, height: height)
+                    .background(Palette.bg)
+                    .clipShape(RoundedRectangle(cornerRadius: 64, style: .continuous))
+                    .shadow(color: .black.opacity(0.25), radius: 24, y: 12)
+                    .scaleEffect(scale, anchor: .top)
+                    .frame(width: width, height: height * scale, alignment: .top)
+            }
+            .padding(.top, top)
+            .frame(width: width, height: height, alignment: .top)
+            .background(Palette.accent)
+        }
+        .ignoresSafeArea()
+    }
+}
+#endif
