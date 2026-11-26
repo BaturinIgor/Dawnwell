@@ -5,20 +5,6 @@ import Foundation
 enum DemoData {
     static let launchArgument = "-demo"
 
-    /// The screenshots' status bar says 9:41. Seconds from GMT of a time zone where it is 9:41 at `now`,
-    /// so the greeting, wait timer and breakfast time show a morning whenever the screenshots are taken.
-    static func morningOffset(now: Date = Date()) -> Int {
-        let utc = Int(now.timeIntervalSince1970.rounded(.down)) % 86_400 / 60
-        var minutes = 9 * 60 + 41 - utc
-        if minutes < -12 * 60 { minutes += 24 * 60 }
-        return minutes * 60
-    }
-
-    /// Runs the demo in the time zone where it is 9:41 now. Call it before making the demo data.
-    static func useMorningTimeZone() {
-        if let zone = TimeZone(secondsFromGMT: morningOffset()) { NSTimeZone.default = zone }
-    }
-
     static func snapshot(now: Date = Date(), calendar: Calendar = .current, locale: Locale = .current) -> Snapshot {
         // Pounds in the US, kilograms everywhere else, as onboarding suggests.
         let unit: WeightUnit = locale.measurementSystem == .us ? .lb : .kg

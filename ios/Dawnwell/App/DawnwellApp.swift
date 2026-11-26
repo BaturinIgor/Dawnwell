@@ -9,7 +9,6 @@ struct DawnwellApp: App {
         if Persistence.isRunningTests {
             container = try? Persistence.makeContainer(inMemory: true)
         } else if Persistence.isDemo {
-            DemoData.useMorningTimeZone()
             let demo = try? Persistence.makeContainer(inMemory: true)
             var snapshot = DemoData.snapshot()
             // Design catalog states (debug builds only): nothing logged yet, or not set up yet.

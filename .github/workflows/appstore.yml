@@ -56,7 +56,7 @@ jobs:
                   print(big[-1]["udid"]); break
           ')
           [ -n "$UDID" ] || { echo "::error::No Pro Max simulator"; exit 1; }
-          xcrun simctl boot "$UDID" || true
+          scripts/boot_morning.sh "$UDID"
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl ui "$UDID" appearance light
           xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
