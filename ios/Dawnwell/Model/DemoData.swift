@@ -51,7 +51,9 @@ enum DemoData {
                            remindTablet: true, remindWaitOver: true, remindProtein: true, remindRefill: true,
                            questions: "Is it OK to take it later on weekends?"),
             days: days, foods: foods, symptoms: symptoms, weights: weights,
-            doses: [.init(label: "7 mg", from: DayKey.of(first, calendar: calendar), at: first)]
+            // Two weeks ago the dose went up, so the dose chart has something to show.
+            doses: [.init(label: "7 mg", from: DayKey.of(first, calendar: calendar), at: first),
+                    .init(label: "14 mg", from: DayKey.of(dates[21], calendar: calendar), at: dates[21])]
         )
     }
 }

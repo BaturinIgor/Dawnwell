@@ -25,6 +25,10 @@ struct DawnwellApp: App {
             container = nil
         }
         Analytics.start()
+        if !Persistence.isSandboxed {
+            NotificationActions.shared.container = container
+            NotificationActions.shared.register()
+        }
     }
 
     var body: some Scene {

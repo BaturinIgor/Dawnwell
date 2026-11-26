@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld 天</string>
+		</dict>
+	</dict>
 	<key>%lld days of logs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -14,6 +28,20 @@
 			<string>lld</string>
 			<key>other</key>
 			<string>%lld 天的紀錄</string>
+		</dict>
+	</dict>
+	<key>%lld days without a tablet logged.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld 天未記錄藥錠。</string>
 		</dict>
 	</dict>
 	<key>%lld days · worst %lld/5</key>
@@ -42,6 +70,20 @@
 			<string>lld</string>
 			<key>other</key>
 			<string>%lld 項</string>
+		</dict>
+	</dict>
+	<key>%lld of %lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%lld / %#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld 天</string>
 		</dict>
 	</dict>
 	<key>%lld patterns found in your logs.</key>
@@ -140,6 +182,20 @@
 			<string>lld</string>
 			<key>other</key>
 			<string>正在顯示來自 Apple「健康」的 %lld 天資料。</string>
+		</dict>
+	</dict>
+	<key>Symptoms on %lld days, nausea on %lld</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>有症狀 %#@n@，噁心 %lld 天</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>other</key>
+			<string>%lld 天</string>
 		</dict>
 	</dict>
 </dict>

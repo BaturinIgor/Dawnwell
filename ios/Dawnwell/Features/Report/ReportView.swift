@@ -11,7 +11,7 @@ struct ReportView: View {
     @Query private var weights: [WeightEntry]
     @State private var store = PlusStore.shared
     @State private var health = HealthWeight.shared
-    @State private var showPaywall = false
+    @State private var paywall: Plus.Source?
     @State private var pdfURL: URL?
     /// 30 days for everyone, 90 with Plus.
     @State private var period = VisitSummary.span
@@ -29,7 +29,7 @@ struct ReportView: View {
                     Picker("Period", selection: Binding(
                         get: { days },
                         set: { new in
-                            if new == VisitSummary.plusSpan && !store.isPlus { showPaywall = true } else { period = new }
+                            if new == VisitSummary.plusSpan && !store.isPlus { paywall = .report90 } else { period = new }
                         }
                     )) {
                         Text("30 days").tag(VisitSummary.span)
@@ -94,7 +94,7 @@ struct ReportView: View {
                             .buttonStyle(FilledButtonStyle(kind: .secondary))
                             .simultaneousGesture(TapGesture().onEnded { Analytics.send(.reportShared, ["format": "pdf"]) })
                     } else if !store.isPlus {
-                        Button { showPaywall = true } label: {
+                        Button { paywall = .reportPDF } label: {
                             Label("Share as PDF · Plus", systemImage: "lock.fill")
                         }
                         .accessibilityIdentifier("plus-pdf")
@@ -109,7 +109,7 @@ struct ReportView: View {
             }
             .background(Palette.bg)
             .toolbar(.hidden, for: .navigationBar)
-            .sheet(isPresented: $showPaywall) { PaywallView() }
+            .sheet(item: $paywall) { PaywallView(source: $0) }
             .task(id: summary.text + String(store.isPlus)) {
                 await store.refresh()
                 pdfURL = store.isPlus ? try? ReportPDF.file(summary) : nil

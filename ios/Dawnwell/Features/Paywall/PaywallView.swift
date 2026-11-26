@@ -2,6 +2,7 @@ import StoreKit
 import SwiftUI
 
 struct PaywallView: View {
+    var source: Plus.Source = .design
     @Environment(\.dismiss) private var dismiss
     @State private var store = PlusStore.shared
     @State private var plan: Plus.Plan = .yearly
@@ -42,12 +43,20 @@ struct PaywallView: View {
                         }
                     }
 
+                    if trialOffered {
+                        Label("Try every Plus feature free for 7 days. Cancel before it ends and you pay nothing.", systemImage: "gift.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(Palette.accentDark)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .card(Palette.accentSoft)
+                    }
+
                     Button {
                         guard let p = selected else { return }
                         busy = true
                         Task {
                             if await store.buy(p) {
-                                Analytics.send(.purchaseCompleted, ["plan": "\(plan)"])
+                                Analytics.send(.purchaseCompleted, ["plan": "\(plan)", "source": source.rawValue])
                                 dismiss()
                             }
                             busy = false
@@ -86,9 +95,14 @@ struct PaywallView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Not now") { dismiss() } }
             }
-            .onAppear { Analytics.send(.paywallShown) }
+            .onAppear { Analytics.send(.paywallShown, ["source": source.rawValue]) }
             .task { await store.load() }
         }
+    }
+
+    /// The free week is shown only when the chosen plan has one and Apple says this Apple ID can still get it.
+    private var trialOffered: Bool {
+        plan != .lifetime && store.trialEligible && selected?.subscription?.introductoryOffer?.paymentMode == .freeTrial
     }
 
     private var trialText: String {
@@ -128,6 +142,13 @@ struct PaywallView: View {
                     priceLine(this, p.displayPrice).font(.footnote).foregroundStyle(Palette.muted)
                 }
                 Spacer()
+                if this != .lifetime, store.trialEligible, p.subscription?.introductoryOffer?.paymentMode == .freeTrial {
+                    Text("1 week free")
+                        .font(.caption.weight(.heavy))
+                        .foregroundStyle(Palette.accentDark)
+                        .padding(.horizontal, 10).padding(.vertical, 4)
+                        .background(Palette.accentSoft, in: Capsule())
+                }
                 if this == .yearly, let m = store.monthly {
                     let saving = Plus.yearlySaving(monthly: m.price, yearly: p.price)
                     if saving > 0 {

@@ -108,7 +108,8 @@
      "name": "Plus годовая",
      "description": "PDF-отчёты для врача и аналитика питания"
     }
-   }
+   },
+   "familySharable": true
   },
   {
    "productId": "com.dawnwell.app.plus.monthly",
@@ -214,7 +215,8 @@
      "name": "Plus месячная",
      "description": "PDF-отчёты для врача и аналитика питания"
     }
-   }
+   },
+   "familySharable": true
   }
  ],
  "lifetime": {
@@ -318,7 +320,8 @@
     "name": "Plus навсегда",
     "description": "PDF-отчёты для врача и аналитика питания"
    }
-  }
+  },
+  "familySharable": true
  },
  "reviewNote": "Dawnwell Plus unlocks the PDF visit report (Report tab > Share as PDF), a 90-day visit summary (Report tab > 90 days) and Insights (Progress tab). Everything else in the app is free."
 }

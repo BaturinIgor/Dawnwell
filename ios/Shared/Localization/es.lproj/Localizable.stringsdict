@@ -2,6 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld día</string>
+			<key>other</key>
+			<string>%lld días</string>
+		</dict>
+	</dict>
 	<key>%lld days of logs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -16,6 +32,22 @@
 			<string>%lld día con registros</string>
 			<key>other</key>
 			<string>%lld días con registros</string>
+		</dict>
+	</dict>
+	<key>%lld days without a tablet logged.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld día sin pastilla registrada.</string>
+			<key>other</key>
+			<string>%lld días sin pastilla registrada.</string>
 		</dict>
 	</dict>
 	<key>%lld days · worst %lld/5</key>
@@ -48,6 +80,22 @@
 			<string>%lld elemento</string>
 			<key>other</key>
 			<string>%lld elementos</string>
+		</dict>
+	</dict>
+	<key>%lld of %lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%lld de %#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld día</string>
+			<key>other</key>
+			<string>%lld días</string>
 		</dict>
 	</dict>
 	<key>%lld patterns found in your logs.</key>
@@ -160,6 +208,22 @@
 			<string>Mostrando %lld día de Apple Salud.</string>
 			<key>other</key>
 			<string>Mostrando %lld días de Apple Salud.</string>
+		</dict>
+	</dict>
+	<key>Symptoms on %lld days, nausea on %lld</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Síntomas en %#@n@, náuseas en %lld</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld día</string>
+			<key>other</key>
+			<string>%lld días</string>
 		</dict>
 	</dict>
 </dict>

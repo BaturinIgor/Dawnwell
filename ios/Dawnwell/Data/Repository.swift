@@ -128,6 +128,20 @@ struct Repository {
         save()
     }
 
+    /// Logs today's tablet as taken and counts one off the pack. Returns false when it was already logged,
+    /// so a second tap (Today and the notification button) never counts twice.
+    @discardableResult
+    func logTabletTaken(day key: String = DayKey.today(), at now: Date = Date()) -> Bool {
+        guard existingDay(key)?.takenAt == nil else { return false }
+        updateDay(key) {
+            $0.takenAt = now
+            $0.skipped = false
+        }
+        let p = profile()
+        if let left = p.tabletsLeft { p.tabletsLeft = max(0, left - 1); save() }
+        return true
+    }
+
     func addTablets(_ count: Int) {
         guard count > 0 else { return }
         let p = profile()

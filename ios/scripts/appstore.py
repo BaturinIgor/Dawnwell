@@ -424,10 +424,19 @@ def sync_subscription(asc, group_id, sub, note):
         s = asc.create("subscriptions", {
             "name": sub["referenceName"], "productId": sub["productId"],
             "subscriptionPeriod": sub["period"], "groupLevel": sub["groupLevel"],
-            "familySharable": False, "reviewNote": note,
+            "familySharable": sub.get("familySharable", False), "reviewNote": note,
         }, {"group": ref("subscriptionGroups", group_id)})
         print(f"  created {sub['productId']}")
+    sync_family_sharing(asc, "subscriptions", s, sub)
     return s
+
+
+def sync_family_sharing(asc, type_, record, item):
+    """Turns Family Sharing on when products.json asks for it. Apple never lets it be turned off again."""
+    if item.get("familySharable") and not record["attributes"].get("familySharable"):
+        asc.update(type_, record["id"], {"familySharable": True},
+                   path=f"/v2/inAppPurchases/{record['id']}" if type_ == "inAppPurchases" else None)
+        print(f"  Family Sharing on for {item['productId']}")
 
 
 def sync_localizations(asc, list_path, type_, parent_key, parent, locs):
@@ -502,10 +511,11 @@ def sync_free_week(asc, sub_id, duration, ids):
 def sync_lifetime(asc, app_id, item, note):
     found = asc.all(f"/v1/apps/{app_id}/inAppPurchasesV2", **{"filter[productId]": item["productId"]})
     if found:
+        sync_family_sharing(asc, "inAppPurchases", found[0], item)
         return found[0]
     iap = asc.create("inAppPurchases", {
         "name": item["referenceName"], "productId": item["productId"],
-        "inAppPurchaseType": "NON_CONSUMABLE", "familySharable": False, "reviewNote": note,
+        "inAppPurchaseType": "NON_CONSUMABLE", "familySharable": item.get("familySharable", False), "reviewNote": note,
     }, {"app": ref("apps", app_id)}, path="/v2/inAppPurchases")
     print(f"  created {item['productId']}")
     return iap

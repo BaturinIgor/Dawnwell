@@ -7,11 +7,12 @@ import Foundation
 /// - The wait-over reminder fires at the end of today's wait, only once a tablet is logged.
 /// - The protein check is skipped today when the target is already reached.
 /// - The refill reminder fires once, at 10 AM the next day, when few tablets are left.
+/// - The week summary nudge fires on Sunday at 6 PM.
 ///
 /// Wording only repeats what the user set from their label. It never suggests a dose.
 struct ReminderPlan: Equatable {
     struct Item: Equatable {
-        enum Kind: String { case tablet, waitOver, protein, refill }
+        enum Kind: String { case tablet, waitOver, protein, refill, weekly }
         let kind: Kind
         let id: String
         let at: Date
@@ -33,12 +34,16 @@ struct ReminderPlan: Equatable {
         var loggedDays: Set<String>
         var takenAtToday: Date?
         var proteinToday: Int
+        var remindWeekly: Bool = false
     }
 
     /// Days ahead to schedule. iOS keeps at most 64 pending requests; this stays well under.
     static let daysAhead = 7
     static let proteinHour = 15
     static let refillHour = 10
+    static let weeklyHour = 18
+    /// Gregorian weekday number for Sunday.
+    static let weeklyWeekday = 1
 
     let items: [Item]
 
@@ -59,6 +64,10 @@ struct ReminderPlan: Equatable {
                                     ? String(localized: "Take it as your label says.")
                                     : String(localized: "Take it as your label says, then wait \(i.waitMinutes) min before food, drinks or other medicines.")))
             }
+            if i.remindWeekly, calendar.component(.weekday, from: day) == weeklyWeekday, let t = at(offset, weeklyHour, 0), t > now {
+                items.append(Item(kind: .weekly, id: "weekly-\(key)", at: t, title: String(localized: "Your week in Dawnwell"),
+                                  body: String(localized: "See how your tablet, protein and symptoms went this week.")))
+            }
             if i.remindProtein, let t = at(offset, proteinHour, 0), t > now, !(offset == 0 && i.proteinToday >= i.proteinTarget) {
                 let body = offset == 0 && i.proteinToday > 0
                     ? String(localized: "You're at \(i.proteinToday) of \(i.proteinTarget) g today. A protein snack helps.")
@@ -71,7 +80,7 @@ struct ReminderPlan: Equatable {
             let end = taken.addingTimeInterval(TimeInterval(i.waitMinutes * 60))
             if end > now {
                 items.append(Item(kind: .waitOver, id: "wait-\(DayKey.of(taken, calendar: calendar))", at: end,
-                                  title: String(localized: "Your wait is over"), body: String(localized: "You can eat and drink now. Start with protein.")))
+                                  title: String(localized: "Your wait is over"), body: String(localized: "You can eat, have coffee and take your other medicines now. Start with protein.")))
             }
         }
 

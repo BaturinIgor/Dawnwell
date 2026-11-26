@@ -406,5 +406,59 @@
  "Take it as your label says. No wait before food is set.": "Prendila come indicato nel foglietto. Nessuna attesa prima di mangiare impostata.",
  "Take it as your label says.": "Prendila come indicato nel foglietto.",
  "Share anonymous usage": "Condividi uso anonimo",
- "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "Conteggi come «configurazione completata» o «Plus aperto», senza nome né account. Nulla di ciò che registri viene mai inviato."
+ "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "Conteggi come «configurazione completata» o «Plus aperto», senza nome né account. Nulla di ciò che registri viene mai inviato.",
+ "%lld days": {
+  "one": "%lld giorno",
+  "other": "%lld giorni"
+ },
+ "%lld days without a tablet logged.": {
+  "one": "%lld giorno senza compressa registrata.",
+  "other": "%lld giorni senza compressa registrata."
+ },
+ "%lld of %lld days": {
+  "format": "%lld su %#@n@",
+  "one": "%lld giorno",
+  "other": "%lld giorni"
+ },
+ "Symptoms on %lld days, nausea on %lld": {
+  "format": "Sintomi in %#@n@, nausea in %lld",
+  "one": "%lld giorno",
+  "other": "%lld giorni"
+ },
+ "1 week free": "1 settimana gratis",
+ "A clean PDF report and a 90-day summary for each visit": "Un report PDF chiaro e un riepilogo di 90 giorni per ogni visita",
+ "A record of your own logs, not medical advice. Your prescriber decides your dose.": "Un resoconto delle tue registrazioni, non un consiglio medico. La dose la decide chi te la prescrive.",
+ "Add your dose in Medication. Each time it changes, you will see how you felt on it here.": "Aggiungi la dose in Farmaco. A ogni cambio vedrai qui come ti sei sentito.",
+ "Better than the week before": "Meglio della settimana prima",
+ "Days with symptoms": "Giorni con sintomi",
+ "Days with symptoms each week, with dose changes marked": "Giorni con sintomi a settimana, con i cambi di dose segnati",
+ "Days with symptoms per week, last 12 weeks. Lines mark a new dose.": "Giorni con sintomi a settimana, ultime 12 settimane. Le linee indicano una nuova dose.",
+ "Dose change": "Cambio di dose",
+ "Doses and symptoms": "Dosi e sintomi",
+ "Export CSV": "Esporta CSV",
+ "Export CSV · Plus": "Esporta CSV · Plus",
+ "Export everything to a spreadsheet (CSV)": "Esporta tutto in un foglio di calcolo (CSV)",
+ "Most logged: %@": "Il più registrato: %@",
+ "No symptoms logged": "Nessun sintomo registrato",
+ "Protein goal": "Obiettivo proteine",
+ "See how your tablet, protein and symptoms went this week.": "Guarda com’è andata questa settimana tra compressa, proteine e sintomi.",
+ "Since %@ · day %lld": "Dal %@ · giorno %lld",
+ "Spreadsheet": "Foglio di calcolo",
+ "Sunday at 6 PM, a look back at your week": "Domenica alle 18, uno sguardo alla tua settimana",
+ "Symptoms around each dose change, with days on every dose": "Sintomi intorno a ogni cambio di dose, con i giorni su ciascuna dose",
+ "Tablet": "Compressa",
+ "Taken at %@": "Presa alle %@",
+ "Try every Plus feature free for 7 days. Cancel before it ends and you pay nothing.": "Prova tutte le funzioni Plus gratis per 7 giorni. Annulla prima della fine e non paghi nulla.",
+ "Water goal": "Obiettivo acqua",
+ "Week": "Settimana",
+ "Weight %@ this week": "Peso questa settimana: %@",
+ "Worse than the week before": "Peggio della settimana prima",
+ "You can eat, have coffee and take your other medicines now. Start with protein.": "Ora puoi mangiare, bere il caffè e prendere gli altri farmaci. Inizia con le proteine.",
+ "Your days, food, symptoms and doses as CSV files for Numbers, Excel or Google Sheets.": "Giorni, cibo, sintomi e dosi in file CSV per Numbers, Excel o Google Fogli.",
+ "Your first week shows here once you start logging.": "La tua prima settimana apparirà qui quando inizierai a registrare.",
+ "Your week": "La tua settimana",
+ "Your week at a glance: tablet, protein, water and symptoms, next to the week before": "La tua settimana in breve: compressa, proteine, acqua e sintomi, a confronto con la settimana prima",
+ "Your week in Dawnwell": "La tua settimana in Dawnwell",
+ "See your doses with Plus": "Vedi le tue dosi con Plus",
+ "See your week with Plus": "Vedi la tua settimana con Plus"
 }

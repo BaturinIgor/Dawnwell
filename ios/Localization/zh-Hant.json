@@ -396,5 +396,55 @@
  "Take it as your label says. No wait before food is set.": "請依仿單服用。未設定飯前等待時間。",
  "Take it as your label says.": "請依仿單服用。",
  "Share anonymous usage": "分享匿名使用情況",
- "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "僅統計「完成設定」或「打開 Plus」等次數，不含姓名或帳號。你記錄的內容絕不會傳送。"
+ "Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.": "僅統計「完成設定」或「打開 Plus」等次數，不含姓名或帳號。你記錄的內容絕不會傳送。",
+ "%lld days": {
+  "other": "%lld 天"
+ },
+ "%lld days without a tablet logged.": {
+  "other": "%lld 天未記錄藥錠。"
+ },
+ "%lld of %lld days": {
+  "format": "%lld / %#@n@",
+  "other": "%lld 天"
+ },
+ "Symptoms on %lld days, nausea on %lld": {
+  "format": "有症狀 %#@n@，噁心 %lld 天",
+  "other": "%lld 天"
+ },
+ "1 week free": "免費 1 週",
+ "A clean PDF report and a 90-day summary for each visit": "每次就診都有清楚的 PDF 報告和 90 天摘要",
+ "A record of your own logs, not medical advice. Your prescriber decides your dose.": "這是你自己記錄的彙整，不是醫療建議。劑量由開藥的醫師決定。",
+ "Add your dose in Medication. Each time it changes, you will see how you felt on it here.": "請在「藥物」中新增劑量。每次調整後，這裡會顯示你在該劑量下的感受。",
+ "Better than the week before": "比上週好",
+ "Days with symptoms": "有症狀的天數",
+ "Days with symptoms each week, with dose changes marked": "每週有症狀的天數，並標出劑量調整",
+ "Days with symptoms per week, last 12 weeks. Lines mark a new dose.": "最近 12 週每週有症狀的天數。直線表示新劑量。",
+ "Dose change": "劑量調整",
+ "Doses and symptoms": "劑量與症狀",
+ "Export CSV": "匯出 CSV",
+ "Export CSV · Plus": "匯出 CSV · Plus",
+ "Export everything to a spreadsheet (CSV)": "全部匯出為試算表（CSV）",
+ "Most logged: %@": "記錄最多：%@",
+ "No symptoms logged": "未記錄症狀",
+ "Protein goal": "蛋白質目標",
+ "See how your tablet, protein and symptoms went this week.": "看看本週藥錠、蛋白質和症狀的情況。",
+ "Since %@ · day %lld": "自 %@ 起 · 第 %lld 天",
+ "Spreadsheet": "試算表",
+ "Sunday at 6 PM, a look back at your week": "週日 18:00，回顧你的一週",
+ "Symptoms around each dose change, with days on every dose": "每次劑量調整前後的症狀，以及每個劑量的天數",
+ "Tablet": "藥錠",
+ "Taken at %@": "已於 %@ 服用",
+ "Try every Plus feature free for 7 days. Cancel before it ends and you pay nothing.": "免費試用所有 Plus 功能 7 天。在結束前取消，不收取任何費用。",
+ "Water goal": "飲水目標",
+ "Week": "週",
+ "Weight %@ this week": "本週體重：%@",
+ "Worse than the week before": "比上週差",
+ "You can eat, have coffee and take your other medicines now. Start with protein.": "現在可以吃東西、喝咖啡和服用其他藥物了。先從蛋白質開始。",
+ "Your days, food, symptoms and doses as CSV files for Numbers, Excel or Google Sheets.": "將每日記錄、飲食、症狀和劑量匯出為 CSV 檔，可用 Numbers、Excel 或 Google 試算表開啟。",
+ "Your first week shows here once you start logging.": "開始記錄後，你的第一週會顯示在這裡。",
+ "Your week": "你的一週",
+ "Your week at a glance: tablet, protein, water and symptoms, next to the week before": "一週概覽：藥錠、蛋白質、飲水和症狀，與上週對比",
+ "Your week in Dawnwell": "你在 Dawnwell 的一週",
+ "See your doses with Plus": "使用 Plus 查看劑量",
+ "See your week with Plus": "使用 Plus 查看本週"
 }

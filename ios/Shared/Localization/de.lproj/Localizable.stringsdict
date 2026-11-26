@@ -2,6 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Tag</string>
+			<key>other</key>
+			<string>%lld Tage</string>
+		</dict>
+	</dict>
 	<key>%lld days of logs</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -16,6 +32,22 @@
 			<string>%lld Tag mit Einträgen</string>
 			<key>other</key>
 			<string>%lld Tage mit Einträgen</string>
+		</dict>
+	</dict>
+	<key>%lld days without a tablet logged.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Tag ohne eingetragene Tablette.</string>
+			<key>other</key>
+			<string>%lld Tage ohne eingetragene Tablette.</string>
 		</dict>
 	</dict>
 	<key>%lld days · worst %lld/5</key>
@@ -48,6 +80,22 @@
 			<string>%lld Eintrag</string>
 			<key>other</key>
 			<string>%lld Einträge</string>
+		</dict>
+	</dict>
+	<key>%lld of %lld days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%lld von %#@n@</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Tag</string>
+			<key>other</key>
+			<string>%lld Tagen</string>
 		</dict>
 	</dict>
 	<key>%lld patterns found in your logs.</key>
@@ -160,6 +208,22 @@
 			<string>%lld Tag aus Apple Health wird angezeigt.</string>
 			<key>other</key>
 			<string>%lld Tage aus Apple Health werden angezeigt.</string>
+		</dict>
+	</dict>
+	<key>Symptoms on %lld days, nausea on %lld</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Beschwerden an %#@n@, Übelkeit an %lld</string>
+		<key>n</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld Tag</string>
+			<key>other</key>
+			<string>%lld Tagen</string>
 		</dict>
 	</dict>
 </dict>
