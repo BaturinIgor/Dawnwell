@@ -3,59 +3,62 @@ import XCTest
 /// Takes the App Store screenshots from the demo data. Run by the Screenshots and App Store workflows,
 /// which set SCREENSHOT_DIR (and SCREENSHOT_LANG / SCREENSHOT_LOCALE for other languages);
 /// otherwise the pictures are kept as test attachments.
-/// It finds screens by tab position and accessibility identifiers, so it works in every language.
+///
+/// Each store screenshot is the real screen under a headline (`-store-caption`), in the order that sells:
+/// the wait timer first, then what Plus adds, then the visit summary. The headline comes from the app's
+/// translations, so every language gets its own. Screens are found by tab position, scroll targets and
+/// accessibility identifiers, never by text, so this works in every language.
 final class ScreenshotTests: XCTestCase {
-    private var app: XCUIApplication!
     private let env = ProcessInfo.processInfo.environment
     private var language: String { env["SCREENSHOT_LANG"].flatMap { $0.isEmpty ? nil : $0 } ?? "en" }
+    private var locale: String { env["SCREENSHOT_LOCALE"].flatMap { $0.isEmpty ? nil : $0 } ?? "en_US" }
 
     override func setUp() {
         continueAfterFailure = false
-        app = XCUIApplication()
-        let locale = env["SCREENSHOT_LOCALE"].flatMap { $0.isEmpty ? nil : $0 } ?? "en_US"
-        app.launchArguments += ["-demo", "-AppleLanguages", "(\(language))", "-AppleLocale", locale]
-        app.launch()
     }
 
+    /// (file name, caption, tab, card to scroll to)
+    private let shots: [(String, String, Int, String?)] = [
+        ("1-wait", "wait", 0, nil),
+        ("2-week", "week", 1, "week"),
+        ("3-doses", "doses", 1, "doses"),
+        ("4-visit", "visit", 2, nil),
+        ("5-protein", "protein", 1, "protein"),
+        ("6-learn", "learn", 3, nil),
+    ]
+
     func testAppStoreScreenshots() {
-        let tabs = app.tabBars.firstMatch
-        XCTAssertTrue(tabs.waitForExistence(timeout: 15), "The app did not open")
-        XCTAssertTrue(app.buttons["medication"].waitForExistence(timeout: 10), "Today screen did not open")
-        sleep(1)
-        snap("1-today")
+        for (name, caption, tab, scroll) in shots {
+            var args = ["-design-plus", "-store-caption", caption, "-design-tab", String(tab)]
+            if let scroll { args += ["-design-scroll", scroll] }
+            let app = launch(args)
+            XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 15), "\(name): the app did not open")
+            sleep(2)
+            snap(name)
+            app.terminate()
+        }
+        paywall()
+    }
 
-        tabs.buttons.element(boundBy: 1).tap()
-        sleep(1)
-        snap("2-progress")
-
-        tabs.buttons.element(boundBy: 2).tap()
-        sleep(1)
-        snap("3-report")
-
-        // The paywall, for the in-app purchase review screenshot. English only, and only once plans load.
+    /// The paywall without a headline, for the in-app purchase review. English only, and only once plans load.
+    private func paywall() {
+        guard language == "en" else { return }
+        let app = launch(["-design-tab", "2"])
         let plus = app.buttons["plus-pdf"]
-        if language == "en", plus.waitForExistence(timeout: 3) {
-            plus.tap()
-            if app.buttons.matching(NSPredicate(format: "label CONTAINS 'Lifetime'")).firstMatch.waitForExistence(timeout: 15) {
-                sleep(1)
-                snap("paywall")
-            }
-            let close = app.navigationBars.buttons.firstMatch
-            if close.exists { close.tap() } else { app.swipeDown(velocity: .fast) }
+        guard plus.waitForExistence(timeout: 10) else { return }
+        plus.tap()
+        if app.buttons.matching(NSPredicate(format: "label CONTAINS 'Lifetime'")).firstMatch.waitForExistence(timeout: 15) {
             sleep(1)
+            snap("paywall")
         }
+        app.terminate()
+    }
 
-        tabs.buttons.element(boundBy: 3).tap()
-        sleep(1)
-        snap("4-learn")
-
-        tabs.buttons.element(boundBy: 0).tap()
-        let medication = app.buttons["medication"]
-        if medication.waitForExistence(timeout: 5) {
-            medication.tap()
-            sleep(1)
-            snap("5-medication")
-        }
+    private func launch(_ extra: [String]) -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments = ["-demo", "-design", "-AppleLanguages", "(\(language))", "-AppleLocale", locale] + extra
+        app.launch()
+        return app
     }
 
     private func snap(_ name: String) {

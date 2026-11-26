@@ -27,18 +27,26 @@ struct ProgressScreen: View {
         let week = WeekSummary.make(from: snapshot)
         let doses = DoseHistory.make(from: snapshot)
         NavigationStack {
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: Metrics.gap) {
                     Text("Progress").font(.system(size: 28, weight: .heavy)).foregroundStyle(Palette.ink)
-                    weekCard(week)
+                    weekCard(week).id("week")
                     weightCard(stats)
-                    proteinCard(stats)
-                    doseCard(doses)
-                    insightsCard(insights)
+                    proteinCard(stats).id("protein")
+                    doseCard(doses).id("doses")
+                    insightsCard(insights).id("insights")
                     tabletCard(stats)
                     noiseCard(stats)
                 }
                 .padding(Metrics.gutter)
+            }
+            .task {
+                // App Store screenshots (debug builds only): open on one card.
+                guard let target = DesignFlags.argument("-design-scroll") else { return }
+                try? await Task.sleep(for: .milliseconds(300))
+                proxy.scrollTo(target, anchor: .top)
+            }
             }
             .scrollDismissesKeyboard(.interactively)
             .background(Palette.bg)

@@ -35,7 +35,7 @@ struct DawnwellApp: App {
         WindowGroup {
             Group {
                 if let container {
-                    RootView().designPresenter().modelContainer(container)
+                    RootView().designPresenter().storeFrame().modelContainer(container)
                 } else {
                     // Never start over when saved data can't be opened: show this and write nothing.
                     StorageProblemView()
