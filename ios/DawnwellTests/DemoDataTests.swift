@@ -16,6 +16,16 @@ final class DemoDataTests: XCTestCase {
         XCTAssertFalse(s.symptoms.isEmpty)
     }
 
+    func testKilogramsOutsideTheUS() {
+        let us = DemoData.snapshot(now: now, locale: Locale(identifier: "en_US"))
+        XCTAssertEqual(us.profile?.weightUnit, "lb")
+        XCTAssertEqual(us.weights.first?.value, 212)
+        let de = DemoData.snapshot(now: now, locale: Locale(identifier: "de_DE"))
+        XCTAssertEqual(de.profile?.weightUnit, "kg")
+        XCTAssertEqual(de.weights.first?.value, 96.2)
+        XCTAssertEqual(de.profile?.goalWeight, 84)
+    }
+
     func testNothingInTheFuture() {
         let s = DemoData.snapshot(now: now)
         XCTAssertTrue(s.foods.allSatisfy { $0.at < now })
