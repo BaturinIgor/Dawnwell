@@ -528,7 +528,8 @@ def sync_win_back(asc, sub_id, wb, ids):
     included = [{"type": "winBackOfferPrices", "id": f"${{price-{i}}}",
                  "relationships": {"subscriptionPricePoint": {"data": ref("subscriptionPricePoints", point)}}}
                 for i, point in enumerate(targets.values())]
-    start = time.strftime("%Y-%m-%d", time.gmtime(time.time() + 86400))
+    # Apple wants the start at least a day after today in its own time zone: two days from now is always safe.
+    start = time.strftime("%Y-%m-%d", time.gmtime(time.time() + 2 * 86400))
     asc.create("winBackOffers", {
         "referenceName": wb["referenceName"], "offerId": wb["offerId"],
         "duration": wb["duration"], "offerMode": wb["offerMode"], "periodCount": wb["periodCount"],
