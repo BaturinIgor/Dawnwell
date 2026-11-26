@@ -88,9 +88,11 @@ struct ReportView: View {
                         Text("Share summary")
                     }
                     .buttonStyle(FilledButtonStyle())
+                    .simultaneousGesture(TapGesture().onEnded { Analytics.send(.reportShared, ["format": "text"]) })
                     if store.isPlus, let url = pdfURL {
                         ShareLink(item: url) { Label("Share as PDF", systemImage: "doc.richtext") }
                             .buttonStyle(FilledButtonStyle(kind: .secondary))
+                            .simultaneousGesture(TapGesture().onEnded { Analytics.send(.reportShared, ["format": "pdf"]) })
                     } else if !store.isPlus {
                         Button { showPaywall = true } label: {
                             Label("Share as PDF · Plus", systemImage: "lock.fill")

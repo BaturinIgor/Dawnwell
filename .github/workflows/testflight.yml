@@ -46,6 +46,12 @@ jobs:
           [ -z "$KEY" ] && missing="$missing ASC_PRIVATE_KEY"
           if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing"; exit 1; fi
 
+      - name: Add Firebase config (analytics)
+        # Without the secret the build still works, with analytics off.
+        env:
+          GOOGLE_SERVICE_INFO_PLIST: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+        run: scripts/add_firebase_config.sh com.dawnwell.app
+
       - name: Generate project
         run: |
           brew install xcodegen

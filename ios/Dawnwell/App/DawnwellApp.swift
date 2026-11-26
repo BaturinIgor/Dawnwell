@@ -24,6 +24,7 @@ struct DawnwellApp: App {
         } else {
             container = nil
         }
+        Analytics.start()
     }
 
     var body: some Scene {

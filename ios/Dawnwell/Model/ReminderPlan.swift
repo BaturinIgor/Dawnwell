@@ -55,7 +55,9 @@ struct ReminderPlan: Equatable {
             let key = DayKey.of(day, calendar: calendar)
             if i.remindTablet, !i.loggedDays.contains(key), let t = at(offset, i.doseHour, i.doseMinute), t > now {
                 items.append(Item(kind: .tablet, id: "tablet-\(key)", at: t, title: String(localized: "Time for your tablet"),
-                                  body: String(localized: "Take it as your label says, then wait \(i.waitMinutes) min before food, drinks or other medicines.")))
+                                  body: i.waitMinutes == 0
+                                    ? String(localized: "Take it as your label says.")
+                                    : String(localized: "Take it as your label says, then wait \(i.waitMinutes) min before food, drinks or other medicines.")))
             }
             if i.remindProtein, let t = at(offset, proteinHour, 0), t > now, !(offset == 0 && i.proteinToday >= i.proteinTarget) {
                 let body = offset == 0 && i.proteinToday > 0

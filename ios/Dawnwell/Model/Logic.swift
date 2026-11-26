@@ -66,3 +66,18 @@ enum Logic {
         return d.formatted(date: .omitted, time: .shortened)
     }
 }
+
+/// When to ask for an App Store rating: after a week of logged tablets, once per app version.
+/// Apple limits how often the sheet really shows, so this only decides when it is worth asking.
+enum ReviewPrompt {
+    static let streakNeeded = 7
+    static let lastAskedKey = "reviewPromptLastAskedVersion"
+
+    static func shouldAsk(streak: Int, lastAskedVersion: String?, currentVersion: String) -> Bool {
+        streak >= streakNeeded && lastAskedVersion != currentVersion
+    }
+
+    static var currentVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+    }
+}

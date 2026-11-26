@@ -1,8 +1,11 @@
+import StoreKit
 import SwiftData
 import SwiftUI
 
 struct TodayView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.requestReview) private var requestReview
+    @AppStorage(ReviewPrompt.lastAskedKey) private var reviewAskedVersion = ""
     @Query(sort: \Profile.createdAt) private var profiles: [Profile]
     @Query private var days: [DayLog]
     @Query private var foods: [FoodEntry]
@@ -203,6 +206,21 @@ struct TodayView: View {
         }
         if let p = profile, let left = p.tabletsLeft { p.tabletsLeft = max(0, left - 1); repo.save() }
         if let p = profile { WaitActivityController.start(takenAt: now, waitMinutes: p.waitMinutes, medication: p.medication.label) }
+        Analytics.send(.tabletTaken)
+        askForReviewIfDue()
+    }
+
+    private func askForReviewIfDue() {
+        guard !Persistence.isSandboxed else { return }
+        let streak = Logic.streak(takenDays: Set(days.filter { $0.takenAt != nil }.map(\.day)).union([key]))
+        let version = ReviewPrompt.currentVersion
+        guard ReviewPrompt.shouldAsk(streak: streak, lastAskedVersion: reviewAskedVersion, currentVersion: version) else { return }
+        reviewAskedVersion = version
+        Task {
+            // Let the card settle into the wait timer first.
+            try? await Task.sleep(for: .seconds(2))
+            requestReview()
+        }
     }
 
     private func undo() {
@@ -242,12 +260,18 @@ struct TabletCard: View {
                 Group { if overdue { Text("Due at \(due) · not logged") } else { Text("Today's tablet") } }
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(overdue ? Palette.warmInk : Color.white.opacity(0.85))
-                Group { if overdue { Text("Did you take your tablet this morning?") } else { Text("Take it on an empty stomach") } }
+                Group {
+                    if overdue { Text("Did you take your tablet this morning?") }
+                    else if profile.waitMinutes == 0 { Text("Time for today's tablet") }
+                    else { Text("Take it on an empty stomach") }
+                }
                     .font(.system(size: 24, weight: .heavy))
                     .foregroundStyle(overdue ? Palette.ink : Color.white)
                 Group {
                     if overdue {
                         Text("If you missed it, follow the missed-dose instructions on your label. Don't take two to catch up.")
+                    } else if profile.waitMinutes == 0 {
+                        Text("Take it as your label says. No wait before food is set.")
                     } else {
                         Text("With a small sip of water, then wait \(profile.waitMinutes) min before food, drinks or other medicines.")
                     }

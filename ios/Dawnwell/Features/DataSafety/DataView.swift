@@ -14,6 +14,7 @@ struct DataView: View {
     @State private var pending: Pending?
     @State private var message: String?
     @State private var cloudAccount: CloudStatus.Account = .unknown
+    @State private var shareUsage = Analytics.isUserEnabled()
 
     private struct Pending: Identifiable {
         let id = UUID()
@@ -73,6 +74,18 @@ struct DataView: View {
                     }
                 }
                 .card()
+
+                if Analytics.isAvailable {
+                    Toggle(isOn: Binding(get: { shareUsage }, set: { shareUsage = $0; Analytics.setEnabled($0) })) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Share anonymous usage").font(.system(size: 17, weight: .heavy))
+                            Text("Counts like “finished setup” or “opened Plus”, with no name or account. Nothing you log is ever sent.")
+                                .font(.footnote).foregroundStyle(Palette.muted)
+                        }
+                    }
+                    .tint(Palette.accent)
+                    .card()
+                }
 
                 if let message {
                     Text(message)

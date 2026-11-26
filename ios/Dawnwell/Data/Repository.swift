@@ -121,6 +121,8 @@ struct Repository {
         if !label.isEmpty && label != p.doseLabel {
             context.insert(DoseChange(label: "\(label) daily", from: today))
         }
+        // A different tablet comes with a different wait rule. The user can still change it after.
+        if medication != p.medication { p.waitMinutes = medication.defaultWaitMinutes }
         p.medication = medication
         p.doseLabel = label
         save()

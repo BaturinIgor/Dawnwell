@@ -18,3 +18,7 @@ ios/*.xcresult
 ios/xcodebuild.log
 xcuserdata/
 __pycache__/
+
+# Firebase config: only the TestFlight build adds it, from the GOOGLE_SERVICE_INFO_PLIST secret
+ios/Dawnwell/Resources/GoogleService-Info.plist
+ios/scripts/GoogleService-Info.plist

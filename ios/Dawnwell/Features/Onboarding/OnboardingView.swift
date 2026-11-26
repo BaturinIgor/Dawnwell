@@ -90,7 +90,7 @@ struct OnboardingView: View {
             title("Your tablet", "Copy these from your prescription label. You can change them anytime.")
             fieldLabel("Medication")
             ForEach(Medication.allCases) { m in
-                Button { medication = m } label: {
+                Button { medication = m; wait = m.defaultWaitMinutes } label: {
                     HStack {
                         Text(m.label).font(.system(size: 15, weight: .bold)).foregroundStyle(Palette.ink)
                         Spacer()
@@ -120,7 +120,7 @@ struct OnboardingView: View {
                     Text("As written on your label").font(.footnote).foregroundStyle(Palette.muted)
                 }
                 Spacer()
-                StepperView(value: $wait, unit: String(localized: "min"), step: 5, range: 5...120)
+                StepperView(value: $wait, unit: String(localized: "min"), step: 5, range: 0...120)
             }
             .card()
             Button("Continue") { step = 2 }.buttonStyle(FilledButtonStyle())
@@ -185,6 +185,7 @@ struct OnboardingView: View {
         if !p.doseLabel.isEmpty { context.insert(DoseChange(label: "\(p.doseLabel) daily", from: today)) }
         p.onboarded = true
         repo.save()
+        Analytics.send(.onboardingFinished)
     }
 
     private func title(_ text: LocalizedStringKey, _ sub: LocalizedStringKey) -> some View {
