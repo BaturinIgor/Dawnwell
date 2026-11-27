@@ -17,6 +17,12 @@ on:
         type: choice
         options: [check, everything, texts, products, screenshots]
         default: check
+  # Called by the Next release workflow with a comma list, e.g. "texts,screenshots".
+  workflow_call:
+    inputs:
+      parts:
+        type: string
+        required: true
 
 concurrency:
   group: appstore-listing
@@ -24,7 +30,7 @@ concurrency:
 
 jobs:
   shots:
-    if: inputs.parts == 'everything' || inputs.parts == 'screenshots'
+    if: inputs.parts == 'everything' || contains(inputs.parts, 'screenshots')
     runs-on: macos-15
     timeout-minutes: 90
     defaults:

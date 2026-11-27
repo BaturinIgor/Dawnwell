@@ -3,6 +3,7 @@ name: Release
 # Releases and submits versions through the App Store Connect API (ios/scripts/release.py).
 # Run it by hand: Actions -> Release -> Run workflow.
 #   status   versions, builds and purchases with their states (changes nothing)
+#   ready    whether the version in whats-new.json can go to review now (changes nothing)
 #   release  puts the version that is Pending Developer Release on the App Store
 #   prepare  makes the version from ios/AppStore/whats-new.json, fills What's New, attaches the newest build
 #   submit   prepare, then send it to App Review (set App Privacy in App Store Connect first: it has no API)
@@ -15,7 +16,7 @@ on:
       action:
         description: 'What to do'
         type: choice
-        options: [status, release, prepare, submit]
+        options: [status, ready, release, prepare, submit]
         default: status
 
 concurrency:

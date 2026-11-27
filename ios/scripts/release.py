@@ -8,6 +8,7 @@ Run by .github/workflows/release.yml with the same API key secrets as the other 
   python3 release.py prepare    makes the version from AppStore/whats-new.json, fills What's New in every
                                 language and picks its newest processed build
   python3 release.py submit     prepare, then sends that version to App Review
+  python3 release.py ready      whether that version can go to review now (changes nothing)
 
 App Privacy answers have no API: set them in App Store Connect before `submit`.
 """
@@ -95,6 +96,32 @@ def prepare(asc, app_id):
     return vid
 
 
+def ready(asc, app_id):
+    """Whether the version in whats-new.json can go to review now: every other version is out (none waiting,
+    in review or rejected), it is new or still being prepared, and a processed build of it exists.
+    Writes go=true|false for the Next release workflow."""
+    wanted = json.loads((ROOT / "whats-new.json").read_text())["version"]
+    done = ("READY_FOR_SALE", "READY_FOR_DISTRIBUTION", "REPLACED_WITH_NEW_INFO",
+            "REMOVED_FROM_SALE", "DEVELOPER_REMOVED_FROM_SALE")
+    reasons = []
+    for v in versions(asc, app_id):
+        name, s = v["attributes"]["versionString"], state(v)
+        if name == wanted:
+            if s not in EDITABLE:
+                reasons.append(f"{wanted} is already {s}")
+        elif s not in done:
+            reasons.append(f"{name} is {s}")
+    builds = asc.get("/v1/builds", **{"filter[app]": app_id, "filter[preReleaseVersion.version]": wanted,
+                                      "filter[processingState]": "VALID", "limit": 1})["data"]
+    if not builds:
+        reasons.append(f"no processed build of {wanted}")
+    go = not reasons
+    print(f"Ready to send {wanted} to review." if go else f"Not yet: {'; '.join(reasons)}.")
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+            f.write(f"go={'true' if go else 'false'}\n")
+
+
 def submit(asc, app_id):
     vid = prepare(asc, app_id)
     drafts = [s for s in asc.all("/v1/reviewSubmissions", **{"filter[app]": app_id, "filter[platform]": "IOS"})
@@ -118,8 +145,8 @@ def main():
         sys.exit("Add the ASC_KEY_ID, ASC_ISSUER_ID and ASC_PRIVATE_KEY repository secrets first.")
     asc = ASC(key_id, issuer, key)
     app_id = find_app(asc)["id"]
-    {"status": status, "release": release, "prepare": prepare, "submit": submit}[action](asc, app_id)
-    if action != "status":
+    {"status": status, "ready": ready, "release": release, "prepare": prepare, "submit": submit}[action](asc, app_id)
+    if action not in ("status", "ready"):
         print("\nNow:")
         status(asc, app_id)
 
